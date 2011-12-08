@@ -8,15 +8,57 @@
 * file that was distributed with this source code.
 */
 
-
 namespace MediaAlignedText\Core\Interfaces;
 
+
+/*
+ * Inteface for the MediaAlignedText class which is the container
+ * that holds the media file, text, and alignment between them
+ */
 interface MediaAlignedTextInterface
 {
     /**
-     * Gets the Text Associated with the media aligned text
+     * Get the MediaFileSegment Aligned with the supplied TextSegment
+     * 
+     * @param TextSegmentInterface $text_seg
+     * @return MedaiFileSegmentInterface
+     */
+    function getAlignedMediaSegFromTextSeg(TextSegmentInterface $text_seg);
+ 
+    /**
+     * Get the TextSegment Aligned with the supplied MediaFileSegment
+     * 
+     * @param TextSegmentInterface $text_seg
+     * @return TextSegmentInterface
+     */
+    function getAlignedTextSegFromMediaSeg(MediaFileSegmentInteface $media_file_seg);
+    
+    /**
+     * Retrieve an array of the media files associated with the text
+     * 
+     * @return 
+     */
+    function getMediaFiles();
+    
+    /**
+     * Retrieve a collection of MediaFileSegments
+     * 
+     * @return Array 
+     */
+    function getMediaFileSegments();
+    
+    /**
+     * Function to return the Text object which is being aligned
      * 
      * @return TextInterface
      */
     function getText();
+    
+    /**
+     * Gets an ordered array TextSegments Aligned that are aligned with with the media segments
+     * 
+     * @return Array
+     */
+    function getTextSegments();
+
 }
