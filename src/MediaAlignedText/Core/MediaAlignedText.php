@@ -13,7 +13,10 @@ namespace MediaAlignedText\Core;
 
 class MediaAlignedText implements Interfaces\MediaAlignedTextInterface
 {
-    public function getText() {
+    /**
+     * Function to 
+     */
+    public function getTexts() {
       return new Text();
     }
 }

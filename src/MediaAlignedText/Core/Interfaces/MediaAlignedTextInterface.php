@@ -34,8 +34,13 @@ interface MediaAlignedTextInterface
     function getAlignedTextSegFromMediaSeg(MediaFileSegmentInteface $media_file_seg);
     
     /**
-     * Retrieve an array of the media files associated with the text
-     * 
+     * Retrieves the combined full texts of all associated texts
+     * @return String
+     */
+    function getCombinedFullText();
+    
+    /**
+     * Retrieve an collection media files associated with the text
      * @return 
      */
     function getMediaFiles();
@@ -52,10 +57,10 @@ interface MediaAlignedTextInterface
      * 
      * @return TextInterface
      */
-    function getText();
+    function getTexts();
     
     /**
-     * Gets an ordered array TextSegments Aligned that are aligned with with the media segments
+     * Gets an ordered array TextSegments that are aligned with with the media segments
      * 
      * @return Array
      */
