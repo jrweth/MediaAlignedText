@@ -2,7 +2,7 @@
 /**
 * This file is part of the MediaAlignedText package
 * 
-* (c) J. Reuuben Wetherbe <wetherbe@sas.upenn.edu>
+* (c) J. Reuben Wetherbe <wetherbe@sas.upenn.edu>
 *
 * For the full copyright and license information, please view the LICENSE
 * file that was distributed with this source code.
@@ -16,17 +16,26 @@ namespace MediaAlignedText\Core;
 class CharacterGroup implements Interfaces\CharacterGroup
 {
     /**
+     * The type of character group this is
+     * @var String
+     */
+    protected $character_group_type;
+    
+    /**
      * The character string
+     * @var String
      */
     protected $characters;
     
     /**
      * The Order this character occurs in the parent text
+     * @var Integer
      */
     protected $order;
     
     /**
      * The parent text to which this character group belongs
+     * @var Text
      */
     protected $parent_text;
     
@@ -37,7 +46,7 @@ class CharacterGroup implements Interfaces\CharacterGroup
      */
     public function getCharcterGroupType()
     {
-        return 'WORD';
+        return $this->getCharcterGroupType();
     }
     
     /**
@@ -100,6 +109,6 @@ class CharacterGroup implements Interfaces\CharacterGroup
      */
     public function setCharacterGroupType()
     {
-        return 'WORD';
+        $this->character_group_type = 'WORD';
     }
 }
