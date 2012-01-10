@@ -13,6 +13,21 @@ namespace MediaAlignedText\Core;
 class Text implements Interfaces\TextInterface
 {
     /**
+     * The ordered list of CharacterGroups that make up this Text
+     * @var Array
+     */
+    protected $character_groups;
+    
+    /**
+     * Function to set the character groups for this Text
+     * 
+     * @param Array $character_groups
+     */
+    public function addCharacterGroup($character_groups) {
+        $this->character_groups[] = $character_group;
+    }
+    
+    /**
      * Get the Character Groups that make up this Text
      * 
      * @todo implement
@@ -20,7 +35,7 @@ class Text implements Interfaces\TextInterface
      */
     function getCharacterGroups()
     {
-        
+        return $this->character_groups;
     }
     
     /**
@@ -28,12 +43,21 @@ class Text implements Interfaces\TextInterface
      * 
      * @return String
      */
-    function getFullText(){
+    public function getFullText(){
         $full_text = '';
         foreach($this->getCharacterGroups() as $char_group) {
             $full_text .= $char_group->getCharacters();
         }
         
         return $full_text;
+    }
+    
+    /**
+     * Function to set the character groups for this Text
+     * 
+     * @param Array $character_groups
+     */
+    public function setCharacterGroups($character_groups = array()) {
+        $this->character_groups = $character_groups;
     }
 }

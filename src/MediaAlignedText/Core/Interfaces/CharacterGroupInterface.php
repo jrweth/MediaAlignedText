@@ -16,7 +16,7 @@ namespace MediaAlignedText\Core\Interfaces;
  * 
  * @author wetherbe
  */
-interface CharcterGroupInterface
+interface CharacterGroupInterface
 {
     /**
      * Get the order which this character group occurs within it's parent text
