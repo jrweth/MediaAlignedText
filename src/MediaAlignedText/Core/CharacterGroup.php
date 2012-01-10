@@ -13,7 +13,7 @@ namespace MediaAlignedText\Core;
 /**
  * A CharacterGroup represents a unit of text at the word or white-space delimeter level 
  */
-class CharacterGroup implements Interfaces\CharacterGroup
+class CharacterGroup implements Interfaces\CharacterGroupInterface
 {
     /**
      * The type of character group this is
@@ -38,6 +38,12 @@ class CharacterGroup implements Interfaces\CharacterGroup
      * @var Text
      */
     protected $parent_text;
+    
+    /**
+     * The text type (WORD or NON_WORD)
+     * @var String
+     */
+    protected $text_type;
     
     /**
      * Function to get the text type [WORD, NON_WORD]
@@ -75,6 +81,10 @@ class CharacterGroup implements Interfaces\CharacterGroup
         return $this->parent_text;
     }
     
+    public function getTextType() {
+        return $this->text_type;
+    }
+    
     /**
      * Set the order
      * 
@@ -103,12 +113,15 @@ class CharacterGroup implements Interfaces\CharacterGroup
     }
     
     /**
-     * Function to get the text type [WORD, NON_WORD]
-     * @return String
+     * Function to set the text type [WORD, NON_WORD]
+     * @param String $text_type
      * @todo make meaningful
      */
-    public function setCharacterGroupType()
+    public function setCharacterGroupType($word_group_type)
     {
-        $this->character_group_type = 'WORD';
+        if(!in_array($word_group_type, array('WORD', 'NON_WORD'))) {
+            throw new Exception('Text type must be of type WORD or NON_WORD');
+        };
+        $this->character_group_type = $word_group_type;
     }
 }
