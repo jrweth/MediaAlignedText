@@ -3,8 +3,8 @@ namespace MediaAlignedText\Core;
 
 require_once('CoreTest.php');
 
-class TextTest extends CoreTest {
-
+class CharacterGroupTest extends CoreTest {
+    
     /**
      * Test to make sure that the class implements the interface
      */
@@ -13,8 +13,8 @@ class TextTest extends CoreTest {
         $this->assertInstanceOf('MediaAlignedText\\Core\\Interfaces\\TextInterface', $this->text);
     }
     
-    public function testGetFullText()
+    public function testGetCharacters()
     {
-        print $this->text->getFullText();
+        $this->assertEquals($this->character_group->getCharacters(), 'In');
     }
 }
