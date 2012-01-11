@@ -19,6 +19,21 @@ class Text implements Interfaces\TextInterface
     protected $character_groups;
     
     /**
+     * The dependency Injection Container
+     * @var Interfaces\DependencyInjectionContainerInterface
+     */
+    protected $di_container;
+    
+    /**
+     * Construct class and set the dependency injection container
+     * @param Interfaces\DependencyInjectionContainerInterface $di_container  The DependencyInjectionContainer
+     */
+    public function __construct(Interfaces\DependencyInjectionContainerInterface $di_container)
+    {
+        $this->di_container = $di_container;
+    }
+    
+    /**
      * Function to set the character groups for this Text
      * 
      * @param Array $character_groups
