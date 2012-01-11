@@ -21,7 +21,7 @@ interface MediaAlignedTextInterface
      * Get the MediaFileSegment Aligned with the supplied TextSegment
      * 
      * @param TextSegmentInterface $text_seg
-     * @return MedaiFileSegmentInterface
+     * @return MediaFileSegmentInterface
      */
     function getAlignedMediaSegFromTextSeg(TextSegmentInterface $text_seg);
  
