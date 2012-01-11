@@ -28,6 +28,12 @@ class CharacterGroup implements Interfaces\CharacterGroupInterface
     protected $characters;
     
     /**
+     * The dependency Injection Container
+     * @var Interfaces\DependencyInjectionContainerInterface
+     */
+    protected $di_container;
+    
+    /**
      * The Order this character occurs in the parent text
      * @var Integer
      */
@@ -44,6 +50,15 @@ class CharacterGroup implements Interfaces\CharacterGroupInterface
      * @var String
      */
     protected $text_type;
+    
+    /**
+     * Construct class and set the dependency injection container
+     * @param Interfaces\DependencyInjectionContainerInterface $di_container  The DependencyInjectionContainer
+     */
+    public function __construct(Interfaces\DependencyInjectionContainerInterface $di_container)
+    {
+        $this->di_container = $di_container;
+    }
     
     /**
      * Function to get the text type [WORD, NON_WORD]
