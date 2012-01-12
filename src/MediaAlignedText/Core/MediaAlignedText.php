@@ -125,9 +125,10 @@ class MediaAlignedText implements Interfaces\MediaAlignedTextInterface
             
             //loop through and instantiate the character groups from the text  
             $c_groups = array();
-            foreach((array)$text['character_groups'] as $order => $chars) {
+            foreach((array)$text['character_groups'] as $order => $chargroup_def) {
                 $c_group = $this->di_container->getCharacterGroup();
-                $c_group->setCharacters($chars);
+                $c_group->setCharacters($chargroup_def['chars']);
+                $c_group->setCharacterGroupType($chargroup_def['type']);
                 $c_group->setParentText($text_object);
                 $c_group->setOrder($order);
                 $c_groups[] = $c_group;
