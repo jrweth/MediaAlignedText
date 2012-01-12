@@ -27,4 +27,9 @@ class DependencyInjectionContainer implements Interfaces\DependencyInjectionCont
     {
         return new Text($this);
     }
+    
+    public function getTextSegment($params = null)
+    {
+        return new TextSegment($this);
+    }
 }

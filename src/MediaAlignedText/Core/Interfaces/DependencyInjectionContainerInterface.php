@@ -42,4 +42,12 @@ interface DependencyInjectionContainerInterface
      */
     function getText($params = null);
     
+    /**
+     * Get a new TextSegment Object
+     * 
+     * @param Array $params
+     * @return TextSegment
+     */
+    function getTextSegment($params = null);
+    
 }
