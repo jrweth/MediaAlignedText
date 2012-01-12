@@ -63,11 +63,10 @@ class CharacterGroup implements Interfaces\CharacterGroupInterface
     /**
      * Function to get the text type [WORD, NON_WORD]
      * @return String
-     * @todo make meaningful
      */
-    public function getCharcterGroupType()
+    public function getCharacterGroupType()
     {
-        return $this->getCharcterGroupType();
+        return $this->character_group_type;
     }
     
     /**
@@ -96,9 +95,6 @@ class CharacterGroup implements Interfaces\CharacterGroupInterface
         return $this->parent_text;
     }
     
-    public function getTextType() {
-        return $this->text_type;
-    }
     
     /**
      * Set the order
@@ -123,8 +119,8 @@ class CharacterGroup implements Interfaces\CharacterGroupInterface
      * Function to retrieve the parent text to which this character text belongs
      * @return TextInterface
      */
-    public function setParentText(){
-        return $this->parent_text;
+    public function setParentText(Interfaces\TextInterface $parent_text){
+        $this->parent_text = $parent_text;
     }
     
     /**
@@ -135,7 +131,7 @@ class CharacterGroup implements Interfaces\CharacterGroupInterface
     public function setCharacterGroupType($word_group_type)
     {
         if(!in_array($word_group_type, array('WORD', 'NON_WORD'))) {
-            throw new Exception('Text type must be of type WORD or NON_WORD');
+            throw new \Exception('Text type must be of type WORD or NON_WORD');
         };
         $this->character_group_type = $word_group_type;
     }
