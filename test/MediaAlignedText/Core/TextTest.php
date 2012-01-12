@@ -15,6 +15,6 @@ class TextTest extends CoreTest {
     
     public function testGetFullText()
     {
-        print $this->text->getFullText();
+        
     }
 }
