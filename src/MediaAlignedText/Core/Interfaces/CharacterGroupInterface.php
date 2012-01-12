@@ -40,5 +40,5 @@ interface CharacterGroupInterface
      * Function to get the text type [WORD, NON_WORD]
      * @return String
      */
-    function getTextType();
+    function getCharacterGroupType();
 }
