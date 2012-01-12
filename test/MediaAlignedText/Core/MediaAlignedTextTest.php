@@ -1,23 +1,20 @@
 <?php 
+/**
+* This file is part of the MediaAlignedText package
+* 
+* (c) J. Reuben Wetherbe <jreubenwetherbee@gmail.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+namespace MediaAlignedText\Core;
 
-use MediaAlignedText\Core\MediaAlignedText;
+require_once('CoreTest.php');
 
-class MediaAlignedTextTest extends \PHPUnit_Framework_TestCase {
-
-    /**
-     * Media Aligned Text instantiated during setup
-     * @var MediaAlignedText
-     */
-    private $media_aligned_text;
+class MediaAlignedTextTest extends CoreTest {
     
-    public function setUp()
+    public function testGetText()
     {
-        $this->media_alinged_text = new MediaAlignedText();
-    }
-    
-    public function getTextTest()
-    {
-        $text = $this->media_aligned_text->getText();
-        $this->assertInstanceOf('TextInterface', $text);
+        $this->assertInstanceOf('MediaAlignedText\\Core\\Interfaces\\MediaAlignedTextInterface', $this->media_aligned_text);
     }
 }
