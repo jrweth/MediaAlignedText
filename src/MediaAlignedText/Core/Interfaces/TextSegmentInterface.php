@@ -32,6 +32,12 @@ interface TextSegmentInterface
     function getCharacterGroups();
     
     /**
+     * Function to get parent MediaAlignedText
+     * @return MediaAlignedTextInterface
+     */
+    function getParentMediaAlignedText();
+    
+    /**
      * Function to retrieve an array of the composite character text and character group orders
      * 
      * e.g. if the TextSegment encompasses the 4th to 9th characater groups of the first text the 
@@ -40,9 +46,27 @@ interface TextSegmentInterface
      */
     function getTextCharacterGroupOrders();
     
+    
     /**
-     * Function to get the text type [WORD, NON_WORD]
-     * @return MediaAlignedTextInterface
+     * Set the id which uniquely identifies this text segment from other TextSegmenst
+     * of the same MediaAlignedText
+     * @param Integer $id
      */
-    function getParentMediaAlignedText();
+    function setId($id);
+    
+    
+    /**
+     * Function to set an array of the composite character text and character group orders for this segment
+     * 
+     * e.g. if the TextSegment encompasses the 4th to 12th characater groups of the first text the 
+     * array would be [0_3, 0_4, 0_5, 0_6, 0_7, 0_8, 0_9, 0_10, 0_11]
+     * @param array $text_character_group_orders
+     */
+    function setTextCharacterGroupOrders($text_character_group_orders);
+    
+    /**
+     * Function to set the Parent MediaAlignedText
+     * @param MediaAlignedTextInterface $media_aligned_text
+     */
+    function setParentMediaAlignedText(MediaAlignedTextInterface $media_aligned_text);
 }

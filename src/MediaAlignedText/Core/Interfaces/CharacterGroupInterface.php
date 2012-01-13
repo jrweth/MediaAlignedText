@@ -19,10 +19,10 @@ namespace MediaAlignedText\Core\Interfaces;
 interface CharacterGroupInterface
 {
     /**
-     * Get the order which this character group occurs within it's parent text
-     * @return Integer
+     * Function to get the text type [WORD, NON_WORD]
+     * @return String
      */
-    function getOrder();
+    function getCharacterGroupType();
     
     /**
      * Function to return the text characters contained in the character groups
@@ -31,14 +31,40 @@ interface CharacterGroupInterface
     function getCharacters();
     
     /**
+     * Get the order which this character group occurs within it's parent text
+     * @return Integer
+     */
+    function getOrder();
+    
+    /**
      * Function to retrieve the parent text to which this character text belongs
      * @return TextInterface
      */
     function getParentText();
     
+    
     /**
-     * Function to get the text type [WORD, NON_WORD]
-     * @return String
+     * Function to set the text type [WORD, NON_WORD]
+     * @param String $char_group_type
      */
-    function getCharacterGroupType();
+    function setCharacterGroupType($char_group_type);
+    
+    /**
+     * Function to set the text characters contained in the character groups
+     * @param String $characters
+     */
+    function setCharacters($characters);
+    
+    /**
+     * Set the order which this character group occurs within it's parent text
+     * @param Integer $order
+     */
+    function setOrder($order);
+    
+    /**
+     * Function to set the parent text to which this character text belongs
+     * @param TextInterface $text  
+     */
+    function setParentText(TextInterface $text);
+    
 }

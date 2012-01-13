@@ -52,5 +52,7 @@ class CoreTest extends \PHPUnit_Framework_TestCase {
         $this->text = $this->texts[0];
         $this->character_groups = $this->text->getCharacterGroups();
         $this->character_group = $this->character_groups[0];
+        $this->text_segments = $this->media_aligned_text->getTextSegments();
+        $this->text_segment = $this->text_segments[0];
     }
 }
