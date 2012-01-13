@@ -17,10 +17,23 @@ class DependencyInjectionContainer implements Interfaces\DependencyInjectionCont
     {
         return new CharacterGroup($this);
     }
-    
+    /**
+     * (non-PHPdoc)
+     * @see MediaAlignedText\Core\Interfaces.DependencyInjectionContainerInterface::getMediaAlignedText()
+     * @return MediaAlignedText
+     */
     public function getMediaAlignedText($params = null)
     {
         return new MediaAlignedText($this);
+    }
+    /**
+     * (non-PHPdoc)
+     * @see MediaAlignedText\Core\Interfaces.DependencyInjectionContainerInterface::getMediaFile()
+     * @return MediaFile
+     */
+    public function getMediaFile($params = null)
+    {
+        return new MediaFile($this);
     }
     
     public function getText($params = null)

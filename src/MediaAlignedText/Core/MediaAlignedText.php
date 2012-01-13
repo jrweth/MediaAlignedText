@@ -19,6 +19,13 @@ class MediaAlignedText implements Interfaces\MediaAlignedTextInterface
      * @var Interfaces\DependencyInjectionContainerInterface
      */
     protected $di_container;
+    
+    /**
+     * The array of MediaFiles used for this alignment
+     * @var Array
+     */
+    protected $media_files;
+    
     /**
      * Array of ordered Text Objects associated with this Object
      * @var Array
@@ -80,7 +87,7 @@ class MediaAlignedText implements Interfaces\MediaAlignedTextInterface
      * @todo implement
      */
     function getMediaFiles() {
-        
+        return $this->media_files;
     }
     
     /**
@@ -153,6 +160,17 @@ class MediaAlignedText implements Interfaces\MediaAlignedTextInterface
             $segment->setParentMediaAlignedText($this);
             $segment->setTextCharacterGroupOrders($segment_def['text_character_group_orders']);
             $this->text_segments[] = $segment;
+        }
+        
+        //loop through and instantiate the MediaFiles
+        $this->media_files = array();
+        foreach((array)$data['media_files'] as $media_file_order => $media_file_def) {
+            $media_file = $this->di_container->getMediaFile();
+            $media_file->setTitle($media_file_def['title']);
+            $media_file->setUrl($media_file_def['url']);
+            $media_file->setFileType($media_file_def['file_type']);
+            $media_file->setMediaType($media_file_def['media_type']);
+            $this->media_files[] = $media_file;
         }
     }
 }

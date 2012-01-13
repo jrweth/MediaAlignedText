@@ -35,6 +35,13 @@ interface DependencyInjectionContainerInterface
     function getMediaAlignedText($params = null);
     
     /**
+     * Get a new MediaFile Object
+     * 
+     * @param Array $params Params to help instantiate the object
+     */
+    function getMediaFile($params = null);
+    
+    /**
      * Get a new Text Object
      * 
      * @param Array $params  Params to help instantiate the object

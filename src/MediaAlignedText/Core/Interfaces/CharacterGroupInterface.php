@@ -11,7 +11,7 @@
 namespace MediaAlignedText\Core\Interfaces;
 
 /**
- * The Text Interface defines the methods necessary for any class representing 
+ * The CharacterGroup Interface defines the methods necessary for any class representing 
  * the character groups that make up a Text
  * 
  * @author wetherbe
