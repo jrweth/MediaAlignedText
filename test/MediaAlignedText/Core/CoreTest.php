@@ -30,7 +30,11 @@ class CoreTest extends \PHPUnit_Framework_TestCase {
      */
     protected $text;
     
-    
+    /**
+     * TextSegment Instance
+     * @var TextSegment
+     */
+    protected $text_segment;
     public function setUp()
     {
         //register the MediaAlignedText Autoloader
