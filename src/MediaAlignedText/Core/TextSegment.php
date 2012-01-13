@@ -73,13 +73,30 @@ class TextSegment implements Interfaces\TextSegmentInterface
      */
     function getCharacterGroups()
     {
+        $character_groups = array();
+        $previous_text_order = -1;
+        foreach($this->text_character_group_orders as $order_keys) {
+            //split the composite orders into component parts
+            list($text_order, $character_group_order) = explode('_', $order_keys);
+            
+            //get the new list of character groups if the text order has changed
+            if($text_order != $previous_text_order) {
+                $texts = $this->getParentMediaAlignedText()->getTexts();
+                $text = $texts[$text_order];
+                $char_groups = $text->getCharacterGroups();
+                $previous_text_order = $text_order;
+            }
+            
+            $character_groups[] = $char_groups[$character_group_order];
+        }
         
+        return $character_groups;
     }
     
     /**
      * Function to get parent MediaAlignedText
      * 
-     * @return Interfaces\MediaAlignedTextInterface
+     * @return MediaAlignedText
      */
     function getParentMediaAlignedText()
     {
