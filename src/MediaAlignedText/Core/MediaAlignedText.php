@@ -26,6 +26,12 @@ class MediaAlignedText implements Interfaces\MediaAlignedTextInterface
     protected $texts;
     
     /**
+     * Array of TextSegments that split the Texts into alignable segments
+     * @var Array
+     */
+    protected $text_segments;
+    
+    /**
      * Construct class and set the dependency injection container
      * @param Interfaces\DependencyInjectionContainerInterface $di_container  The DependencyInjectionContainer
      */
@@ -98,13 +104,12 @@ class MediaAlignedText implements Interfaces\MediaAlignedTextInterface
     }
     
     /**
-     * Gets an ordered array TextSegments that are aligned with with the media segments
+     * Gets an array of TextSegments that can be aligned with the media segments
      * 
      * @return Array
-     * @todo implement
      */
     function getTextSegments() {
-        
+        return $this->text_segments;
     }
     
     /**
@@ -118,12 +123,12 @@ class MediaAlignedText implements Interfaces\MediaAlignedTextInterface
         $data = json_decode($json_string, true);
         
         //Loop through each text
-        foreach($data['texts'] as $text_order => $text) {
+        foreach((array)$data['texts'] as $text_order => $text) {
             
             //create the text object
             $text_object = $this->di_container->getText();
             
-            //loop through and instantiate the character groups from the text  
+            //loop through and instantiate the character groups from the json
             $c_groups = array();
             foreach((array)$text['character_groups'] as $order => $chargroup_def) {
                 $c_group = $this->di_container->getCharacterGroup();
@@ -138,6 +143,16 @@ class MediaAlignedText implements Interfaces\MediaAlignedTextInterface
             $text_object->setCharacterGroups($c_groups);
             
             $this->texts[] = $text_object;
+        }
+        
+        //loop through and instantiate the TextSegments
+        $this->text_segments = array();
+        foreach((array)$data['text_segments'] as $segment_order => $segment_def) {
+            $segment = $this->di_container->getTextSegment();
+            $segment->setId($segment_def['id']);
+            $segment->setParentMediaAlignedText($this);
+            $segment->setTextCharacterGroupOrders($segment_def['text_character_group_orders']);
+            $this->text_segments[] = $segment;
         }
     }
 }
