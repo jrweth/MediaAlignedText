@@ -36,8 +36,8 @@ class TextSegment implements Interfaces\TextSegmentInterface
     protected $id;
     
     /**
-     * Enter description here ...
-     * @var Interfaces\MediaAlignedTextInterafce
+     * The parent MediaAlignedText which this MediaFileSegment is a part of
+     * @var Interfaces\MediaAlignedTextInterface
      */
     protected $parent_media_alinged_text;
     
@@ -57,7 +57,7 @@ class TextSegment implements Interfaces\TextSegmentInterface
     }
     
     /**
-     * Get the id which uniquely identifies this text segment from other TextSegmenst
+     * Get the id which uniquely identifies this text segment from other TextSegments
      * of the same MediaAlignedText
      * @return Integer
      */
@@ -142,7 +142,7 @@ class TextSegment implements Interfaces\TextSegmentInterface
     
     /**
      * Function to set the Parent MediaAlignedText
-     * @param MediaAlignedTextInterface $media_aligned_text
+     * @param Interfaces\MediaAlignedTextInterface $media_aligned_text
      */
     function setParentMediaAlignedText(Interfaces\MediaAlignedTextInterface $media_aligned_text)
     {
