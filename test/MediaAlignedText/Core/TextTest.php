@@ -7,6 +7,7 @@ class TextTest extends CoreTest {
 
     /**
      * Test to make sure that the class implements the interface
+     * @todo make meaningful tests
      */
     public function testInterface()
     {
