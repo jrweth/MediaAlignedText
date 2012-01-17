@@ -8,7 +8,7 @@
     [{
         "title":"The Hobbit - Chapter 1a",
         "url":"https://url_to_soundfile",
-        "media_type":"audio",
+        "media_type":"AUDIO",
         "file_type":"mp3"
     }],
 "media_file_segments":
