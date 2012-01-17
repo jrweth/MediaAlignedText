@@ -44,6 +44,12 @@ interface MediaFileSegmentInterface
     function getMediaFileOrder();
     
     /**
+     * Function to get parent MediaAlignedText
+     * @return MediaAlignedTextInterface
+     */
+    function getParentMediaAlignedText();
+    
+    /**
      * Get the time within the MediaFile that this segment ends
      * @return Float
      */
@@ -56,8 +62,34 @@ interface MediaFileSegmentInterface
     function getTimeStart();
     
     /**
-     * Function to get parent MediaAlignedText
-     * @return MediaAlignedTextInterface
+     * Set the id which uniquely identifies this MediaFileSegment from other MediaFileSegments
+     * of the same MediaAlignedText
+     * @param Integer $id  The Id of the MediaFileSegment
      */
-    function getParentMediaAlignedText();
+    function setId($id);
+    
+    
+    /**
+     * Set the order of the MediaFile within in the MediaAlignedText which this MediaFileSegment is a part of
+     * @param Integer $order  The order which the parent MediaFile comes within the MediaAlignedText
+     */
+    function setMediaFileOrder($order);
+    
+    /**
+     * Function to set parent MediaAlignedText
+     * @param Interfaces\MediaAlignedTextInterface $media_aligned_text  the parent MediaAlignedText
+     */
+    function setParentMediaAlignedText(MediaAlignedTextInterface $media_alinged_text);
+    
+    /**
+     * Set the time within the MediaFile that this segment ends
+     * @param Float $time_end  The time in seconds when the MediaFileSegment ends
+     */
+    function setTimeEnd($time_end);
+    
+    /**
+     * Set the time within the MediaFile that this segment starts
+     * $param Float $time_start  the time in seconds when the MediaFileSegment starts
+     */
+    function setTimeStart($time_start);
 }

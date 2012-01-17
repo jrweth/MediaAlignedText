@@ -13,10 +13,16 @@ namespace MediaAlignedText\Core;
 
 class DependencyInjectionContainer implements Interfaces\DependencyInjectionContainerInterface
 {
+    /**
+     * (non-PHPdoc)
+     * @see MediaAlignedText\Core\Interfaces.DependencyInjectionContainerInterface::getCharacterGroup()
+     * @return CharacterGroup
+     */
     public function getCharacterGroup($params = null)
     {
         return new CharacterGroup($this);
     }
+    
     /**
      * (non-PHPdoc)
      * @see MediaAlignedText\Core\Interfaces.DependencyInjectionContainerInterface::getMediaAlignedText()
@@ -36,11 +42,31 @@ class DependencyInjectionContainer implements Interfaces\DependencyInjectionCont
         return new MediaFile($this);
     }
     
+    /**
+     * (non-PHPdoc)
+     * @see MediaAlignedText\Core\Interfaces.DependencyInjectionContainerInterface::getMediaFileSegment()
+     * @return MediaFileSegment
+     */
+    public function getMediaFileSegment($params = null)
+    {
+        return new MediaFileSegment($this);
+    }
+    
+    /**
+     * (non-PHPdoc)
+     * @see MediaAlignedText\Core\Interfaces.DependencyInjectionContainerInterface::getText()
+     * @return Text
+     */
     public function getText($params = null)
     {
         return new Text($this);
     }
     
+    /**
+     * (non-PHPdoc)
+     * @see MediaAlignedText\Core\Interfaces.DependencyInjectionContainerInterface::getTextSegment()
+     * @return TextSegment
+     */
     public function getTextSegment($params = null)
     {
         return new TextSegment($this);

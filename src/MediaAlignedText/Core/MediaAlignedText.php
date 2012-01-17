@@ -27,6 +27,11 @@ class MediaAlignedText implements Interfaces\MediaAlignedTextInterface
     protected $media_files;
     
     /**
+     * The array of MediaFileSegmenst used for this alignment
+     * @var Array
+     */
+    protected $media_file_segments;
+    /**
      * Array of ordered Text Objects associated with this Object
      * @var Array
      */
@@ -94,10 +99,9 @@ class MediaAlignedText implements Interfaces\MediaAlignedTextInterface
      * Retrieve a collection of MediaFileSegments
      * 
      * @return Array
-     * @todo implement
      */
     function getMediaFileSegments(){
-        
+        return $this->media_file_segments;
     }
     
     /**
@@ -171,6 +175,17 @@ class MediaAlignedText implements Interfaces\MediaAlignedTextInterface
             $media_file->setFileType($media_file_def['file_type']);
             $media_file->setMediaType($media_file_def['media_type']);
             $this->media_files[] = $media_file;
+        }
+        
+        //loop through and instantiate the MediaFileSegments
+        $this->media_file_segments = array();
+        foreach((array)$data['media_file_segments'] as $segment_order => $media_file_segment_def) {
+            $media_file_segment = $this->di_container->getMediaFileSegment();
+            $media_file_segment->setId($media_file_segment_def['id']);
+            $media_file_segment->setTimeStart($media_file_segment_def['time_start']);
+            $media_file_segment->setTimeEnd($media_file_segment_def['time_end']);
+            $media_file_segment->setMediaFileOrder($media_file_segment_def['media_file_order']);
+            $this->media_file_segments[] = $media_file_segment;
         }
     }
 }

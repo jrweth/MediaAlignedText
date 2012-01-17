@@ -41,6 +41,13 @@ interface DependencyInjectionContainerInterface
      */
     function getMediaFile($params = null);
     
+    
+    /**
+     * Get a new MediaFileSegment
+     * @param Array $params
+     */
+    function getMediaFileSegment($params = null);
+    
     /**
      * Get a new Text Object
      * 
