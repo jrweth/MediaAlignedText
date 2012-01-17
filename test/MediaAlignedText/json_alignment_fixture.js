@@ -13,11 +13,11 @@
     }],
 "media_file_segments":
     [
-        {"id": 0, "media_file_order":0, "start_time": 0.0, "end_time": 7.2},
-        {"id": 1, "media_file_order":0, "start_time": 7.2, "end_time": 17.6},
-        {"id": 2, "media_file_order":0, "start_time": 17.6, "end_time": 23.1},
-        {"id": 3, "media_file_order":0, "start_time": 23.1, "end_time": 24.0},
-        {"id": 4, "media_file_order":0, "start_time": 24.0, "end_time": 35.1}
+        {"id": 0, "media_file_order":0, "time_start": 0.0, "time_end": 7.2},
+        {"id": 1, "media_file_order":0, "time_start": 7.2, "time_end": 17.6},
+        {"id": 2, "media_file_order":0, "time_start": 17.6, "time_end": 23.1},
+        {"id": 3, "media_file_order":0, "time_start": 23.1, "time_end": 24.0},
+        {"id": 4, "media_file_order":0, "time_start": 24.0, "time_end": 35.1}
     ],
 "text_segments":
     [
