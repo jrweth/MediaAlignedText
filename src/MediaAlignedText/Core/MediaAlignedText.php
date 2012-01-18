@@ -185,6 +185,7 @@ class MediaAlignedText implements Interfaces\MediaAlignedTextInterface
             $media_file_segment->setTimeStart($media_file_segment_def['time_start']);
             $media_file_segment->setTimeEnd($media_file_segment_def['time_end']);
             $media_file_segment->setMediaFileOrder($media_file_segment_def['media_file_order']);
+            $media_file_segment->setParentMediaAlignedText($this);
             $this->media_file_segments[] = $media_file_segment;
         }
     }
