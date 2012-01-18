@@ -94,11 +94,11 @@ class MediaFileSegment implements Interfaces\MediaFileSegmentInterface
     /**
      * (non-PHPdoc)
      * @see MediaAlignedText\Core\Interfaces.MediaFileSegmentInterface::getMediaFile()
-     * @todo implement
      */
     public function getMediaFile()
     {
-        
+        $parent_media_files = $this->getParentMediaAlignedText()->getMediaFiles();
+        return $parent_media_files[$this->media_file_order];
     }
     
     /**
