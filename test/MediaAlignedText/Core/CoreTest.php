@@ -25,6 +25,11 @@ class CoreTest extends \PHPUnit_Framework_TestCase {
     protected $media_aligned_text;
     
     /**
+     * Media File Segment for testing
+     * @var MediaFileSegment
+     */
+    protected $media_file_segment;
+    /**
      * Single Text Instance
      * @var Text
      */
