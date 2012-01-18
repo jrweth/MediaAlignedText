@@ -19,6 +19,11 @@ require_once('MediaAlignedText/Autoload.php');
 class CoreTest extends \PHPUnit_Framework_TestCase {
 
     /**
+     * An instantiated MediaTextSegmentAlignment
+     * @var MediaTextSegmentAlignment
+     */
+    protected $alignment;
+    /**
      * Single Character Group Intance
      * @var CharacterGroup
      */
@@ -74,5 +79,7 @@ class CoreTest extends \PHPUnit_Framework_TestCase {
         $this->media_file = $this->media_files[0];
         $this->media_file_segments = $this->media_aligned_text->getMediaFileSegments();
         $this->media_file_segment = $this->media_file_segments[0];
+        $this->alignments = $this->media_aligned_text->getMediaTextSegmentAlignments();
+        $this->alignment = $this->alignments[0];
     }
 }
