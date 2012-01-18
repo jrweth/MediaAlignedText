@@ -49,6 +49,12 @@ interface DependencyInjectionContainerInterface
     function getMediaFileSegment($params = null);
     
     /**
+     * Get a new MediaTextSegmentAlgiment object
+     * @param Array $params
+     */
+    function getMediaTextSegmentAlignment($params = null);
+    
+    /**
      * Get a new Text Object
      * 
      * @param Array $params  Params to help instantiate the object

@@ -7,8 +7,6 @@
 * For the full copyright and license information, please view the LICENSE
 * file that was distributed with this source code.
 */
-
-
 namespace MediaAlignedText\Core;
 
 class MediaAlignedText implements Interfaces\MediaAlignedTextInterface
@@ -16,7 +14,7 @@ class MediaAlignedText implements Interfaces\MediaAlignedTextInterface
     /**
      * The DependencyInjection Container
      * 
-     * @var Interfaces\DependencyInjectionContainerInterface
+     * @var DependencyInjectionContainer
      */
     protected $di_container;
     
@@ -31,11 +29,18 @@ class MediaAlignedText implements Interfaces\MediaAlignedTextInterface
      * @var Array
      */
     protected $media_file_segments;
+    
     /**
      * Array of ordered Text Objects associated with this Object
      * @var Array
      */
     protected $texts;
+    
+    /**
+     * Array of MediaTextSegmentAlignments that define the alignment between the MediaFileSegments and TextSegments
+     * @var Array
+     */
+    protected $media_text_segment_alignments;
     
     /**
      * Array of TextSegments that split the Texts into alignable segments
@@ -102,6 +107,11 @@ class MediaAlignedText implements Interfaces\MediaAlignedTextInterface
      */
     function getMediaFileSegments(){
         return $this->media_file_segments;
+    }
+    
+    function getMediaTextSegmentAlignments()
+    {
+        return $this->media_text_segment_alignments;
     }
     
     /**
@@ -187,6 +197,17 @@ class MediaAlignedText implements Interfaces\MediaAlignedTextInterface
             $media_file_segment->setMediaFileOrder($media_file_segment_def['media_file_order']);
             $media_file_segment->setParentMediaAlignedText($this);
             $this->media_file_segments[] = $media_file_segment;
+        }
+        
+        //loop through and instantiate the MediaTextSegmentAlignments
+        $this->media_text_segment_alignments = array();
+        foreach((array)$data['media_text_segment_alignments'] as $alignment_def) {
+            $alignment = $this->di_container->getMediaTextSegmentAlignment();
+            $alignment->setParentMediaAlignedText($this);
+            $alignment->setId($alignment_def['id']);
+            $alignment->setMediaFileSegmentId($alignment_def['media_file_segment_id']);
+            $alignment->setTextSegmentId($alingment_def['text_segment_id']);
+            $this->media_text_segment_alignments[] = $alignment;
         }
     }
 }

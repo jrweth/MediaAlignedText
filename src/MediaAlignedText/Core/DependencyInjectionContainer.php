@@ -9,6 +9,7 @@
 */
 
 
+use MediaAlignedText\Core\MediaTextSegmentAlignment;
 namespace MediaAlignedText\Core;
 
 class DependencyInjectionContainer implements Interfaces\DependencyInjectionContainerInterface
@@ -50,6 +51,16 @@ class DependencyInjectionContainer implements Interfaces\DependencyInjectionCont
     public function getMediaFileSegment($params = null)
     {
         return new MediaFileSegment($this);
+    }
+    
+    /**
+     * (non-PHPdoc)
+     * @see MediaAlignedText\Core\Interfaces.DependencyInjectionContainerInterface::getMediaTextSegmentAlignment()
+     * @return MediaTextSegmentAlignment
+     */
+    public function getMediaTextSegmentAlignment($params = null)
+    {
+        return new MediaTextSegmentAlignment($this);
     }
     
     /**

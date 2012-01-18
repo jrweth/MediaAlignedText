@@ -53,6 +53,11 @@ interface MediaAlignedTextInterface
     function getMediaFileSegments();
     
     /**
+     * Function to retrieve the alignments between the MediaFileSegments and TextSegments
+     * @return Array
+     */
+    function getMediaTextSegmentAlignments();
+    /**
      * Function to return the Text object which is being aligned
      * 
      * @return TextInterface
