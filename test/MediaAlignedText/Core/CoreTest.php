@@ -1,9 +1,16 @@
-<?php 
-use MediaAlignedText\Core\CharacterGroup;
-namespace MediaAlignedText\Core;
+<?php
+/**
+* This file is part of the MediaAlignedText package
+* 
+* (c) J. Reuben Wetherbe <jreubenwetherbee@gmail.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+namespace MediaAlignedText\Core\Test;
+use MediaAlignedText\Core\DependencyInjectionContainer;
 
 require_once('MediaAlignedText/Autoload.php');
-
 /**
  * This base CoreTest is used to duplicate the setup for each individual test 
  * @author J. Reuben Wetherbee
@@ -49,7 +56,7 @@ class CoreTest extends \PHPUnit_Framework_TestCase {
         //Setup the Defined Variables used for testing 
         $di_container = new DependencyInjectionContainer();
         
-        $this->media_aligned_text = new MediaAlignedText($di_container);
+        $this->media_aligned_text = $di_container->getMediaAlignedText();
         
         //load up the media aligned text from the json query
         $js_fixture_filepath = dirname(__DIR__).'/json_alignment_fixture.js';
