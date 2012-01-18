@@ -89,7 +89,7 @@ interface MediaFileSegmentInterface
     
     /**
      * Set the time within the MediaFile that this segment starts
-     * $param Float $time_start  the time in seconds when the MediaFileSegment starts
+     * @param Float $time_start  the time in seconds when the MediaFileSegment starts
      */
     function setTimeStart($time_start);
 }
