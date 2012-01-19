@@ -41,9 +41,16 @@ interface MediaAlignedTextInterface
     
     /**
      * Retrieve an collection media files associated with the text
-     * @return 
+     * @return Array
      */
     function getMediaFiles();
+    
+    /**
+     * Retrieve an associated MediaFileSegment by providing the id
+     * @param Integer $media_file_segment_id  The id of the MediaFileSegment
+     * @return MediaFileSegmentInterface
+     */
+    function getMediaFileSegmentById($media_file_segment_id);
     
     /**
      * Retrieve a collection of MediaFileSegments
@@ -63,6 +70,13 @@ interface MediaAlignedTextInterface
      * @return TextInterface
      */
     function getTexts();
+    
+    /**
+     * Retrieve an associated TextSegment by providing the id
+     * @param Integer $text_segment_id  The id of the TextSegment
+     * @return TextSegmentInterface
+     */
+    function getTextSegmentById($text_segment_id);
     
     /**
      * Gets an ordered array TextSegments that are aligned with with the media segments
