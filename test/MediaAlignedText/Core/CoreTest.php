@@ -74,12 +74,12 @@ class CoreTest extends \PHPUnit_Framework_TestCase {
         $this->character_groups = $this->text->getCharacterGroups();
         $this->character_group = $this->character_groups[0];
         $this->text_segments = $this->media_aligned_text->getTextSegments();
-        $this->text_segment = $this->text_segments[0];
+        $this->text_segment = $this->text_segments[1];
         $this->media_files = $this->media_aligned_text->getMediaFiles();
         $this->media_file = $this->media_files[0];
         $this->media_file_segments = $this->media_aligned_text->getMediaFileSegments();
-        $this->media_file_segment = $this->media_file_segments[0];
+        $this->media_file_segment = $this->media_file_segments[1];
         $this->alignments = $this->media_aligned_text->getMediaTextSegmentAlignments();
-        $this->alignment = $this->alignments[0];
+        $this->alignment = $this->alignments[2];
     }
 }
