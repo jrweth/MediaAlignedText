@@ -35,7 +35,7 @@ class MediaFileSegmentTest extends CoreTest {
      */
     function testGetId()
     {
-        $this->assertEquals($this->media_file_segment->getId(), 0);
+        $this->assertEquals(1, $this->media_file_segment->getId());
     }
     
     /**
