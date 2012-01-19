@@ -101,6 +101,26 @@ class MediaAlignedText implements Interfaces\MediaAlignedTextInterface
     }
     
     /**
+     * (non-PHPdoc)
+     * @see MediaAlignedText\Core\Interfaces.MediaAlignedTextInterface::getMediaFileSegmentById()
+     * @return MediaFileSegment
+     */
+    function getMediaFileSegmentById($media_file_segment_id)
+    {
+        //check if the associative array key exists first
+        if(array_key_exists($media_file_segment_id, $this->media_file_segments)
+            && $this->media_file_segments[$media_file_segment_id]->getId() == $media_file_segment_id)
+        {
+            return $this->media_file_segments[$media_file_segment_id];
+        }
+        //otherwise loop through each one and look for it
+        foreach((array)$this->media_file_segments as $segment) {
+            if($segment->getId() == $media_file_segment_id) return $segment;
+        }
+        
+    }
+    
+    /**
      * Retrieve a collection of MediaFileSegments
      * 
      * @return Array
@@ -122,6 +142,26 @@ class MediaAlignedText implements Interfaces\MediaAlignedTextInterface
      */
     function getTexts(){
         return $this->texts;
+    }
+    
+    /**
+     * (non-PHPdoc)
+     * @see MediaAlignedText\Core\Interfaces.MediaAlignedTextInterface::getTextSegmentById()
+     * @return TextSegment
+     */
+    public function getTextSegmentById($text_segment_id)
+    {
+        //check if the associative array key exists first
+        if(array_key_exists($text_segment_id, $this->text_segments)
+            && $this->text_segments[$text_segment_id]->getId() == $text_segment_id)
+        {
+            return $this->text_segments[$text_segment_id];
+        }
+        //otherwise loop through each one and look for it
+        foreach((array)$this->text_segments as $segment) {
+            if($segment->getId() == $text_segment_id) return $segment;
+        }
+        
     }
     
     /**
@@ -173,7 +213,7 @@ class MediaAlignedText implements Interfaces\MediaAlignedTextInterface
             $segment->setId($segment_def['id']);
             $segment->setParentMediaAlignedText($this);
             $segment->setTextCharacterGroupOrders($segment_def['text_character_group_orders']);
-            $this->text_segments[] = $segment;
+            $this->text_segments[$segment_def['id']] = $segment;
         }
         
         //loop through and instantiate the MediaFiles
@@ -196,8 +236,9 @@ class MediaAlignedText implements Interfaces\MediaAlignedTextInterface
             $media_file_segment->setTimeEnd($media_file_segment_def['time_end']);
             $media_file_segment->setMediaFileOrder($media_file_segment_def['media_file_order']);
             $media_file_segment->setParentMediaAlignedText($this);
-            $this->media_file_segments[] = $media_file_segment;
+            $this->media_file_segments[$media_file_segment_def['id']] = $media_file_segment;
         }
+        
         
         //loop through and instantiate the MediaTextSegmentAlignments
         $this->media_text_segment_alignments = array();
@@ -206,8 +247,8 @@ class MediaAlignedText implements Interfaces\MediaAlignedTextInterface
             $alignment->setParentMediaAlignedText($this);
             $alignment->setId($alignment_def['id']);
             $alignment->setMediaFileSegmentId($alignment_def['media_file_segment_id']);
-            $alignment->setTextSegmentId($alingment_def['text_segment_id']);
-            $this->media_text_segment_alignments[] = $alignment;
+            $alignment->setTextSegmentId($alignment_def['text_segment_id']);
+            $this->media_text_segment_alignments[$alignment_def['id']] = $alignment;
         }
     }
 }
