@@ -3,14 +3,21 @@ README for MediaAlignedText
 
 What is MediaTextAligner?
 -------------------------
+The basic purpose of the MediaAlignedText project is to provide support in synchronizing audio/video playback with corresponding text.
+The initial requirement was to have an audio player which would have typical audio controls, but also be linked to the corresponding text.  When each section of audio is played, then the corresponding text is highlighted.
 
-The basic purpose of the MediaAlignedText project is to provide
-support in synchronizing audio/video playback with corresponding text
+
+Modularity
+----------
+At it simplest, MediaTextAligner is merely a javascript library that handles the playback of aligned media and text in a web browser. In this case all that is needed to use the player is the javascript library (including other libraries dependencies), a media file, and the json-encoded alignment data.
+
+The additional functionality beyond this simple MediaAlignedText javascript player is to handle the generation of the and manipulations of the alignment data and the persistence of the media file and alignment data in a database.  Also, since the this data lends itself well to EPUB format there is a module which allows export and import from the Epub format.
+
 
 Requirements
 ------------
 
-PHP 5.3
+PHP 5.3 (for non-static implementations)
 
 Dependencies
 ------------
@@ -20,4 +27,6 @@ Library Dependencies:
 javascript:
 jquery (version v1.6.4+) 
 jplayer (Version: 2.1.0)
-jquery scrollto
+jquery.scrollto
+
+
