@@ -28,6 +28,12 @@ class MediaTextSegmentAlignment implements Interfaces\MediaTextSegmentAlignmentI
     protected $id;
     
     /**
+     * The Associated MediaFileSegment 
+     * @var MediaFileSegment
+     */
+    protected $media_file_segment;
+    
+    /**
      * The Id uniquely identifying the aligned MediaFileSegment
      * @var Integer
      */
@@ -37,7 +43,13 @@ class MediaTextSegmentAlignment implements Interfaces\MediaTextSegmentAlignmentI
      * The Parent MediaAlignedText
      * @var Interfaces\MediaAlignedText
      */
-    protected $parent_media_alinged_text;
+    protected $parent_media_aligned_text;
+    
+    /**
+     * The TextSegment which is aligned
+     * @var TextSegment
+     */
+    protected $text_segment;
     
     /**
      * The id uniquely identifying the aligned TextSegment
@@ -70,7 +82,11 @@ class MediaTextSegmentAlignment implements Interfaces\MediaTextSegmentAlignmentI
      */
     function getMediaFileSegment()
     {
-        
+        //if MediaFileSegment not yet found than search for it
+        if($this->media_file_segment === null) {
+            $this->media_file_segment = $this->parent_media_aligned_text->getMediaFileSegmentById($this->media_file_segment_id);
+        }
+        return $this->media_file_segment;
     }
     
     /**
@@ -88,7 +104,7 @@ class MediaTextSegmentAlignment implements Interfaces\MediaTextSegmentAlignmentI
      */
     function getParentMediaAlignedText()
     {
-        return $this->parent_media_alinged_text;
+        return $this->parent_media_aligned_text;
     }
     
     /**
@@ -99,7 +115,11 @@ class MediaTextSegmentAlignment implements Interfaces\MediaTextSegmentAlignmentI
      */
     function getTextSegment()
     {
-        
+        //if TextSegment not yet found than search for it
+        if($this->text_segment === null) {
+            $this->text_segment = $this->parent_media_aligned_text->getTextSegmentById($this->text_segment_id);
+        }
+        return $this->text_segment;
     }
     
     /**
@@ -134,9 +154,9 @@ class MediaTextSegmentAlignment implements Interfaces\MediaTextSegmentAlignmentI
      * (non-PHPdoc)
      * @see MediaAlignedText\Core\Interfaces.MediaTextSegmentAlignmentInterface::setParentMediaAlignedText()
      */
-    function setParentMediaAlignedText(Interfaces\MediaAlignedTextInterface $media_alinged_text)
+    function setParentMediaAlignedText(Interfaces\MediaAlignedTextInterface $media_aligned_text)
     {
-        $this->parent_media_alinged_text = $media_aligned_text;
+        $this->parent_media_aligned_text = $media_aligned_text;
     }
     
     /**
