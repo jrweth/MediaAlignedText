@@ -9,9 +9,13 @@
 */
 
 
-use MediaAlignedText\Core\MediaTextSegmentAlignment;
+
 namespace MediaAlignedText\Core;
 
+/**
+ * The Dependency Injection Container that helps implement new classes
+ * 
+ */
 class DependencyInjectionContainer implements Interfaces\DependencyInjectionContainerInterface
 {
     /**
