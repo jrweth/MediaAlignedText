@@ -1,0 +1,16 @@
+@CHARSET "ISO-8859-1";
+
+ 
+span:hover {
+	background-color: #CCCCFF;
+	cursor: pointer;
+}
+
+#text_viewer {
+    margin-top: 10px;
+    height: 100px;
+    width: 420px;
+    border:1px solid blue;
+    overflow: auto;
+    padding: 3px;
+}
