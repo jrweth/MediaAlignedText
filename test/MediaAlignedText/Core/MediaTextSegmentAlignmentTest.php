@@ -33,7 +33,7 @@ class MediaTextSegmentAlignmentTest extends CoreTest {
      */
     public function testGetMediaFileSegment()
     {
-        $this->assertEquals('7.2', $this->alignment->getMediaFileSegment()->getTimeStart());
+        $this->assertEquals('3.0', $this->alignment->getMediaFileSegment()->getTimeStart());
     }
 
     /**
