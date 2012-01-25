@@ -4,6 +4,7 @@ README for MediaAlignedText
 What is MediaAlignedText?
 -------------------------
 The basic purpose of the MediaAlignedText project is to provide support in synchronizing audio/video playback with corresponding text.
+
 The initial focus is an HTML5 audio player which has typical audio controls. Additionally the media files are time-aligned to corresponding text segments.  When each segment of audio is played, then the corresponding text segment is highlighted. Also, when a text segment is selected (e.g. by a click), then the audio player tracks to the aligned time.
 
 
