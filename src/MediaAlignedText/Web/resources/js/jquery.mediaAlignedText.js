@@ -10,9 +10,11 @@
 
 (function( $ ) {
     
-    //handle public method calls
+    /**
+     * base JQuery function to handle public method calls
+     */
     $.fn.mediaAlignedText = function( method ) {
-        //call specific method and pass along additional parameters
+        //call specific method and pass along additional arguments
         if(public_methods[method]) {
             return public_methods[method].apply(this, Array.prototype.slice.call( arguments, 1));
         }
@@ -27,9 +29,12 @@
         }
     };
     
-
     
-    //define public methods
+    /**
+     * Define the following public methods
+     * - init              Initialize the MediaAlignedText 
+     * - charGroupClicked  Handle clicking the CharGroup
+     */
     var public_methods = {
         //initialize the MediaAlignedText playback
         init : function(options){
@@ -75,22 +80,89 @@
             
         },
         
-        //handle advancing to the clicked on media file
-        'charGroupClicked' : function(word_id) {
+        //handles advancing to the aligned time of media when charGroup div clicked
+        'charGroupClicked' : function(char_group_id) {
             var $this = $(this);
             var data = $this.data('mediaAlignedText');
-            var text_char_group_order = word_id.replace('char_group_','');
+            //strip the char_group_ off of the div to get the text and char group order
+            var text_char_group_order = char_group_id.replace('char_group_','');
+            
+            //get the text_segment to which this charGroup belongs
             var text_segment_id = data.text_char_group_segment_id_map[text_char_group_order];
             
             if( text_segment_id ) {
+                //set the text_segment as the current one
+                _setCurrentTextSegmentId($this, text_segment_id);
+                
+                //get the corresponding media segment
                 var media_segment_id = data.text_media_id_map[text_segment_id];
                 if(media_segment_id) {
-                    var media_segment = data.json_alignment.media_file_segments[media_segment_id];
-                    //go tot the 
-                    $this.jPlayer('play', media_segment.time_start);
+                    //set the current_media_file_segment
+                    data.current_media_file_segment = data.json_alignment.media_file_segments[media_segment_id];
+                    
+                    //save the change of current_media_file_segment
+                    $this.data('mediaAlignedText',data);
+                    
+                    //go to the place in the media_file_segment
+                    if($this.data('jPlayer').status.paused) {
+                        $this.jPlayer('pause', data.current_media_file_segment.time_start);
+                    }
+                    else {
+                        $this.jPlayer('play', data.current_media_file_segment.time_start);
+                    }
                 }
             }
         }
+    };
+    
+    var _checkTimeChange = function(object){
+        var data = object.data('mediaAlignedText');
+        var current_time = parseFloat(object.data("jPlayer").status.currentTime);
+        var current_media_segment_invalid = false;
+        
+        var current_media_file_segment = data.current_media_file_segment;
+        
+        //get start/end times for the current_media_file_segment
+        if(current_media_file_segment == undefined) {
+            current_media_segment_invalid = true;
+        }
+        else {
+            var current_segment_start = parseFloat(current_media_file_segment.time_start);
+            var current_segment_end = parseFloat(current_media_file_segment.time_end);
+            if(current_time < current_segment_start || current_time > current_segment_end) {
+                
+                //unset the current_media_file segment if necessary
+                data.current_media_file_segment = undefined;
+                current_media_segment_invalid = true;
+                
+                //unset the current text segment to remove highlight
+                if(data.current_text_segment_id) _textSegmentRemoveHighlight(object, data.current_text_segment_id);
+            }
+        }
+        
+        //try to find a new matching media segment
+        if(current_media_segment_invalid) {
+            //search for new media_file_segment
+            //this needs to be optimized!!!!  shouldn't try to scan whole array each time
+            for(var media_segment_id in data.json_alignment.media_file_segments) {
+                
+                //set the media_file_segment var for convenience
+                var media_file_segment = data.json_alignment.media_file_segments[media_segment_id];
+                
+                //
+                if(media_file_segment.time_start < current_time && media_file_segment.time_end > current_time) {
+                    
+                    data.current_media_file_segment = media_file_segment;
+                    var text_segment_id = data.media_text_id_map[media_segment_id];
+                    
+                    if(text_segment_id) {
+                        _setCurrentTextSegmentId(object, text_segment_id);
+                    }
+                }
+            }
+        }
+        //reset the data 
+        object.data('mediaAlignedText', data);
     };
     
     //initialize the Jplayer
@@ -98,14 +170,22 @@
         
         var options = $.extend({
               swfPath: 'js',
-              supplied: 'mp3'
-              //timeupdate: function() {check_time(); }
+              supplied: 'mp3',
+              timeupdate: function() {_checkTimeChange($(this))}
         }, options);
         
         object.jPlayer(options);
-    }
+    };
     
-    //initialize the text
+    /**
+     * Initialize the text in the text_viewer
+     * 
+     * @todo clean up the html generation - different char_group_types need some thought 
+     * 
+     * @param JqueryObject  object          The jquery object which the mediaAlignedText has been 
+     * @param String        text_viewer_id  
+     * @param Object        json_alignment  
+     */
     var _initText = function (object, text_viewer_id, json_alignment) {
         var html = '';
         var char_group = null;
@@ -119,15 +199,22 @@
             for(var char_group_order in json_alignment.texts[text_order].character_groups) {
                 char_group = json_alignment.texts[text_order].character_groups[char_group_order];
                 
+                var text_char_group_order = text_order+'_'+char_group_order;
+                var text_segment_id = object.data('mediaAlignedText').text_char_group_segment_id_map[text_char_group_order];
+                var text_segment_class = (text_segment_id ? 'mat_text_segment_'+text_segment_id : '');
+                
                 //for word type characater groups wrap the character in a span tag
                 if(char_group.type == 'WORD') {
+                    
                     html = html+'<span id="char_group_' + text_order + '_'+ char_group_order + '"'
-                        + 'class="mat_char_group_word">'
+                        + 'class="mat_char_group_word '+text_segment_class+'">'
                         + char_group.chars + '</span>';
                 }
                 //for non-word characater_groups make sure to put in line breaks
                 else if(char_group.type == 'NON_WORD') {
-                    html = html+(char_group.chars + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
+                    html = html+'<span class="'+text_segment_class+'">'+
+                        (char_group.chars + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2')+
+                        '</span>';
                 }
                 
                 //for tag character groups, just ouptut the tag
@@ -143,8 +230,11 @@
         $('span.mat_char_group_word').click(function() {
             object.mediaAlignedText('charGroupClicked', $(this).attr('id'));
         });
-    }
+    };
     
+    /**
+     * initialize the mapping between char groups and text segments
+     */
     var _initTextCharGroupSegmentIdMap = function(object){
         var data = object.data('mediaAlignedText');
         var text_segment = null;
@@ -166,13 +256,16 @@
         
         //reset updated data object
         object.data('mediaAlignedText', data);
-    }
+    };
     
-    
+    /**
+     * Initilize the mappings between text segments and media segments
+     */
     var _initTextMediaMaps = function(object){
         var data = object.data('mediaAlignedText');
         var alignments = data.json_alignment.media_text_segment_alignments;
-
+        
+        //initialize the mapping arrays
         var text_media_id_map = {};
         var media_text_id_map = {};
         
@@ -181,18 +274,23 @@
             //set the text_segment
             text_media_id_map[alignments[alignment_key].text_segment_id] = alignments[alignment_key].media_file_segment_id;
             media_text_id_map[alignments[alignment_key].media_file_segment_id] = alignments[alignment_key].text_segment_id;
-
         }
+        
         //add the text_char_group map to data object
         data.text_media_id_map = text_media_id_map;
         data.media_text_id_map = media_text_id_map;
         
         //reset updated data object
         object.data('mediaAlignedText', data);
-    }
+    };
     
     /**
-     * get the default html for the media player 
+     * get the default html for the jplayer media player 
+     * 
+     * @param Object   options  The options that can be used to initialize the Jplayer Controller including the following
+     * - jp_container_id:  The id of the container
+     * - title:            The media file title to include in the player
+     * - 
      */
     var _getJplayerContainerHtml = function (options) {
             
@@ -241,11 +339,53 @@
             </div>\
           </div>\
         </div>';
-    }
-
-    var _getTextSegmentIdFromTextCharGroupOrder = function(object, text_char_group_order) {
-       
-        return data.text_char_group_segment_id_map[text_char_group_order];
-    }
+    };
+    
+    /**
+     * Set the current text segment to be the one supplied
+     * 
+     * @param jQueryObject     object   The obect on which the mediaAlignedText has been instantiated
+     * @param text_segment_id  integer  The id of the textSegment to be highlighted
+     */
+    var _setCurrentTextSegmentId = function(object, text_segment_id) {
+        var data = object.data('mediaAlignedText');
+        
+        //if it is already set than do nothing
+        if (data.current_text_segment_id == text_segment_id) {
+            return true;
+        }
+        //if current text segment not yet set then simply set it and highlight it
+        else if (data.current_text_segment_id == undefined) {
+            data.current_text_segment_id = text_segment_id;
+            _textSegmentHighlight(object, text_segment_id);
+        }
+        //must already be set, so unhiglight old one and set new one
+        else {
+            _textSegmentRemoveHighlight(object, data.current_text_segment_id);
+            data.current_text_segment_id = text_segment_id;
+            _textSegmentHighlight(object, text_segment_id);
+        }
+    };
+    
+    /**
+     * Highlight a particular text segment
+     * 
+     * @param jQueryObject     object   The obect on which the mediaAlignedText has been instantiated
+     * @param text_segment_id  integer  The id of the textSegment to be highlighted
+     */
+    var _textSegmentHighlight = function(object, text_segment_id) {
+        $('.mat_text_segment_'+text_segment_id).addClass('highlighted_text_segment');
+        $('#'+object.data('mediaAlignedText').text_viewer_id).scrollTo('.highlighted_text_segment', 250, {'axis': 'y', 'offset': -20});
+    };
+    
+    /**
+     * Remvoe the highlight on a particular text segment
+     * 
+     * @param jQueryObject     object   The obect on which the mediaAlignedText has been instantiated
+     * @param text_segment_id  integer  The id of the textSegment to have highlighting removed
+     */
+    var _textSegmentRemoveHighlight = function(object, text_segment_id){
+        $('.mat_text_segment_'+text_segment_id).removeClass('highlighted_text_segment');
+    };
     
 })( jQuery );
