@@ -4,20 +4,21 @@ README for MediaAlignedText
 What is MediaAlignedText?
 -------------------------
 The basic purpose of the MediaAlignedText project is to provide support in synchronizing audio/video playback with corresponding text.
-The initial focus is an HTML5 audio player which would have typical audio controls but additionaly, each media file will be divided into time segments which are aligned to corresponding text segments.  When each segment of audio is played, then the corresponding text segment is highlighted. Also, when a segment text is selected (e.g. by a click), then the audio tracks to the aligned time.
+
+The initial focus is an HTML5 audio player which has typical audio controls. Additionally the media files are time-aligned to corresponding text segments.  When each segment of audio is played, then the corresponding text segment is highlighted. Also, when a text segment is selected (e.g. by a click), then the audio player tracks to the aligned time.
 
 
 Functionality
 -------------
 At it simplest, MediaAlignedText is merely a javascript library that handles the playback of aligned media and text in a web browser. In this case all that is needed to use the player is the javascript library (including other libraries dependencies), a media file, and the json-encoded alignment data connecting the media files to the text.
 
-The additional functionality beyond this simple MediaAlignedText player is to handle the generation of the and manipulations of the alignment data and the persistence of the media file and alignment data in a database.  Also, since the this data lends itself well to EPUB format there is a module which allows export and import from the Epub format.
+The additional functionality is for handling the generation, manipulation and storage of the alignment data in a database.  Also, since the this data lends itself well to audio book formats, there is a planned module which allows export and import from the Epub format.
 
 
 Requirements
 ------------
 
-PHP 5.3 (for database and alignment generation functionality)
+PHP 5.3 + Mysql (for additional alignment generation, manipulation and database functionality)
 
 Dependencies
 ------------
