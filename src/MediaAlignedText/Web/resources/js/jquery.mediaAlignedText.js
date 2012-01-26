@@ -41,12 +41,14 @@
             
             //get default options 
             var options = $.extend({
-                'jplayer_controls_id'       : 'jplayer_controls',  //id of the div where jplayer controls reside
-                'text_viewer_id'            : 'text_viewer',       //id of the div where the text is displayed
-                'json_alignment'            : {},                  //json alignment object
-                'jplayer_options'           : {},                  //jplayer options to initiate
-                'jplayer_control_options'   : {},                  //options to send to the jplayer control generator
-                'generate_jplayer_controls' : true                 //flag indicating if controls should be generated or not
+                'json_alignment'            : {},                    //json alignment object
+                'jplayer_controls_id'       : 'jplayer_controls',    //id of the div where jplayer controls reside
+                'text_viewer_id'            : 'text_viewer',         //id of the div where the text is displayed
+                'jplayer_options'           : {},                    //additional jplayer options to initiate
+                'jplayer_control_options'   : {},                    //options to send to the jplayer control generator
+                'generate_jplayer_controls' : true,                  //flag indicating if controls should be generated or not
+                'highlight_function'        : _textSegmentHighlight, //the function to use to highlight - requiers object and text_segment_id as arguments
+                'highlight_remove_function' : _textSegmentRemoveHighlight  //function to remove highligh - requiers object and text_segment_id as arguments
             }, options);
             
             //save options to the objects namespaced data holder
@@ -136,7 +138,7 @@
                 current_media_segment_invalid = true;
                 
                 //unset the current text segment to remove highlight
-                if(data.current_text_segment_id) _textSegmentRemoveHighlight(object, data.current_text_segment_id);
+                if(data.current_text_segment_id) data.highlight_remove_function(object, data.current_text_segment_id);
             }
         }
         
@@ -357,13 +359,13 @@
         //if current text segment not yet set then simply set it and highlight it
         else if (data.current_text_segment_id == undefined) {
             data.current_text_segment_id = text_segment_id;
-            _textSegmentHighlight(object, text_segment_id);
+            data.highlight_function(object, text_segment_id);
         }
         //must already be set, so unhiglight old one and set new one
         else {
-            _textSegmentRemoveHighlight(object, data.current_text_segment_id);
+            data.highlight_remove_function(object, data.current_text_segment_id);
             data.current_text_segment_id = text_segment_id;
-            _textSegmentHighlight(object, text_segment_id);
+            data.highlight_function(object, text_segment_id);
         }
     };
     
