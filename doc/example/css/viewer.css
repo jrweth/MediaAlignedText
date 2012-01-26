@@ -14,3 +14,7 @@ span:hover {
     overflow: auto;
     padding: 3px;
 }
+
+.highlighted_text_segment {
+	background-color: #ccffcc;
+}
