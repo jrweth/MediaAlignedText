@@ -14,6 +14,7 @@
      * base JQuery function to handle public method calls
      */
     $.fn.mediaAlignedText = function( method ) {
+        
         //call specific method and pass along additional arguments
         if(public_methods[method]) {
             return public_methods[method].apply(this, Array.prototype.slice.call( arguments, 1));
@@ -25,7 +26,7 @@
         }
         //method not recognized
         else {
-            $.error( 'Method ' +  method + ' does not exist on jQuery.mediaAlignedText' );
+            $.error( 'Method ' +  method + ' does not exist in jQuery.mediaAlignedText' );
         }
     };
     
@@ -47,27 +48,25 @@
                 'jplayer_options'           : {},                    //additional jplayer options to initiate
                 'jplayer_control_options'   : {},                    //options to send to the jplayer control generator
                 'generate_jplayer_controls' : true,                  //flag indicating if controls should be generated or not
-                'highlight_function'        : _textSegmentHighlight, //the function to use to highlight - requiers object and text_segment_id as arguments
-                'highlight_remove_function' : _textSegmentRemoveHighlight  //function to remove highligh - requiers object and text_segment_id as arguments
+                'highlight_function'        : _textSegmentHighlight, //the function to use to highlight - requires object and text_segment_id as arguments
+                'highlight_remove_function' : _textSegmentRemoveHighlight  //function to remove highligh - requires object and text_segment_id as arguments
             }, options);
             
             //save options to the objects namespaced data holder
-            var $this = $(this),
-                data = $this.data('mediaAlignedText');
+            var $this = $(this);
+            var data = $this.data('mediaAlignedText');
             
             if(!data) {
                 $(this).data('mediaAlignedText', options);
             }
             
-            /**
-             * @todo check first to see if the html already exists before creating default
-             */
+            //initialized jplayer controls
             if(options.generate_jplayer_controls) {
                 options.jplayer_control_options.title = options.json_alignment.media_files[0].title;
                 $('#'+options.jplayer_controls_id).html(_getJplayerContainerHtml(options.jplayer_control_options));
             }
             
-            //set the media file for the jplayer
+            //set the initial media file for the jplayer
             options.jplayer_options.ready = function() {
                 $(this).jPlayer("setMedia", {
                     mp3: options.json_alignment.media_files[0].url
@@ -83,11 +82,12 @@
         },
         
         //handles advancing to the aligned time of media when charGroup div clicked
-        'charGroupClicked' : function(char_group_id) {
+        'charGroupClicked' : function(char_group_div_id) {
             var $this = $(this);
             var data = $this.data('mediaAlignedText');
-            //strip the char_group_ off of the div to get the text and char group order
-            var text_char_group_order = char_group_id.replace('char_group_','');
+            
+            //strip the char_group_ off of the div id to get the text and char group order
+            var text_char_group_order = char_group_div_id.replace('char_group_','');
             
             //get the text_segment to which this charGroup belongs
             var text_segment_id = data.text_char_group_segment_id_map[text_char_group_order];
@@ -99,27 +99,15 @@
                 //get the corresponding media segment
                 var media_segment_id = data.text_media_id_map[text_segment_id];
                 if(media_segment_id) {
-                    //set the current_media_file_segment
-                    data.current_media_file_segment = data.json_alignment.media_file_segments[media_segment_id];
-                    
-                    //save the change of current_media_file_segment
-                    $this.data('mediaAlignedText',data);
-                    
-                    //go to the place in the media_file_segment
-                    if($this.data('jPlayer').status.paused) {
-                        $this.jPlayer('pause', data.current_media_file_segment.time_start);
-                    }
-                    else {
-                        $this.jPlayer('play', data.current_media_file_segment.time_start);
-                    }
+                    _setCurrentMediaFileSegmentId($this, media_segment_id);
                 }
             }
         }
     };
     
-    var _checkTimeChange = function(object){
-        var data = object.data('mediaAlignedText');
-        var current_time = parseFloat(object.data("jPlayer").status.currentTime);
+    var _checkTimeChange = function($this){
+        var data = $this.data('mediaAlignedText');
+        var current_time = parseFloat($this.data("jPlayer").status.currentTime);
         var current_media_segment_invalid = false;
         
         var current_media_file_segment = data.current_media_file_segment;
@@ -138,7 +126,7 @@
                 current_media_segment_invalid = true;
                 
                 //unset the current text segment to remove highlight
-                if(data.current_text_segment_id) data.highlight_remove_function(object, data.current_text_segment_id);
+                if(data.current_text_segment_id) data.highlight_remove_function($this, data.current_text_segment_id);
             }
         }
         
@@ -158,17 +146,17 @@
                     var text_segment_id = data.media_text_id_map[media_segment_id];
                     
                     if(text_segment_id) {
-                        _setCurrentTextSegmentId(object, text_segment_id);
+                        _setCurrentTextSegmentId($this, text_segment_id);
                     }
                 }
             }
         }
         //reset the data 
-        object.data('mediaAlignedText', data);
+        $this.data('mediaAlignedText', data);
     };
     
     //initialize the Jplayer
-    var _initJplayer = function (object, options) {
+    var _initJplayer = function ($this, options) {
         
         var options = $.extend({
               swfPath: 'js',
@@ -176,7 +164,7 @@
               timeupdate: function() {_checkTimeChange($(this))}
         }, options);
         
-        object.jPlayer(options);
+        $this.jPlayer(options);
     };
     
     /**
@@ -184,11 +172,11 @@
      * 
      * @todo clean up the html generation - different char_group_types need some thought 
      * 
-     * @param JqueryObject  object          The jquery object which the mediaAlignedText has been 
+     * @param JqueryObject  $this          The jquery object which the mediaAlignedText has been 
      * @param String        text_viewer_id  
      * @param Object        json_alignment  
      */
-    var _initText = function (object, text_viewer_id, json_alignment) {
+    var _initText = function ($this, text_viewer_id, json_alignment) {
         var html = '';
         var char_group = null;
         var breakTag = '<br />';
@@ -202,7 +190,7 @@
                 char_group = json_alignment.texts[text_order].character_groups[char_group_order];
                 
                 var text_char_group_order = text_order+'_'+char_group_order;
-                var text_segment_id = object.data('mediaAlignedText').text_char_group_segment_id_map[text_char_group_order];
+                var text_segment_id = $this.data('mediaAlignedText').text_char_group_segment_id_map[text_char_group_order];
                 var text_segment_class = (text_segment_id ? 'mat_text_segment_'+text_segment_id : '');
                 
                 //for word type characater groups wrap the character in a span tag
@@ -230,15 +218,15 @@
         
         //add the click function to the words
         $('span.mat_char_group_word').click(function() {
-            object.mediaAlignedText('charGroupClicked', $(this).attr('id'));
+            $this.mediaAlignedText('charGroupClicked', $(this).attr('id'));
         });
     };
     
     /**
      * initialize the mapping between char groups and text segments
      */
-    var _initTextCharGroupSegmentIdMap = function(object){
-        var data = object.data('mediaAlignedText');
+    var _initTextCharGroupSegmentIdMap = function($this){
+        var data = $this.data('mediaAlignedText');
         var text_segment = null;
         var text_char_group_segment_id_map = {};
         
@@ -257,14 +245,14 @@
         data.text_char_group_segment_id_map = text_char_group_segment_id_map;
         
         //reset updated data object
-        object.data('mediaAlignedText', data);
+        $this.data('mediaAlignedText', data);
     };
     
     /**
      * Initilize the mappings between text segments and media segments
      */
-    var _initTextMediaMaps = function(object){
-        var data = object.data('mediaAlignedText');
+    var _initTextMediaMaps = function($this){
+        var data = $this.data('mediaAlignedText');
         var alignments = data.json_alignment.media_text_segment_alignments;
         
         //initialize the mapping arrays
@@ -283,7 +271,7 @@
         data.media_text_id_map = media_text_id_map;
         
         //reset updated data object
-        object.data('mediaAlignedText', data);
+        $this.data('mediaAlignedText', data);
     };
     
     /**
@@ -344,13 +332,38 @@
     };
     
     /**
-     * Set the current text segment to be the one supplied
+     * Set the current media file segment to be the one supplied
      * 
-     * @param jQueryObject     object   The obect on which the mediaAlignedText has been instantiated
+     * @param jQueryObject     $this   The obect on which the mediaAlignedText has been instantiated
      * @param text_segment_id  integer  The id of the textSegment to be highlighted
      */
-    var _setCurrentTextSegmentId = function(object, text_segment_id) {
-        var data = object.data('mediaAlignedText');
+    var _setCurrentMediaFileSegmentId = function($this, media_segment_id) {
+        var data = $this.data('mediaAlignedText');
+        
+        //set the current_media_file_segment
+        data.current_media_file_segment = data.json_alignment.media_file_segments[media_segment_id];
+        
+        //save the change of current_media_file_segment
+        $this.data('mediaAlignedText',data);
+        
+        //go to the place in the media_file_segment
+        if($this.data('jPlayer').status.paused) {
+            $this.jPlayer('pause', data.current_media_file_segment.time_start);
+        }
+        else {
+            $this.jPlayer('play', data.current_media_file_segment.time_start);
+        }
+    }
+    
+    
+    /**
+     * Set the current text segment to be the one supplied
+     * 
+     * @param jQueryObject     $this   The obect on which the mediaAlignedText has been instantiated
+     * @param text_segment_id  integer  The id of the textSegment to be highlighted
+     */
+    var _setCurrentTextSegmentId = function($this, text_segment_id) {
+        var data = $this.data('mediaAlignedText');
         
         //if it is already set than do nothing
         if (data.current_text_segment_id == text_segment_id) {
@@ -359,34 +372,34 @@
         //if current text segment not yet set then simply set it and highlight it
         else if (data.current_text_segment_id == undefined) {
             data.current_text_segment_id = text_segment_id;
-            data.highlight_function(object, text_segment_id);
+            data.highlight_function($this, text_segment_id);
         }
         //must already be set, so unhiglight old one and set new one
         else {
-            data.highlight_remove_function(object, data.current_text_segment_id);
+            data.highlight_remove_function($this, data.current_text_segment_id);
             data.current_text_segment_id = text_segment_id;
-            data.highlight_function(object, text_segment_id);
+            data.highlight_function($this, text_segment_id);
         }
     };
     
     /**
      * Highlight a particular text segment
      * 
-     * @param jQueryObject     object   The obect on which the mediaAlignedText has been instantiated
+     * @param jQueryObject     $this    The obect on which the mediaAlignedText has been instantiated
      * @param text_segment_id  integer  The id of the textSegment to be highlighted
      */
-    var _textSegmentHighlight = function(object, text_segment_id) {
+    var _textSegmentHighlight = function($this, text_segment_id) {
         $('.mat_text_segment_'+text_segment_id).addClass('highlighted_text_segment');
-        $('#'+object.data('mediaAlignedText').text_viewer_id).scrollTo('.highlighted_text_segment', 250, {'axis': 'y', 'offset': -20});
+        $('#'+$this.data('mediaAlignedText').text_viewer_id).scrollTo('.highlighted_text_segment', 250, {'axis': 'y', 'offset': -20});
     };
     
     /**
      * Remvoe the highlight on a particular text segment
      * 
-     * @param jQueryObject     object   The obect on which the mediaAlignedText has been instantiated
+     * @param jQueryObject     $this   The obect on which the mediaAlignedText has been instantiated
      * @param text_segment_id  integer  The id of the textSegment to have highlighting removed
      */
-    var _textSegmentRemoveHighlight = function(object, text_segment_id){
+    var _textSegmentRemoveHighlight = function($this, text_segment_id){
         $('.mat_text_segment_'+text_segment_id).removeClass('highlighted_text_segment');
     };
     
