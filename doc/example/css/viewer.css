@@ -6,7 +6,7 @@ span:hover {
 	cursor: pointer;
 }
 
-#text_viewer {
+#mat_text_viewer {
     margin-top: 10px;
     height: 100px;
     width: 420px;
@@ -16,5 +16,21 @@ span:hover {
 }
 
 .highlighted_text_segment {
-	background-color: #ccffcc;
+	color: purple;
+}
+a {
+	text-decoration: none;
+	color: #000000;
+}
+
+
+.mat_media_file_segment {
+	position: absolute;
+	height: 99%;
+	border-right: 1px solid black;
+	border-left: 1px solid black;
+}
+
+#mat_timeline {
+	position: relative;
 }
