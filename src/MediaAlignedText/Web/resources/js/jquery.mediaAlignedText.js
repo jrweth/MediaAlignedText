@@ -43,8 +43,8 @@
             //get default options 
             var options = $.extend({
                 'json_alignment'            : {},                    //json alignment object
-                'jplayer_controls_id'       : 'jplayer_controls',    //id of the div where jplayer controls reside
-                'text_viewer_id'            : 'text_viewer',         //id of the div where the text is displayed
+                'jplayer_controls_id'       : 'mat_jplayer_controls',//id of the div where jplayer controls reside
+                'text_viewer_id'            : 'mat_text_viewer',     //id of the div where the text is displayed
                 'jplayer_options'           : {},                    //additional jplayer options to initiate
                 'jplayer_control_options'   : {},                    //options to send to the jplayer control generator
                 'generate_jplayer_controls' : true,                  //flag indicating if controls should be generated or not
@@ -76,6 +76,8 @@
             //initialize all the mappings and components
             _initTextCharGroupSegmentIdMap($this);
             _initTextMediaMaps($this);
+            _initTextSegmentOrder($this);
+            _initMediaSegmentOrder($this);
             _initJplayer($this, options.jplayer_options);
             _initText($this, options.text_viewer_id, options.json_alignment);
             
@@ -168,6 +170,24 @@
     };
     
     /**
+     * Function to created an index for the media_file_segments based upon time start.
+     * 
+     * @todo currently it is assumed media_file_segments are in order - check that assumption
+     */
+    var _initMediaSegmentOrder = function($this) {
+        var data = $this.data('mediaAlignedText');
+        data.media_segment_order = new Array();
+        
+        //loop through and index the media_file_segments
+        for(var id in data.json_alignment.media_file_segments) {
+            data.media_segment_order.push(id);
+        }
+        
+        //write back to the data object
+        $this.data('mediaAlignedText', data);
+    }
+    
+    /**
      * Initialize the text in the text_viewer
      * 
      * @todo clean up the html generation - different char_group_types need some thought 
@@ -196,9 +216,9 @@
                 //for word type characater groups wrap the character in a span tag
                 if(char_group.type == 'WORD') {
                     
-                    html = html+'<span id="char_group_' + text_order + '_'+ char_group_order + '"'
+                    html = html+'<a href="#" id="char_group_' + text_order + '_'+ char_group_order + '"'
                         + 'class="mat_char_group_word '+text_segment_class+'">'
-                        + char_group.chars + '</span>';
+                        + char_group.chars + '</a>';
                 }
                 //for non-word characater_groups make sure to put in line breaks
                 else if(char_group.type == 'NON_WORD') {
@@ -217,7 +237,7 @@
         $('#'+text_viewer_id).html(html);
         
         //add the click function to the words
-        $('span.mat_char_group_word').click(function() {
+        $('a.mat_char_group_word').click(function() {
             $this.mediaAlignedText('charGroupClicked', $(this).attr('id'));
         });
     };
@@ -273,6 +293,19 @@
         //reset updated data object
         $this.data('mediaAlignedText', data);
     };
+    
+    var _initTextSegmentOrder = function($this) {
+        var data = $this.data('mediaAlignedText');
+        data.text_segment_order = new Array();
+        
+        //loop through and index the media_file_segments
+        for(var id in data.json_alignment.text_segments) {
+            data.text_segment_order.push(id);
+        }
+        
+        //write back to the data object
+        $this.data('mediaAlignedText', data);
+    }
     
     /**
      * get the default html for the jplayer media player 
