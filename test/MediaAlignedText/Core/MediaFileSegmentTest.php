@@ -26,7 +26,7 @@ class MediaFileSegmentTest extends CoreTest {
      */
     function testGetDuration()
     {
-        $this->assertEquals($this->media_file_segment->getDuration(), '3.0');
+        $this->assertEquals('4.0', $this->media_file_segment->getDuration());
     }
     
     /**
@@ -70,7 +70,7 @@ class MediaFileSegmentTest extends CoreTest {
      */
     function testGetTimeEnd()
     {
-        $this->assertEquals($this->media_file_segment->getTimeEnd(), '3.0');
+        $this->assertEquals('4.0', $this->media_file_segment->getTimeEnd());
     }
     
     /**

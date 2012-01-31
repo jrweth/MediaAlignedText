@@ -11,6 +11,10 @@ namespace MediaAlignedText\Core\Test;
 
 require_once('CoreTest.php');
 
+/**
+ * Test the MediaAlignedText class
+ *
+ */
 class MediaAlignedTextTest extends CoreTest {
     
     public function testGetText()

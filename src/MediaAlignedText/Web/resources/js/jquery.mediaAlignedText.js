@@ -75,9 +75,7 @@
             
             //initialize all the mappings and components
             _initTextCharGroupSegmentIdMap($this);
-            _initTextMediaMaps($this);
             _initTextSegmentOrder($this);
-            _initMediaSegmentOrder($this);
             _initJplayer($this, options.jplayer_options);
             _initText($this, options.text_viewer_id, options.json_alignment);
             
@@ -95,14 +93,17 @@
             var text_segment_id = data.text_char_group_segment_id_map[text_char_group_order];
             
             if( text_segment_id ) {
-                //set the text_segment as the current one
-                _setCurrentTextSegmentId($this, text_segment_id);
-                
-                //get the corresponding media segment
-                var media_segment_id = data.text_media_id_map[text_segment_id];
-                if(media_segment_id) {
-                    _setCurrentMediaFileSegmentId($this, media_segment_id);
+                var text_segment = data.json_alignment.text_segments[text_segment_id];
+                //go to the place in the media file 
+                if($this.data('jPlayer').status.paused) { //if player paused just advance
+                    $this.jPlayer('pause', text_segment.time_start);
+                    _setCurrentTextSegmentId($this, text_segment_id);
                 }
+                else { // if player not paused then go to 
+                    $this.jPlayer('play', text_segment.time_start);
+                }
+                
+
             }
         }
     };
@@ -110,22 +111,22 @@
     var _checkTimeChange = function($this){
         var data = $this.data('mediaAlignedText');
         var current_time = parseFloat($this.data("jPlayer").status.currentTime);
-        var current_media_segment_invalid = false;
+        var current_text_segment_invalid = false;
         
-        var current_media_file_segment = data.current_media_file_segment;
+        var current_text_segment = data.current_text_segment;
         
         //get start/end times for the current_media_file_segment
-        if(current_media_file_segment == undefined) {
-            current_media_segment_invalid = true;
+        if(current_text_segment == undefined) {
+            current_text_segment_invalid = true;
         }
         else {
-            var current_segment_start = parseFloat(current_media_file_segment.time_start);
-            var current_segment_end = parseFloat(current_media_file_segment.time_end);
+            var current_segment_start = parseFloat(current_text_segment.time_start);
+            var current_segment_end = parseFloat(current_text_segment.time_end);
             if(current_time < current_segment_start || current_time > current_segment_end) {
                 
-                //unset the current_media_file segment if necessary
-                data.current_media_file_segment = undefined;
-                current_media_segment_invalid = true;
+                //unset the current_text_segment if necessary
+                data.current_text_segment = undefined;
+                current_text_segment_invalid = true;
                 
                 //unset the current text segment to remove highlight
                 if(data.current_text_segment_id) data.highlight_remove_function($this, data.current_text_segment_id);
@@ -133,23 +134,20 @@
         }
         
         //try to find a new matching media segment
-        if(current_media_segment_invalid) {
-            //search for new media_file_segment
+        if(current_text_segment_invalid) {
+            //search for new text_segment
             //this needs to be optimized!!!!  shouldn't try to scan whole array each time
-            for(var media_segment_id in data.json_alignment.media_file_segments) {
+            for(var text_segment_id in data.json_alignment.text_segments) {
                 
-                //set the media_file_segment var for convenience
-                var media_file_segment = data.json_alignment.media_file_segments[media_segment_id];
+                //set the text_segment var for convenience
+                var text_segment = data.json_alignment.text_segments[text_segment_id];
                 
                 //
-                if(media_file_segment.time_start < current_time && media_file_segment.time_end > current_time) {
+                if(text_segment.time_start < current_time && text_segment.time_end > current_time) {
                     
-                    data.current_media_file_segment = media_file_segment;
-                    var text_segment_id = data.media_text_id_map[media_segment_id];
+                    data.current_text_segment = text_segment;
+                    _setCurrentTextSegmentId($this, text_segment_id);
                     
-                    if(text_segment_id) {
-                        _setCurrentTextSegmentId($this, text_segment_id);
-                    }
                 }
             }
         }
@@ -168,24 +166,6 @@
         
         $this.jPlayer(options);
     };
-    
-    /**
-     * Function to created an index for the media_file_segments based upon time start.
-     * 
-     * @todo currently it is assumed media_file_segments are in order - check that assumption
-     */
-    var _initMediaSegmentOrder = function($this) {
-        var data = $this.data('mediaAlignedText');
-        data.media_segment_order = new Array();
-        
-        //loop through and index the media_file_segments
-        for(var id in data.json_alignment.media_file_segments) {
-            data.media_segment_order.push(id);
-        }
-        
-        //write back to the data object
-        $this.data('mediaAlignedText', data);
-    }
     
     /**
      * Initialize the text in the text_viewer
@@ -254,46 +234,23 @@
         for(var text_segment_key in data.json_alignment.text_segments) {
             //set the text_segment
             text_segment = data.json_alignment.text_segments[text_segment_key];
-            
-            //loop through child char groups to find a match
-            for (char_group_key in text_segment.text_character_group_orders) {
-                text_char_group_segment_id_map[text_segment.text_character_group_orders[char_group_key]] = text_segment.id;
+            for(i = text_segment.character_group_start; i <= text_segment.character_group_end; i++) {
+                text_char_group_segment_id_map[text_segment.text_order+'_'+i] = text_segment.id;
             }
         }
         
         //add the text_char_group map to data object
         data.text_char_group_segment_id_map = text_char_group_segment_id_map;
         
+        
         //reset updated data object
         $this.data('mediaAlignedText', data);
     };
     
     /**
-     * Initilize the mappings between text segments and media segments
+     * initialize an ordered index of text segments
+     * @todo it is assumed the text segments are listed in time order - should be checked
      */
-    var _initTextMediaMaps = function($this){
-        var data = $this.data('mediaAlignedText');
-        var alignments = data.json_alignment.media_text_segment_alignments;
-        
-        //initialize the mapping arrays
-        var text_media_id_map = {};
-        var media_text_id_map = {};
-        
-        //loop through all alignments to make map
-        for(var alignment_key in alignments) {
-            //set the text_segment
-            text_media_id_map[alignments[alignment_key].text_segment_id] = alignments[alignment_key].media_file_segment_id;
-            media_text_id_map[alignments[alignment_key].media_file_segment_id] = alignments[alignment_key].text_segment_id;
-        }
-        
-        //add the text_char_group map to data object
-        data.text_media_id_map = text_media_id_map;
-        data.media_text_id_map = media_text_id_map;
-        
-        //reset updated data object
-        $this.data('mediaAlignedText', data);
-    };
-    
     var _initTextSegmentOrder = function($this) {
         var data = $this.data('mediaAlignedText');
         data.text_segment_order = new Array();
@@ -365,31 +322,6 @@
     };
     
     /**
-     * Set the current media file segment to be the one supplied
-     * 
-     * @param jQueryObject     $this   The obect on which the mediaAlignedText has been instantiated
-     * @param text_segment_id  integer  The id of the textSegment to be highlighted
-     */
-    var _setCurrentMediaFileSegmentId = function($this, media_segment_id) {
-        var data = $this.data('mediaAlignedText');
-        
-        //set the current_media_file_segment
-        data.current_media_file_segment = data.json_alignment.media_file_segments[media_segment_id];
-        
-        //save the change of current_media_file_segment
-        $this.data('mediaAlignedText',data);
-        
-        //go to the place in the media_file_segment
-        if($this.data('jPlayer').status.paused) {
-            $this.jPlayer('pause', data.current_media_file_segment.time_start);
-        }
-        else {
-            $this.jPlayer('play', data.current_media_file_segment.time_start);
-        }
-    }
-    
-    
-    /**
      * Set the current text segment to be the one supplied
      * 
      * @param jQueryObject     $this   The obect on which the mediaAlignedText has been instantiated
@@ -427,7 +359,7 @@
     };
     
     /**
-     * Remvoe the highlight on a particular text segment
+     * Remove the highlight on a particular text segment
      * 
      * @param jQueryObject     $this   The obect on which the mediaAlignedText has been instantiated
      * @param text_segment_id  integer  The id of the textSegment to have highlighting removed
