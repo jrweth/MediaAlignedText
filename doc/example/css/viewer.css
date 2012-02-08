@@ -1,10 +1,5 @@
 @CHARSET "ISO-8859-1";
 
- 
-span:hover {
-	background-color: #CCCCFF;
-	cursor: pointer;
-}
 
 #mat_text_viewer {
     margin-top: 10px;
@@ -15,21 +10,25 @@ span:hover {
     padding: 3px;
 }
 
-.highlighted_text_segment {
-	color: purple;
+.highlighted_time_segment {
+    border-top: 5px solid purple;
 }
-a {
+
+a.mat_char_group_word {
 	text-decoration: none;
 	color: #000000;
 }
 
-
-.mat_media_file_segment {
+a.highlighted_text_segment {
+    color: purple;
+}
+.mat_time_segment {
 	position: absolute;
 	height: 99%;
 	border-right: 1px solid black;
 	border-left: 1px solid black;
 }
+
 
 #mat_timeline {
 	position: relative;
