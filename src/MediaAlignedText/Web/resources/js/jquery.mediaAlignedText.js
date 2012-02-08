@@ -115,7 +115,7 @@
         
         var current_text_segment = data.current_text_segment;
         
-        //get start/end times for the current_media_file_segment
+        //get start/end times for the current_text_segment
         if(current_text_segment == undefined) {
             current_text_segment_invalid = true;
         }
