@@ -51,13 +51,15 @@
 
 <br /><br />
 
-<div id="mat_time_editor" style="width: 500px; overflow: auto">
-    <div id="mat_timeline" style="width: 1000px; height: 40px;  border: 1px solid black;">
+<a href="#" onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('zoomTimeEditor', -1)">zoom in</a>
+<a href="#" onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('zoomTimeEditor', 1)">zoom out</a>
+
+
+<div id="mat_time_editor" style="overflow: auto">
+    <div id="mat_timeline" style="border: 1px solid black;">
         
     </div>
 </div>
-<a href="#" onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('zoomTimeEditor', -1)">zoom in</a>
-<a href="#" onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('zoomTimeEditor', 1)">zoom out</a>
 <div id="mat_manual_editor">
     start time: <input type="text" id="mat_editor_start_time" size="5"/>
     end time: <input type="text" id="mat_editor_end_time" size="5"/>

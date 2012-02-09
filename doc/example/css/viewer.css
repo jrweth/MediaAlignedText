@@ -3,16 +3,14 @@
 
 #mat_text_viewer {
     margin-top: 10px;
-    height: 100px;
+    height: 150px;
     width: 420px;
     border:1px solid blue;
     overflow: auto;
     padding: 3px;
 }
 
-.highlighted_time_segment {
-    border-top: 5px solid purple;
-}
+
 
 a.mat_char_group_word {
 	text-decoration: none;
@@ -24,12 +22,21 @@ a.highlighted_text_segment {
 }
 .mat_time_segment {
 	position: absolute;
-	height: 99%;
-	border-right: 1px solid black;
-	border-left: 1px solid black;
+	height: 36px;
+	border: 2px solid black;
 }
-
+.highlighted_time_segment {
+    border: 2px solid purple;
+}
 
 #mat_timeline {
 	position: relative;
+	height: 40px;
+	margin-top: 20px;
+}
+
+#mat_time_editor {
+	width: 500px;
+	height: 80px;
+	border: 1px solid black;
 }
