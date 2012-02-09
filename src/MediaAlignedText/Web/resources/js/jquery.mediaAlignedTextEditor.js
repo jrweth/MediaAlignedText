@@ -44,8 +44,8 @@
             //get default options 
             var options = $.extend({
                 'json_alignment'            : {},                    //json alignment object
-                'viewable_media_segments'   : 5,
-                'color_toggle'              : ['#E69F00','#56B4E9', '#009E73', '#F0E442', '#0072B2', '#D55E00', '#CC79A7' ],
+                'viewable_media_segments'   : 5, //average number of segments viewable on the viewer
+                'color_toggle'              : ['#E69F00','#56B4E9', '#009E73', '#F0E442', '#0072B2', '#D55E00', '#CC79A7' ], //array of colors to toggle through
                 'highlight_function'        : _textSegmentHighlight, //the function to use to highlight - requires object and text_segment_id as arguments
                 'highlight_remove_function' : _textSegmentRemoveHighlight  //function to remove highligh - requires object and text_segment_id as arguments
                 }, options);
@@ -57,7 +57,7 @@
             //if data not yet initialized set here
             if(!data) {
                 data = options;
-                data.json_alignment_new = options.json_alignment;
+                data.json_alignment_orig = options.json_alignment;
                 $this.data('mediaAlignedTextEditor', options);
             }
             
@@ -68,11 +68,11 @@
         
         'timeSegmentClicked' : function(time_segment_id) {
             var $this = $(this);
-            var data = $this.data('mediaAlignedTextEditor');
+            var data = $this.data('mediaAlignedText');
             
             //strip the char_group_ off of the div id to get the text and char group order
             var text_segment_id = time_segment_id.replace('time_segment_','');
-            var text_segment = data.json_alignment_new.text_segments[text_segment_id];
+            var text_segment = data.json_alignment.text_segments[text_segment_id];
             
             //spoof clicking the char group
             $this.mediaAlignedText('charGroupClicked', 'char_group_' + text_segment.text_order + '_' + text_segment.character_group_start);
@@ -87,8 +87,8 @@
         'updateSegmentTimeManual' : function(){
             var $this = $(this);
             var text_segment_id = $this.data('mediaAlignedText').current_text_segment_id;
-            var time_start = $('#mat_editor_start_time').val();
-            var time_end = $('#mat_editor_end_time').val();
+            var time_start = parseFloat($('#mat_editor_start_time').val());
+            var time_end = parseFloat($('#mat_editor_end_time').val());
             
             _updateSegmentTime($this, text_segment_id, time_start, time_end);
             
@@ -122,10 +122,12 @@
      * @param Integer       toggle_color_count  the count to toggle the background color by
      */
     var _getTimeSegmentHtml= function($this, text_segment_id, toggle_color_count) {
-        var data = $this.data('mediaAlignedTextEditor');
-        var text_segment = data.json_alignment_new.text_segments[text_segment_id];
-        var width = Math.round((text_segment.time_end - text_segment.time_start) * data.time_editor_width_per_second);
-        var left_offset = Math.round(text_segment.time_start * data.time_editor_width_per_second);
+        var data = $this.data('mediaAlignedText');
+        var editor_data = $this.data('mediaAlignedTextEditor');
+        
+        var text_segment = data.json_alignment.text_segments[text_segment_id];
+        var width = Math.round((text_segment.time_end - text_segment.time_start) * editor_data.time_editor_width_per_second);
+        var left_offset = Math.round(text_segment.time_start * editor_data.time_editor_width_per_second);
 
         return '<div id="time_segment_'+text_segment_id +'" '
             + 'class="mat_time_segment" '
@@ -136,33 +138,34 @@
     };
     
     var _initMediaAlignedTextPlayer = function($this) {
-        var data = $this.data('mediaAlignedTextEditor');
+        var editor_data = $this.data('mediaAlignedTextEditor');
         
         //initialize the mediaAlignedTextPlayer
-        $this.mediaAlignedText(data);
+        $this.mediaAlignedText(editor_data);
     }
     
     /**
      * Refresh the time editor starting with the first
      */
     var _initTimeEditor = function($this) {
-        var data = $this.data('mediaAlignedTextEditor');
+        var editor_data = $this.data('mediaAlignedTextEditor');
+        var data = $this.data('mediaAlignedText');
         var text_segment_order = $this.data('mediaAlignedText').text_segment_order;
         
       //@todo make total timespan based upon total media file times not last segment id times
-        var last_segment = data.json_alignment_new.text_segments[text_segment_order[text_segment_order.length-1]];
-        data.time_editor_total_timespan = last_segment.time_end;
-        data.time_editor_viewable_timespan = data.viewable_media_segments * data.time_editor_total_timespan/text_segment_order.length;
-        data.time_editor_width_per_second = $('#mat_time_editor').width() / data.time_editor_viewable_timespan; 
+        var last_segment = data.json_alignment.text_segments[text_segment_order[text_segment_order.length-1]];
+        editor_data.time_editor_total_timespan = last_segment.time_end;
+        editor_data.time_editor_viewable_timespan = editor_data.viewable_media_segments * editor_data.time_editor_total_timespan/text_segment_order.length;
+        editor_data.time_editor_width_per_second = $('#mat_time_editor').width() / editor_data.time_editor_viewable_timespan; 
 
         //set the width of the entire timespan
-        $('#mat_timeline').width(Math.round(data.time_editor_total_timespan*data.time_editor_width_per_second));
+        $('#mat_timeline').width(Math.round(editor_data.time_editor_total_timespan*editor_data.time_editor_width_per_second));
         
 
         var count = 0;
         var html = '';
         for(var i=0; i< text_segment_order.length; i++) {
-            $('.mat_text_segment_' + text_segment_order[i]).css('background-color', data.color_toggle[count % 5]);
+            $('.mat_text_segment_' + text_segment_order[i]).css('background-color', editor_data.color_toggle[count % 5]);
             html = html + _getTimeSegmentHtml($this, text_segment_order[i], count);
             count++;
         }
@@ -183,7 +186,7 @@
         $('#time_segment_'+text_segment_id).addClass('highlighted_time_segment');
         $('.mat_text_segment_'+text_segment_id).addClass('highlighted_text_segment');
         $('#'+$this.data('mediaAlignedText').text_viewer_id).scrollTo('.highlighted_text_segment', 250, {'axis': 'y', 'offset': -20});
-        var text_segment = $this.data('mediaAlignedTextEditor').json_alignment_new.text_segments[text_segment_id];
+        var text_segment = $this.data('mediaAlignedText').json_alignment.text_segments[text_segment_id];
         $('#mat_editor_start_time').val(text_segment.time_start);
         $('#mat_editor_end_time').val(text_segment.time_end);
     };
@@ -202,25 +205,22 @@
     };
     
     var _updateSegmentTime = function($this, text_segment_id, time_start, time_end) {
-        var data = $this.data('mediaAlignedTextEditor');
+        var editor_data = $this.data('mediaAlignedTextEditor');
+        var data = $this.data('mediaAlignedText');
         
         //update the time segments 
         //@todo data validation
-        data.json_alignment_new.text_segments[text_segment_id].time_start = time_start;
-        data.json_alignment_new.text_segments[text_segment_id].time_end = time_end;
+        data.json_alignment.text_segments[text_segment_id].time_start = time_start;
+        data.json_alignment.text_segments[text_segment_id].time_end = time_end;
         
         //update the time segments
-        var width = Math.round((time_end - time_start) * data.time_editor_width_per_second);
-        var left_offset = Math.round(time_start * data.time_editor_width_per_second);
+        var width = Math.round((time_end - time_start) * editor_data.time_editor_width_per_second);
+        var left_offset = Math.round(time_start * editor_data.time_editor_width_per_second);
         
         $('#time_segment_'+text_segment_id).css('width', width+'px');
         $('#time_segment_'+text_segment_id).css('left', left_offset+'px');
         
-        $this.data('mediaAlignedTextEditor', data);
+        $this.data('mediaAlignedText', data);
         
-        //update player to reflect new time
-        var player_data = $this.data('mediaAlignedText');
-        player_data.json_alignment.text_segments[text_segment_id] = data.json_alignment_new.text_segments[text_segment_id];
-        $this.data('mediaAlignedText', player_data);
-    }
+    };
 })( jQuery );
