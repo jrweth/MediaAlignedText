@@ -8,6 +8,7 @@
     border:1px solid blue;
     overflow: auto;
     padding: 3px;
+    line-height: 150%;
 }
 
 
@@ -15,10 +16,21 @@
 a.mat_char_group_word {
 	text-decoration: none;
 	color: #000000;
+    border-bottom: 3px solid transparent;
+    margin-top: 3px;
+}
+
+span.mat_char_group_non_word {
+    text-decoration: none;
+    color: #000000;
+    border-bottom: 3px solid transparent;
+    margin-top: 3px;
 }
 
 a.highlighted_text_segment {
     color: purple;
+    border-bottom: 3px solid black;
+    margin-top: 3px;
 }
 .mat_time_segment {
 	position: absolute;
