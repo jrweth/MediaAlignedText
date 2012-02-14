@@ -105,6 +105,27 @@
                 
 
             }
+        },
+        /**
+         * play the media file for just the text segment 
+         * @param integer  text_segment_id   Id of the text_segment to be played
+         */
+        'playTextSegment' : function(text_segment_id) {
+            var $this = $(this);
+            var text_segment = $this.data('mediaAlignedText').json_alignment.text_segments[text_segment_id];
+            $this.jPlayer('play', text_segment.time_start);
+            
+            var t = setTimeout("$('#jquery_jplayer_1').jPlayer('pause')", 1000*(text_segment.time_end - text_segment.time_start));
+        },
+        
+        'refreshSegments' : function() {
+            var $this = $(this);
+            var data = $this.data('mediaAlignedText');
+            //initialize all the mappings and components
+            _initTextCharGroupSegmentIdMap($this);
+            _initTextSegmentOrder($this);
+            _initText($this, data.text_viewer_id, data.json_alignment);
+            
         }
     };
     
@@ -192,19 +213,20 @@
                 var text_char_group_order = text_order+'_'+char_group_order;
                 var text_segment_id = $this.data('mediaAlignedText').text_char_group_segment_id_map[text_char_group_order];
                 var text_segment_class = (text_segment_id ? 'mat_text_segment_'+text_segment_id : '');
+                var char_group_id = text_order + '_' + char_group_order;
                 
                 //for word type characater groups wrap the character in a span tag
                 if(char_group.type == 'WORD') {
                     
-                    html = html+'<a href="#" id="char_group_' + text_order + '_'+ char_group_order + '"'
-                        + 'class="mat_char_group_word '+text_segment_class+'">'
+                    html = html+'<a href="#" id="char_group_' + char_group_id + '"'
+                        + ' class="mat_char_group_word '+text_segment_class+'">'
                         + char_group.chars + '</a>';
                 }
                 //for non-word characater_groups make sure to put in line breaks
                 else if(char_group.type == 'NON_WORD') {
-                    html = html+'<span class="'+text_segment_class+'">'+
-                        (char_group.chars + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2')+
-                        '</span>';
+                    html = html+'<span class="mat_char_group_non_word '+text_segment_class+'" id="char_group_' + char_group_id + '">'
+                        + (char_group.chars + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2')
+                        + '</span>';
                 }
                 
                 //for tag character groups, just ouptut the tag
