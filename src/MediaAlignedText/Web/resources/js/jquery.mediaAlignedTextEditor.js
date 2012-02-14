@@ -32,12 +32,73 @@
     
     /**
      * Define the following public methods
+     * - clearSegments       Remove all segment and time alignment
      * - init                Initialize the MediaAlignedText
      * - timeSegmentClicked  Handles when user clicks on a particular time segment
      * - updateSegmentTime   Handles updating the text segment start and end parameters
      * - zoomTimeEditor      zoom the time editor in or out
+     * - createSegments      creates new segments
+     * - playCurrentSemgent  play the current segment via the player
+     * - recordManualTime     called when user clicks button to record time
+     * - startManualAlignment start the recording for manual alignment
      */
     var public_methods = {
+            
+        'clearSegments' : function() {
+            var $this = $(this);
+            var data = $this.data('mediaAlignedText');
+            
+            data.json_alignment.text_segments = {};
+            data.text_char_group_segment_id_map = new Array();
+            data.text_segment_order = new Array();
+            $this.data('mediaAlignedText', data);
+            
+            $this.mediaAlignedText('refreshSegments');
+            _initTimeEditor($this);
+            
+        },
+        /**
+         * split up the text into segments based upon the type of break desired
+         * 
+         * @param string  break_on   The delimeter on which to split
+         */
+        'createSegments' : function(break_on) {
+            var $this = $(this);
+            var data = $this.data('mediaAlignedText');
+            $this.mediaAlignedTextEditor('clearSegments');
+            var text_segments = {};
+            var segment_count = 0;
+            
+            //loop through the texts 
+            for(var text_order in data.json_alignment.texts) {
+                var char_groups = data.json_alignment.texts[text_order].character_groups;
+                for (var char_group_order in char_groups) {
+                    var char_group = char_groups[char_group_order];
+ 
+                    if(char_group.type == 'WORD' || char_group_order == 0) {
+                        segment_count++;
+                        //create a new text segment for each element
+                        text_segments[segment_count] = {
+                                "id": segment_count,
+                                "media_file_order":null,
+                                "time_start": null,
+                                "time_end": null,
+                                "text_order": text_order,
+                                "character_group_start" : char_group_order,
+                                "character_group_end" : char_group_order
+                            };
+                    }
+                    else {
+                        text_segments[segment_count].character_group_end = char_group_order;
+                    }
+                }
+            }
+            
+            data.json_alignment.text_segments = text_segments;
+            $this.data('mediaAlignedText', data);            
+            $this.mediaAlignedText('refreshSegments');
+            _initTimeEditor($this);
+        },
         //initialize the MediaAlignedText playback
         'init' : function(options){
             
@@ -66,6 +127,68 @@
             _initTimeEditor($this);
         },
         
+        'recordManualTime': function() {
+            var $this = $(this);
+            var data = $this.data('mediaAlignedText');
+            var previous_text_segment_id = data.text_segment_order[data.manual_text_segment_position];
+            var text_segment_id = data.text_segment_order[data.manual_text_segment_position+1];
+            var current_time = Math.round(parseFloat($this.data("jPlayer").status.currentTime)*100)/100;
+            
+            //set the end time for the previous segment
+            data.json_alignment.text_segments[previous_text_segment_id].time_end = current_time;
+            _textSegmentRemoveHighlight($this, previous_text_segment_id);
+            
+            //get the next text segment
+            data.manual_text_segment_position = data.manual_text_segment_position + 1;
+
+            //set the start time for the next text segment
+            data.json_alignment.text_segments[text_segment_id].time_start = current_time;
+            data.json_alignment.text_segments[text_segment_id].media_file_order = 0;
+            
+            //highlight the spot
+            _textSegmentHighlight($this, text_segment_id);
+            $this.data('mediaAlignedText', data);
+        },
+        
+        'pauseManualAlignment' : function() {
+            var $this = $(this);
+            
+            $this.jPlayer('pause');
+
+            _initTimeEditor($this);
+            $("#mat_output").html((JSON.stringify($this.data('mediaAlignedText').json_alignment)));
+        },
+        
+        /**
+         * Play the current selected segment
+         */
+        'playCurrentSegment' : function() {
+            var $this = $(this);
+            
+            $this.mediaAlignedText('playTextSegment', $this.data('mediaAlignedText').current_text_segment_id);
+        },
+        
+        'startManualAlignment': function() {
+            var $this = $(this);
+            var data = $this.data('mediaAlignedText');
+            
+            data.manual_text_segment_position = 0;
+            var text_segment = data.json_alignment.text_segments[data.text_segment_order[0]];
+            
+            data.json_alignment.text_segments[text_segment.id].media_file_order = 0;
+            data.json_alignment.text_segments[text_segment.id].time_start = 0;
+            
+            //position the highlight at the first word
+            $this.mediaAlignedText('charGroupClicked', 'char_group_'+text_segment.text_order+'_'+text_segment.character_group_start);
+
+            $this.data('mediaAlignedText', data);
+            $this.jPlayer('play', 0);
+        },
+        
+        /**
+         * Handles the click of a time segment
+         * @param time_segment_id
+         */
         'timeSegmentClicked' : function(time_segment_id) {
             var $this = $(this);
             var data = $this.data('mediaAlignedText');
@@ -152,9 +275,8 @@
         var data = $this.data('mediaAlignedText');
         var text_segment_order = $this.data('mediaAlignedText').text_segment_order;
         
-      //@todo make total timespan based upon total media file times not last segment id times
-        var last_segment = data.json_alignment.text_segments[text_segment_order[text_segment_order.length-1]];
-        editor_data.time_editor_total_timespan = last_segment.time_end;
+      //@todo make total timespan based upon total media file times not just first one
+        editor_data.time_editor_total_timespan = data.json_alignment.media_files[0].length;
         editor_data.time_editor_viewable_timespan = editor_data.viewable_media_segments * editor_data.time_editor_total_timespan/text_segment_order.length;
         editor_data.time_editor_width_per_second = $('#mat_time_editor').width() / editor_data.time_editor_viewable_timespan; 
 
@@ -164,7 +286,9 @@
 
         var count = 0;
         var html = '';
+        
         for(var i=0; i< text_segment_order.length; i++) {
+            
             $('.mat_text_segment_' + text_segment_order[i]).css('background-color', editor_data.color_toggle[count % 5]);
             html = html + _getTimeSegmentHtml($this, text_segment_order[i], count);
             count++;
@@ -175,7 +299,7 @@
         $('.mat_time_segment').click(function() {
             $this.mediaAlignedTextEditor('timeSegmentClicked', $(this).attr('id'));
         });
-    }
+    };
     /**
      * Highlight a particular time segment
      * 
