@@ -27,7 +27,7 @@ span.mat_char_group_non_word {
     margin-top: 3px;
 }
 
-a.highlighted_text_segment {
+a.highlighted_text_segment, span.highlighted_text_segment{
     color: purple;
     border-bottom: 3px solid black;
     margin-top: 3px;
@@ -35,16 +35,21 @@ a.highlighted_text_segment {
 .mat_time_segment {
 	position: absolute;
 	height: 36px;
-	border: 2px solid black;
+	border-top: 3px solid transparent;
+	border-right: 1px solid black;
+	overflow: hidden;
 }
 .highlighted_time_segment {
-    border: 2px solid purple;
+    border-top: 3px solid black;
+}
+#mat_time_slider {
+	position: absolute;
+	width: 500px;
 }
 
 #mat_timeline {
 	position: relative;
-	height: 40px;
-	margin-top: 20px;
+	height: 60px;
 }
 
 #mat_time_editor {
