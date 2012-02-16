@@ -2,376 +2,384 @@
 <head>
     <link type="text/css" href="skin/jplayer.blue.monday.css" rel="stylesheet" />
     <link type="text/css" href="css/viewer.css" rel="stylesheet" />
+    <link type="text/css" href="css/jquery-ui-1.8.17.custom.css" rel="stylesheet" />
     <script  type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery.jplayer.min.js"></script>
     <script type="text/javascript" src="js/jquery.scrollTo-min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.8.17.custom.min.js"></script>
     <script  type="text/javascript" src="mat_resources/js/jquery.mediaAlignedText.js"></script>
     <script  type="text/javascript" src="mat_resources/js/jquery.mediaAlignedTextEditor.js"></script>
     <script type="text/javascript">
-        var json_alignment = {"texts":[
-{"title":"The Hobbit - Chapter 1a","character_groups":[
-{"chars":"In","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"a","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"hole","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"in","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"the","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"ground","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"there","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"lived","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"a","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"hobbit","type":"WORD"},
-{"chars":". ","type":"NON_WORD"},
-{"chars":"Not","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"a","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"nasty","type":"WORD"},
-{"chars":", ","type":"NON_WORD"},
-{"chars":"dirty","type":"WORD"},
-{"chars":", ","type":"NON_WORD"},
-{"chars":"wet","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"hole","type":"WORD"},
-{"chars":", ","type":"NON_WORD"},
-{"chars":"filled","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"with","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"the","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"ends","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"of","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"worms","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"and","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"an","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"oozy","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"smell","type":"WORD"},
-{"chars":", ","type":"NON_WORD"},
-{"chars":"nor","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"yet","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"a","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"dry","type":"WORD"},
-{"chars":", ","type":"NON_WORD"},
-{"chars":"bare","type":"WORD"},
-{"chars":", ","type":"NON_WORD"},
-{"chars":"sandy","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"hole","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"with","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"nothing","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"in","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"it","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"to","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"sit","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"down","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"on","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"or","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"to","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"eat","type":"WORD"},
-{"chars":": ","type":"NON_WORD"},
-{"chars":"it","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"was","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"a","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"hobbit","type":"WORD"},
-{"chars":"-","type":"NON_WORD"},
-{"chars":"hole","type":"WORD"},
-{"chars":", ","type":"NON_WORD"},
-{"chars":"and","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"that","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"means","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"comfort","type":"WORD"},
-{"chars":".\r\n\r\n","type":"NON_WORD"},
-{"chars":"It","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"had","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"a","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"perfectly","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"round","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"door","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"like","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"a","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"porthole","type":"WORD"},
-{"chars":", ","type":"NON_WORD"},
-{"chars":"painted","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"green","type":"WORD"},
-{"chars":", ","type":"NON_WORD"},
-{"chars":"with","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"a","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"shiny","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"yellow","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"brass","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"knob","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"in","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"the","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"exact","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"middle","type":"WORD"},
-{"chars":". ","type":"NON_WORD"},
-{"chars":"The","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"door","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"opened","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"on","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"to","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"a","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"tube","type":"WORD"},
-{"chars":"-","type":"NON_WORD"},
-{"chars":"shaped","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"hall","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"like","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"a","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"tunnel","type":"WORD"},
-{"chars":": ","type":"NON_WORD"},
-{"chars":"a","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"very","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"comfortable","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"tunnel","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"without","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"smoke","type":"WORD"},
-{"chars":", ","type":"NON_WORD"},
-{"chars":"with","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"panelled","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"walls","type":"WORD"},
-{"chars":", ","type":"NON_WORD"},
-{"chars":"and","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"floors","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"tiled","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"and","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"carpeted","type":"WORD"},
-{"chars":", ","type":"NON_WORD"},
-{"chars":"provided","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"with","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"polished","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"chairs","type":"WORD"},
-{"chars":", ","type":"NON_WORD"},
-{"chars":"and","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"lots","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"and","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"lots","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"of","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"pegs","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"for","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"hats","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"and","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"coats","type":"WORD"},
-{"chars":" - ","type":"NON_WORD"},
-{"chars":"the","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"hobbit","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"was","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"fond","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"of","type":"WORD"},
-{"chars":" ","type":"NON_WORD"},
-{"chars":"visitors","type":"WORD"},
-{"chars":". ","type":"NON_WORD"}]}],"media_files":[
-{"title":"The Hobbit - Chapter 1a","url":"media_files/hobbit-1a.mp3","media_type":"AUDIO","file_type":"mp3","length":42}],"text_segments":
-{"1":
-{"id":1,"media_file_order":0,"time_start":0,"time_end":1.253877551020408,"text_order":"0","character_group_start":"0","character_group_end":"1"},"2":
-{"id":2,"media_file_order":0,"time_start":1.253877551020408,"time_end":1.486077097505669,"text_order":"0","character_group_start":"2","character_group_end":"3"},"3":
-{"id":3,"media_file_order":0,"time_start":1.486077097505669,"time_end":1.7182766439909296,"text_order":"0","character_group_start":"4","character_group_end":"5"},"4":
-{"id":4,"media_file_order":0,"time_start":1.7182766439909296,"time_end":1.7182766439909296,"text_order":"0","character_group_start":"6","character_group_end":"7"},"5":
-{"id":5,"media_file_order":0,"time_start":1.7182766439909296,"time_end":1.9969160997732427,"text_order":"0","character_group_start":"8","character_group_end":"9"},"6":
-{"id":6,"media_file_order":0,"time_start":1.9969160997732427,"time_end":2.507755102040816,"text_order":"0","character_group_start":"10","character_group_end":"11"},"7":
-{"id":7,"media_file_order":0,"time_start":2.507755102040816,"time_end":3.250793650793651,"text_order":"0","character_group_start":"12","character_group_end":"13"},"8":
-{"id":8,"media_file_order":0,"time_start":3.250793650793651,"time_end":3.250793650793651,"text_order":"0","character_group_start":"14","character_group_end":"15"},"9":
-{"id":9,"media_file_order":0,"time_start":3.250793650793651,"time_end":3.4829931972789114,"text_order":"0","character_group_start":"16","character_group_end":"17"},"10":
-{"id":10,"media_file_order":0,"time_start":3.4829931972789114,"time_end":4.504671201814059,"text_order":"0","character_group_start":"18","character_group_end":"19"},"11":
-{"id":11,"media_file_order":0,"time_start":4.504671201814059,"time_end":4.736870748299319,"text_order":"0","character_group_start":"20","character_group_end":"21"},"12":
-{"id":12,"media_file_order":0,"time_start":4.736870748299319,"time_end":4.96907029478458,"text_order":"0","character_group_start":"22","character_group_end":"23"},"13":
-{"id":13,"media_file_order":0,"time_start":4.96907029478458,"time_end":4.96907029478458,"text_order":"0","character_group_start":"24","character_group_end":"25"},"14":
-{"id":14,"media_file_order":0,"time_start":4.96907029478458,"time_end":5.479909297052155,"text_order":"0","character_group_start":"26","character_group_end":"27"},"15":
-{"id":15,"media_file_order":0,"time_start":5.479909297052155,"time_end":5.990748299319727,"text_order":"0","character_group_start":"28","character_group_end":"29"},"16":
-{"id":16,"media_file_order":0,"time_start":5.990748299319727,"time_end":6.965986394557823,"text_order":"0","character_group_start":"30","character_group_end":"31"},"17":
-{"id":17,"media_file_order":0,"time_start":6.965986394557823,"time_end":7.244625850340136,"text_order":"0","character_group_start":"32","character_group_end":"33"},"18":
-{"id":18,"media_file_order":0,"time_start":7.244625850340136,"time_end":7.244625850340136,"text_order":"0","character_group_start":"34","character_group_end":"35"},"19":
-{"id":19,"media_file_order":0,"time_start":7.244625850340136,"time_end":7.476825396825396,"text_order":"0","character_group_start":"36","character_group_end":"37"},"20":
-{"id":20,"media_file_order":0,"time_start":7.476825396825396,"time_end":7.75546485260771,"text_order":"0","character_group_start":"38","character_group_end":"39"},"21":
-{"id":21,"media_file_order":0,"time_start":7.75546485260771,"time_end":7.987664399092971,"text_order":"0","character_group_start":"40","character_group_end":"41"},"22":
-{"id":22,"media_file_order":0,"time_start":7.987664399092971,"time_end":8.498503401360544,"text_order":"0","character_group_start":"42","character_group_end":"43"},"23":
-{"id":23,"media_file_order":0,"time_start":8.498503401360544,"time_end":8.730702947845804,"text_order":"0","character_group_start":"44","character_group_end":"45"},"24":
-{"id":24,"media_file_order":0,"time_start":8.730702947845804,"time_end":8.730702947845804,"text_order":"0","character_group_start":"46","character_group_end":"47"},"25":
-{"id":25,"media_file_order":0,"time_start":8.730702947845804,"time_end":8.962902494331065,"text_order":"0","character_group_start":"48","character_group_end":"49"},"26":
-{"id":26,"media_file_order":0,"time_start":8.962902494331065,"time_end":9.473741496598638,"text_order":"0","character_group_start":"50","character_group_end":"51"},"27":
-{"id":27,"media_file_order":0,"time_start":9.473741496598638,"time_end":10.495419501133787,"text_order":"0","character_group_start":"52","character_group_end":"53"},"28":
-{"id":28,"media_file_order":0,"time_start":10.495419501133787,"time_end":10.727619047619047,"text_order":"0","character_group_start":"54","character_group_end":"55"},"29":
-{"id":29,"media_file_order":0,"time_start":10.727619047619047,"time_end":11.00625850340136,"text_order":"0","character_group_start":"56","character_group_end":"57"},"30":
-{"id":30,"media_file_order":0,"time_start":11.00625850340136,"time_end":11.238458049886622,"text_order":"0","character_group_start":"58","character_group_end":"59"},"31":
-{"id":31,"media_file_order":0,"time_start":11.238458049886622,"time_end":11.749297052154194,"text_order":"0","character_group_start":"60","character_group_end":"61"},"32":
-{"id":32,"media_file_order":0,"time_start":11.749297052154194,"time_end":11.981496598639454,"text_order":"0","character_group_start":"62","character_group_end":"63"},"33":
-{"id":33,"media_file_order":0,"time_start":11.981496598639454,"time_end":12.492335600907028,"text_order":"0","character_group_start":"64","character_group_end":"65"},"34":
-{"id":34,"media_file_order":0,"time_start":12.492335600907028,"time_end":12.492335600907028,"text_order":"0","character_group_start":"66","character_group_end":"67"},"35":
-{"id":35,"media_file_order":0,"time_start":12.492335600907028,"time_end":12.72453514739229,"text_order":"0","character_group_start":"68","character_group_end":"69"},"36":
-{"id":36,"media_file_order":0,"time_start":12.72453514739229,"time_end":13.003174603174603,"text_order":"0","character_group_start":"70","character_group_end":"71"},"37":
-{"id":37,"media_file_order":0,"time_start":13.003174603174603,"time_end":13.235374149659863,"text_order":"0","character_group_start":"72","character_group_end":"73"},"38":
-{"id":38,"media_file_order":0,"time_start":13.235374149659863,"time_end":13.235374149659863,"text_order":"0","character_group_start":"74","character_group_end":"75"},"39":
-{"id":39,"media_file_order":0,"time_start":13.235374149659863,"time_end":13.467573696145124,"text_order":"0","character_group_start":"76","character_group_end":"77"},"40":
-{"id":40,"media_file_order":0,"time_start":13.467573696145124,"time_end":13.746213151927437,"text_order":"0","character_group_start":"78","character_group_end":"79"},"41":
-{"id":41,"media_file_order":0,"time_start":13.746213151927437,"time_end":13.746213151927437,"text_order":"0","character_group_start":"80","character_group_end":"81"},"42":
-{"id":42,"media_file_order":0,"time_start":13.746213151927437,"time_end":13.978412698412697,"text_order":"0","character_group_start":"82","character_group_end":"83"},"43":
-{"id":43,"media_file_order":0,"time_start":13.978412698412697,"time_end":14.25705215419501,"text_order":"0","character_group_start":"84","character_group_end":"85"},"44":
-{"id":44,"media_file_order":0,"time_start":14.25705215419501,"time_end":15.232290249433106,"text_order":"0","character_group_start":"86","character_group_end":"87"},"45":
-{"id":45,"media_file_order":0,"time_start":15.232290249433106,"time_end":15.464489795918368,"text_order":"0","character_group_start":"88","character_group_end":"89"},"46":
-{"id":46,"media_file_order":0,"time_start":15.464489795918368,"time_end":15.464489795918368,"text_order":"0","character_group_start":"90","character_group_end":"91"},"47":
-{"id":47,"media_file_order":0,"time_start":15.464489795918368,"time_end":15.743129251700681,"text_order":"0","character_group_start":"92","character_group_end":"93"},"48":
-{"id":48,"media_file_order":0,"time_start":15.743129251700681,"time_end":16.486167800453515,"text_order":"0","character_group_start":"94","character_group_end":"95"},"49":
-{"id":49,"media_file_order":0,"time_start":16.486167800453515,"time_end":16.486167800453515,"text_order":"0","character_group_start":"96","character_group_end":"97"},"50":
-{"id":50,"media_file_order":0,"time_start":16.486167800453515,"time_end":16.718367346938777,"text_order":"0","character_group_start":"98","character_group_end":"99"},"51":
-{"id":51,"media_file_order":0,"time_start":16.718367346938777,"time_end":16.99700680272109,"text_order":"0","character_group_start":"100","character_group_end":"101"},"52":
-{"id":52,"media_file_order":0,"time_start":16.99700680272109,"time_end":16.99700680272109,"text_order":"0","character_group_start":"102","character_group_end":"103"},"53":
-{"id":53,"media_file_order":0,"time_start":16.99700680272109,"time_end":17.22920634920635,"text_order":"0","character_group_start":"104","character_group_end":"105"},"54":
-{"id":54,"media_file_order":0,"time_start":17.22920634920635,"time_end":18.715283446712018,"text_order":"0","character_group_start":"106","character_group_end":"107"},"55":
-{"id":55,"media_file_order":0,"time_start":18.715283446712018,"time_end":18.715283446712018,"text_order":"0","character_group_start":"108","character_group_end":"109"},"56":
-{"id":56,"media_file_order":0,"time_start":18.715283446712018,"time_end":18.99392290249433,"text_order":"0","character_group_start":"110","character_group_end":"111"},"57":
-{"id":57,"media_file_order":0,"time_start":18.99392290249433,"time_end":19.226122448979588,"text_order":"0","character_group_start":"112","character_group_end":"113"},"58":
-{"id":58,"media_file_order":0,"time_start":19.226122448979588,"time_end":19.504761904761903,"text_order":"0","character_group_start":"114","character_group_end":"115"},"59":
-{"id":59,"media_file_order":0,"time_start":19.504761904761903,"time_end":19.504761904761903,"text_order":"0","character_group_start":"116","character_group_end":"117"},"60":
-{"id":60,"media_file_order":0,"time_start":19.504761904761903,"time_end":19.969160997732427,"text_order":"0","character_group_start":"118","character_group_end":"119"},"61":
-{"id":61,"media_file_order":0,"time_start":19.969160997732427,"time_end":20.24780045351474,"text_order":"0","character_group_start":"120","character_group_end":"121"},"62":
-{"id":62,"media_file_order":0,"time_start":20.24780045351474,"time_end":20.48,"text_order":"0","character_group_start":"122","character_group_end":"123"},"63":
-{"id":63,"media_file_order":0,"time_start":20.48,"time_end":20.48,"text_order":"0","character_group_start":"124","character_group_end":"125"},"64":
-{"id":64,"media_file_order":0,"time_start":20.48,"time_end":20.990839002267574,"text_order":"0","character_group_start":"126","character_group_end":"127"},"65":
-{"id":65,"media_file_order":0,"time_start":20.990839002267574,"time_end":21.223038548752832,"text_order":"0","character_group_start":"128","character_group_end":"129"},"66":
-{"id":66,"media_file_order":0,"time_start":21.223038548752832,"time_end":22.24471655328798,"text_order":"0","character_group_start":"130","character_group_end":"131"},"67":
-{"id":67,"media_file_order":0,"time_start":22.24471655328798,"time_end":22.755555555555556,"text_order":"0","character_group_start":"132","character_group_end":"133"},"68":
-{"id":68,"media_file_order":0,"time_start":22.755555555555556,"time_end":23.219954648526077,"text_order":"0","character_group_start":"134","character_group_end":"135"},"69":
-{"id":69,"media_file_order":0,"time_start":23.219954648526077,"time_end":23.49859410430839,"text_order":"0","character_group_start":"136","character_group_end":"137"},"70":
-{"id":70,"media_file_order":0,"time_start":23.49859410430839,"time_end":23.96299319727891,"text_order":"0","character_group_start":"138","character_group_end":"139"},"71":
-{"id":71,"media_file_order":0,"time_start":23.96299319727891,"time_end":24.241632653061224,"text_order":"0","character_group_start":"140","character_group_end":"141"},"72":
-{"id":72,"media_file_order":0,"time_start":24.241632653061224,"time_end":24.241632653061224,"text_order":"0","character_group_start":"142","character_group_end":"143"},"73":
-{"id":73,"media_file_order":0,"time_start":24.241632653061224,"time_end":24.473832199546482,"text_order":"0","character_group_start":"144","character_group_end":"145"},"74":
-{"id":74,"media_file_order":0,"time_start":24.473832199546482,"time_end":24.752471655328797,"text_order":"0","character_group_start":"146","character_group_end":"147"},"75":
-{"id":75,"media_file_order":0,"time_start":24.752471655328797,"time_end":26.006349206349206,"text_order":"0","character_group_start":"148","character_group_end":"149"},"76":
-{"id":76,"media_file_order":0,"time_start":26.006349206349206,"time_end":26.23854875283447,"text_order":"0","character_group_start":"150","character_group_end":"151"},"77":
-{"id":77,"media_file_order":0,"time_start":26.23854875283447,"time_end":26.470748299319727,"text_order":"0","character_group_start":"152","character_group_end":"153"},"78":
-{"id":78,"media_file_order":0,"time_start":26.470748299319727,"time_end":26.749387755102042,"text_order":"0","character_group_start":"154","character_group_end":"155"},"79":
-{"id":79,"media_file_order":0,"time_start":26.749387755102042,"time_end":26.9815873015873,"text_order":"0","character_group_start":"156","character_group_end":"157"},"80":
-{"id":80,"media_file_order":0,"time_start":26.9815873015873,"time_end":27.306666666666665,"text_order":"0","character_group_start":"158","character_group_end":"159"},"81":
-{"id":81,"media_file_order":0,"time_start":27.306666666666665,"time_end":27.538866213151927,"text_order":"0","character_group_start":"160","character_group_end":"161"},"82":
-{"id":82,"media_file_order":0,"time_start":27.538866213151927,"time_end":27.771065759637185,"text_order":"0","character_group_start":"162","character_group_end":"163"},"83":
-{"id":83,"media_file_order":0,"time_start":27.771065759637185,"time_end":28.0497052154195,"text_order":"0","character_group_start":"164","character_group_end":"165"},"84":
-{"id":84,"media_file_order":0,"time_start":28.0497052154195,"time_end":28.28190476190476,"text_order":"0","character_group_start":"166","character_group_end":"167"},"85":
-{"id":85,"media_file_order":0,"time_start":28.28190476190476,"time_end":28.51410430839002,"text_order":"0","character_group_start":"168","character_group_end":"169"},"86":
-{"id":86,"media_file_order":0,"time_start":28.51410430839002,"time_end":29.024943310657598,"text_order":"0","character_group_start":"170","character_group_end":"171"},"87":
-{"id":87,"media_file_order":0,"time_start":29.024943310657598,"time_end":29.30358276643991,"text_order":"0","character_group_start":"172","character_group_end":"173"},"88":
-{"id":88,"media_file_order":0,"time_start":29.30358276643991,"time_end":29.53578231292517,"text_order":"0","character_group_start":"174","character_group_end":"175"},"89":
-{"id":89,"media_file_order":0,"time_start":29.53578231292517,"time_end":29.76798185941043,"text_order":"0","character_group_start":"176","character_group_end":"177"},"90":
-{"id":90,"media_file_order":0,"time_start":29.76798185941043,"time_end":30.046621315192745,"text_order":"0","character_group_start":"178","character_group_end":"179"},"91":
-{"id":91,"media_file_order":0,"time_start":30.046621315192745,"time_end":30.789659863945577,"text_order":"0","character_group_start":"180","character_group_end":"181"},"92":
-{"id":92,"media_file_order":0,"time_start":30.789659863945577,"time_end":31.02185941043084,"text_order":"0","character_group_start":"182","character_group_end":"183"},"93":
-{"id":93,"media_file_order":0,"time_start":31.02185941043084,"time_end":32.04353741496598,"text_order":"0","character_group_start":"184","character_group_end":"185"},"94":
-{"id":94,"media_file_order":0,"time_start":32.04353741496598,"time_end":32.275736961451244,"text_order":"0","character_group_start":"186","character_group_end":"187"},"95":
-{"id":95,"media_file_order":0,"time_start":32.275736961451244,"time_end":32.554376417233556,"text_order":"0","character_group_start":"188","character_group_end":"189"},"96":
-{"id":96,"media_file_order":0,"time_start":32.554376417233556,"time_end":32.78657596371882,"text_order":"0","character_group_start":"190","character_group_end":"191"},"97":
-{"id":97,"media_file_order":0,"time_start":32.78657596371882,"time_end":33.01877551020408,"text_order":"0","character_group_start":"192","character_group_end":"193"},"98":
-{"id":98,"media_file_order":0,"time_start":33.01877551020408,"time_end":34.040453514739234,"text_order":"0","character_group_start":"194","character_group_end":"195"},"99":
-{"id":99,"media_file_order":0,"time_start":34.040453514739234,"time_end":34.27265306122449,"text_order":"0","character_group_start":"196","character_group_end":"197"},"100":
-{"id":100,"media_file_order":0,"time_start":34.27265306122449,"time_end":34.55129251700681,"text_order":"0","character_group_start":"198","character_group_end":"199"},"101":
-{"id":101,"media_file_order":0,"time_start":34.55129251700681,"time_end":35.80517006802721,"text_order":"0","character_group_start":"200","character_group_end":"201"},"102":
-{"id":102,"media_file_order":0,"time_start":35.80517006802721,"time_end":36.03736961451247,"text_order":"0","character_group_start":"202","character_group_end":"203"},"103":
-{"id":103,"media_file_order":0,"time_start":36.03736961451247,"time_end":36.269569160997726,"text_order":"0","character_group_start":"204","character_group_end":"205"},"104":
-{"id":104,"media_file_order":0,"time_start":36.269569160997726,"time_end":36.78040816326531,"text_order":"0","character_group_start":"206","character_group_end":"207"},"105":
-{"id":105,"media_file_order":0,"time_start":36.78040816326531,"time_end":37.29124716553288,"text_order":"0","character_group_start":"208","character_group_end":"209"},"106":
-{"id":106,"media_file_order":0,"time_start":37.29124716553288,"time_end":37.523446712018135,"text_order":"0","character_group_start":"210","character_group_end":"211"},"107":
-{"id":107,"media_file_order":0,"time_start":37.523446712018135,"time_end":37.802086167800454,"text_order":"0","character_group_start":"212","character_group_end":"213"},"108":
-{"id":108,"media_file_order":0,"time_start":37.802086167800454,"time_end":38.03428571428571,"text_order":"0","character_group_start":"214","character_group_end":"215"},"109":
-{"id":109,"media_file_order":0,"time_start":38.03428571428571,"time_end":38.26648526077098,"text_order":"0","character_group_start":"216","character_group_end":"217"},"110":
-{"id":110,"media_file_order":0,"time_start":38.26648526077098,"time_end":38.54512471655328,"text_order":"0","character_group_start":"218","character_group_end":"219"},"111":
-{"id":111,"media_file_order":0,"time_start":38.54512471655328,"time_end":38.77732426303855,"text_order":"0","character_group_start":"220","character_group_end":"221"},"112":
-{"id":112,"media_file_order":0,"time_start":38.77732426303855,"time_end":39.055963718820855,"text_order":"0","character_group_start":"222","character_group_end":"223"},"113":
-{"id":113,"media_file_order":0,"time_start":39.055963718820855,"time_end":39.288163265306125,"text_order":"0","character_group_start":"224","character_group_end":"225"},"114":
-{"id":114,"media_file_order":0,"time_start":39.288163265306125,"time_end":39.52036281179139,"text_order":"0","character_group_start":"226","character_group_end":"227"},"115":
-{"id":115,"media_file_order":0,"time_start":39.52036281179139,"time_end":40.542040816326534,"text_order":"0","character_group_start":"228","character_group_end":"229"},"116":
-{"id":116,"media_file_order":0,"time_start":40.542040816326534,"time_end":40.77424036281179,"text_order":"0","character_group_start":"230","character_group_end":"231"},"117":
-{"id":117,"media_file_order":0,"time_start":40.77424036281179,"time_end":41.05287981859411,"text_order":"0","character_group_start":"232","character_group_end":"233"},"118":
-{"id":118,"media_file_order":0,"time_start":41.05287981859411,"time_end":41.05287981859411,"text_order":"0","character_group_start":"234","character_group_end":"235"},"119":
-{"id":119,"media_file_order":0,"time_start":41.05287981859411,"time_end":41.795918367346935,"text_order":"0","character_group_start":"236","character_group_end":"237"},"120":
-{"id":120,"media_file_order":0,"time_start":41.795918367346935,"time_end":42,"text_order":"0","character_group_start":"238","character_group_end":"239"}}}
+        var json_alignment = {
+    "media_files":[{"title":"The Hobbit - Chapter 1a","url":"media_files/hobbit-1a.mp3","media_type":"AUDIO","file_type":"mp3","length":42}],
+    "texts":[{
+        "title":"The Hobbit - Chapter 1a",
+        "character_groups":[
+            {"chars":"In","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"a","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"hole","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"in","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"the","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"ground","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"there","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"lived","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"a","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"hobbit","type":"WORD"},
+            {"chars":". ","type":"NON_WORD"},
+            {"chars":"Not","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"a","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"nasty","type":"WORD"},
+            {"chars":", ","type":"NON_WORD"},
+            {"chars":"dirty","type":"WORD"},
+            {"chars":", ","type":"NON_WORD"},
+            {"chars":"wet","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"hole","type":"WORD"},
+            {"chars":", ","type":"NON_WORD"},
+            {"chars":"filled","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"with","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"the","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"ends","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"of","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"worms","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"and","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"an","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"oozy","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"smell","type":"WORD"},
+            {"chars":", ","type":"NON_WORD"},
+            {"chars":"nor","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"yet","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"a","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"dry","type":"WORD"},
+            {"chars":", ","type":"NON_WORD"},
+            {"chars":"bare","type":"WORD"},
+            {"chars":", ","type":"NON_WORD"},
+            {"chars":"sandy","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"hole","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"with","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"nothing","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"in","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"it","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"to","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"sit","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"down","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"on","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"or","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"to","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"eat","type":"WORD"},
+            {"chars":": ","type":"NON_WORD"},
+            {"chars":"it","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"was","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"a","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"hobbit","type":"WORD"},
+            {"chars":"-","type":"NON_WORD"},
+            {"chars":"hole","type":"WORD"},
+            {"chars":", ","type":"NON_WORD"},
+            {"chars":"and","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"that","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"means","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"comfort","type":"WORD"},
+            {"chars":".\r\n\r\n","type":"NON_WORD"},
+            {"chars":"It","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"had","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"a","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"perfectly","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"round","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"door","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"like","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"a","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"porthole","type":"WORD"},
+            {"chars":", ","type":"NON_WORD"},
+            {"chars":"painted","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"green","type":"WORD"},
+            {"chars":", ","type":"NON_WORD"},
+            {"chars":"with","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"a","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"shiny","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"yellow","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"brass","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"knob","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"in","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"the","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"exact","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"middle","type":"WORD"},
+            {"chars":". ","type":"NON_WORD"},
+            {"chars":"The","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"door","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"opened","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"on","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"to","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"a","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"tube","type":"WORD"},
+            {"chars":"-","type":"NON_WORD"},
+            {"chars":"shaped","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"hall","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"like","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"a","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"tunnel","type":"WORD"},
+            {"chars":": ","type":"NON_WORD"},
+            {"chars":"a","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"very","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"comfortable","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"tunnel","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"without","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"smoke","type":"WORD"},
+            {"chars":", ","type":"NON_WORD"},
+            {"chars":"with","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"panelled","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"walls","type":"WORD"},
+            {"chars":", ","type":"NON_WORD"},
+            {"chars":"and","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"floors","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"tiled","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"and","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"carpeted","type":"WORD"},
+            {"chars":", ","type":"NON_WORD"},
+            {"chars":"provided","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"with","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"polished","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"chairs","type":"WORD"},
+            {"chars":", ","type":"NON_WORD"},
+            {"chars":"and","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"lots","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"and","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"lots","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"of","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"pegs","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"for","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"hats","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"and","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"coats","type":"WORD"},
+            {"chars":" - ","type":"NON_WORD"},
+            {"chars":"the","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"hobbit","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"was","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"fond","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"of","type":"WORD"},
+            {"chars":" ","type":"NON_WORD"},
+            {"chars":"visitors","type":"WORD"},
+            {"chars":". ","type":"NON_WORD"}
+        ]
+    }],
+    "text_segments":{
+        "1":{"id":1,"media_file_order":0,"time_start":0,"time_end":1.3,"text_order":"0","character_group_start":"0","character_group_end":"1","order":0},
+        "2":{"id":2,"media_file_order":0,"time_start":1.3,"time_end":1.53,"text_order":"0","character_group_start":"2","character_group_end":"3","order":1},
+        "3":{"id":3,"media_file_order":0,"time_start":1.53,"time_end":1.76,"text_order":"0","character_group_start":"4","character_group_end":"5","order":2},
+        "4":{"id":4,"media_file_order":0,"time_start":1.76,"time_end":1.81,"text_order":"0","character_group_start":"6","character_group_end":"7","order":3},
+        "5":{"id":5,"media_file_order":0,"time_start":1.81,"time_end":2.04,"text_order":"0","character_group_start":"8","character_group_end":"9","order":4},
+        "6":{"id":6,"media_file_order":0,"time_start":2.04,"time_end":2.79,"text_order":"0","character_group_start":"10","character_group_end":"11","order":5},
+        "7":{"id":7,"media_file_order":0,"time_start":2.79,"time_end":3.02,"text_order":"0","character_group_start":"12","character_group_end":"13","order":6},
+        "8":{"id":8,"media_file_order":0,"time_start":3.02,"time_end":3.3,"text_order":"0","character_group_start":"14","character_group_end":"15","order":7},
+        "9":{"id":9,"media_file_order":0,"time_start":3.3,"time_end":3.53,"text_order":"0","character_group_start":"16","character_group_end":"17","order":8},
+        "10":{"id":10,"media_file_order":0,"time_start":3.53,"time_end":4.55,"text_order":"0","character_group_start":"18","character_group_end":"19","order":9},
+        "11":{"id":11,"media_file_order":0,"time_start":4.55,"time_end":4.78,"text_order":"0","character_group_start":"20","character_group_end":"21","order":10},
+        "12":{"id":12,"media_file_order":0,"time_start":4.78,"time_end":4.83,"text_order":"0","character_group_start":"22","character_group_end":"23","order":11},
+        "13":{"id":13,"media_file_order":0,"time_start":4.83,"time_end":5.29,"text_order":"0","character_group_start":"24","character_group_end":"25","order":12},
+        "14":{"id":14,"media_file_order":0,"time_start":5.29,"time_end":5.53,"text_order":"0","character_group_start":"26","character_group_end":"27","order":13},
+        "15":{"id":15,"media_file_order":0,"time_start":5.53,"time_end":6.04,"text_order":"0","character_group_start":"28","character_group_end":"29","order":14},
+        "16":{"id":16,"media_file_order":0,"time_start":6.04,"time_end":6.78,"text_order":"0","character_group_start":"30","character_group_end":"31","order":15},
+        "17":{"id":17,"media_file_order":0,"time_start":6.78,"time_end":7.01,"text_order":"0","character_group_start":"32","character_group_end":"33","order":16},
+        "18":{"id":18,"media_file_order":0,"time_start":7.01,"time_end":7.29,"text_order":"0","character_group_start":"34","character_group_end":"35","order":17},
+        "19":{"id":19,"media_file_order":0,"time_start":7.29,"time_end":7.34,"text_order":"0","character_group_start":"36","character_group_end":"37","order":18},
+        "20":{"id":20,"media_file_order":0,"time_start":7.34,"time_end":7.52,"text_order":"0","character_group_start":"38","character_group_end":"39","order":19},
+        "21":{"id":21,"media_file_order":0,"time_start":7.52,"time_end":7.8,"text_order":"0","character_group_start":"40","character_group_end":"41","order":20},
+        "22":{"id":22,"media_file_order":0,"time_start":7.8,"time_end":8.27,"text_order":"0","character_group_start":"42","character_group_end":"43","order":21},
+        "23":{"id":23,"media_file_order":0,"time_start":8.27,"time_end":8.54,"text_order":"0","character_group_start":"44","character_group_end":"45","order":22},
+        "24":{"id":24,"media_file_order":0,"time_start":8.54,"time_end":8.78,"text_order":"0","character_group_start":"46","character_group_end":"47","order":23},
+        "25":{"id":25,"media_file_order":0,"time_start":8.78,"time_end":9.01,"text_order":"0","character_group_start":"48","character_group_end":"49","order":24},
+        "26":{"id":26,"media_file_order":0,"time_start":9.01,"time_end":10.03,"text_order":"0","character_group_start":"50","character_group_end":"51","order":25},
+        "27":{"id":27,"media_file_order":0,"time_start":10.03,"time_end":10.26,"text_order":"0","character_group_start":"52","character_group_end":"53","order":26},
+        "28":{"id":28,"media_file_order":0,"time_start":10.26,"time_end":10.54,"text_order":"0","character_group_start":"54","character_group_end":"55","order":27},
+        "29":{"id":29,"media_file_order":0,"time_start":10.54,"time_end":10.77,"text_order":"0","character_group_start":"56","character_group_end":"57","order":28},
+        "30":{"id":30,"media_file_order":0,"time_start":10.77,"time_end":11.05,"text_order":"0","character_group_start":"58","character_group_end":"59","order":29},
+        "31":{"id":31,"media_file_order":0,"time_start":11.05,"time_end":11.52,"text_order":"0","character_group_start":"60","character_group_end":"61","order":30},
+        "32":{"id":32,"media_file_order":0,"time_start":11.52,"time_end":11.8,"text_order":"0","character_group_start":"62","character_group_end":"63","order":31},
+        "33":{"id":33,"media_file_order":0,"time_start":11.8,"time_end":12.26,"text_order":"0","character_group_start":"64","character_group_end":"65","order":32},
+        "34":{"id":34,"media_file_order":0,"time_start":12.26,"time_end":12.54,"text_order":"0","character_group_start":"66","character_group_end":"67","order":33},
+        "35":{"id":35,"media_file_order":0,"time_start":12.54,"time_end":12.77,"text_order":"0","character_group_start":"68","character_group_end":"69","order":34},
+        "36":{"id":36,"media_file_order":0,"time_start":12.77,"time_end":12.82,"text_order":"0","character_group_start":"70","character_group_end":"71","order":35},
+        "37":{"id":37,"media_file_order":0,"time_start":12.82,"time_end":13.05,"text_order":"0","character_group_start":"72","character_group_end":"73","order":36},
+        "38":{"id":38,"media_file_order":0,"time_start":13.05,"time_end":13.28,"text_order":"0","character_group_start":"74","character_group_end":"75","order":37},
+        "39":{"id":39,"media_file_order":0,"time_start":13.28,"time_end":13.51,"text_order":"0","character_group_start":"76","character_group_end":"77","order":38},
+        "40":{"id":40,"media_file_order":0,"time_start":13.51,"time_end":13.79,"text_order":"0","character_group_start":"78","character_group_end":"79","order":39},
+        "41":{"id":41,"media_file_order":0,"time_start":13.79,"time_end":14.02,"text_order":"0","character_group_start":"80","character_group_end":"81","order":40},
+        "42":{"id":42,"media_file_order":0,"time_start":14.02,"time_end":14.07,"text_order":"0","character_group_start":"82","character_group_end":"83","order":41},
+        "43":{"id":43,"media_file_order":0,"time_start":14.07,"time_end":14.3,"text_order":"0","character_group_start":"84","character_group_end":"85","order":42},
+        "44":{"id":44,"media_file_order":0,"time_start":14.3,"time_end":15.05,"text_order":"0","character_group_start":"86","character_group_end":"87","order":43},
+        "45":{"id":45,"media_file_order":0,"time_start":15.05,"time_end":15.28,"text_order":"0","character_group_start":"88","character_group_end":"89","order":44},
+        "46":{"id":46,"media_file_order":0,"time_start":15.28,"time_end":15.51,"text_order":"0","character_group_start":"90","character_group_end":"91","order":45},
+        "47":{"id":47,"media_file_order":0,"time_start":15.51,"time_end":15.56,"text_order":"0","character_group_start":"92","character_group_end":"93","order":46},
+        "48":{"id":48,"media_file_order":0,"time_start":15.56,"time_end":15.79,"text_order":"0","character_group_start":"94","character_group_end":"95","order":47},
+        "49":{"id":49,"media_file_order":0,"time_start":15.79,"time_end":16.53,"text_order":"0","character_group_start":"96","character_group_end":"97","order":48},
+        "50":{"id":50,"media_file_order":0,"time_start":16.53,"time_end":16.58,"text_order":"0","character_group_start":"98","character_group_end":"99","order":49},
+        "51":{"id":51,"media_file_order":0,"time_start":16.58,"time_end":16.81,"text_order":"0","character_group_start":"100","character_group_end":"101","order":50},
+        "52":{"id":52,"media_file_order":0,"time_start":16.81,"time_end":17.09,"text_order":"0","character_group_start":"102","character_group_end":"103","order":51},
+        "53":{"id":53,"media_file_order":0,"time_start":17.09,"time_end":18.58,"text_order":"0","character_group_start":"104","character_group_end":"105","order":52},
+        "54":{"id":54,"media_file_order":0,"time_start":18.58,"time_end":18.81,"text_order":"0","character_group_start":"106","character_group_end":"107","order":53},
+        "55":{"id":55,"media_file_order":0,"time_start":18.81,"time_end":19.09,"text_order":"0","character_group_start":"108","character_group_end":"109","order":54},
+        "56":{"id":56,"media_file_order":0,"time_start":19.09,"time_end":19.14,"text_order":"0","character_group_start":"110","character_group_end":"111","order":55},
+        "57":{"id":57,"media_file_order":0,"time_start":19.14,"time_end":19.32,"text_order":"0","character_group_start":"112","character_group_end":"113","order":56},
+        "58":{"id":58,"media_file_order":0,"time_start":19.32,"time_end":19.6,"text_order":"0","character_group_start":"114","character_group_end":"115","order":57},
+        "59":{"id":59,"media_file_order":0,"time_start":19.6,"time_end":19.83,"text_order":"0","character_group_start":"116","character_group_end":"117","order":58},
+        "60":{"id":60,"media_file_order":0,"time_start":19.83,"time_end":20.06,"text_order":"0","character_group_start":"118","character_group_end":"119","order":59},
+        "61":{"id":61,"media_file_order":0,"time_start":20.06,"time_end":20.34,"text_order":"0","character_group_start":"120","character_group_end":"121","order":60},
+        "62":{"id":62,"media_file_order":0,"time_start":20.34,"time_end":21.08,"text_order":"0","character_group_start":"122","character_group_end":"123","order":61},
+        "63":{"id":63,"media_file_order":0,"time_start":21.08,"time_end":21.32,"text_order":"0","character_group_start":"124","character_group_end":"125","order":62},
+        "64":{"id":64,"media_file_order":0,"time_start":21.32,"time_end":22.38,"text_order":"0","character_group_start":"126","character_group_end":"127","order":63},
+        "65":{"id":65,"media_file_order":0,"time_start":22.38,"time_end":22.43,"text_order":"0","character_group_start":"128","character_group_end":"129","order":64},
+        "66":{"id":66,"media_file_order":0,"time_start":22.43,"time_end":22.62,"text_order":"0","character_group_start":"130","character_group_end":"131","order":65},
+        "67":{"id":67,"media_file_order":0,"time_start":22.62,"time_end":22.85,"text_order":"0","character_group_start":"132","character_group_end":"133","order":66},
+        "68":{"id":68,"media_file_order":0,"time_start":22.85,"time_end":23.13,"text_order":"0","character_group_start":"134","character_group_end":"135","order":67},
+        "69":{"id":69,"media_file_order":0,"time_start":23.13,"time_end":23.36,"text_order":"0","character_group_start":"136","character_group_end":"137","order":68},
+        "70":{"id":70,"media_file_order":0,"time_start":23.36,"time_end":23.87,"text_order":"0","character_group_start":"138","character_group_end":"139","order":69},
+        "71":{"id":71,"media_file_order":0,"time_start":23.87,"time_end":24.1,"text_order":"0","character_group_start":"140","character_group_end":"141","order":70},
+        "72":{"id":72,"media_file_order":0,"time_start":24.1,"time_end":24.15,"text_order":"0","character_group_start":"142","character_group_end":"143","order":71},
+        "73":{"id":73,"media_file_order":0,"time_start":24.15,"time_end":24.61,"text_order":"0","character_group_start":"144","character_group_end":"145","order":72},
+        "74":{"id":74,"media_file_order":0,"time_start":24.61,"time_end":25.87,"text_order":"0","character_group_start":"146","character_group_end":"147","order":73},
+        "75":{"id":75,"media_file_order":0,"time_start":25.87,"time_end":25.92,"text_order":"0","character_group_start":"148","character_group_end":"149","order":74},
+        "76":{"id":76,"media_file_order":0,"time_start":25.92,"time_end":26.38,"text_order":"0","character_group_start":"150","character_group_end":"151","order":75},
+        "77":{"id":77,"media_file_order":0,"time_start":26.38,"time_end":26.61,"text_order":"0","character_group_start":"152","character_group_end":"153","order":76},
+        "78":{"id":78,"media_file_order":0,"time_start":26.61,"time_end":26.84,"text_order":"0","character_group_start":"154","character_group_end":"155","order":77},
+        "79":{"id":79,"media_file_order":0,"time_start":26.84,"time_end":27.12,"text_order":"0","character_group_start":"156","character_group_end":"157","order":78},
+        "80":{"id":80,"media_file_order":0,"time_start":27.12,"time_end":27.17,"text_order":"0","character_group_start":"158","character_group_end":"159","order":79},
+        "81":{"id":81,"media_file_order":0,"time_start":27.17,"time_end":27.35,"text_order":"0","character_group_start":"160","character_group_end":"161","order":80},
+        "82":{"id":82,"media_file_order":0,"time_start":27.35,"time_end":27.63,"text_order":"0","character_group_start":"162","character_group_end":"163","order":81},
+        "83":{"id":83,"media_file_order":0,"time_start":27.63,"time_end":28.1,"text_order":"0","character_group_start":"164","character_group_end":"165","order":82},
+        "84":{"id":84,"media_file_order":0,"time_start":28.1,"time_end":28.15,"text_order":"0","character_group_start":"166","character_group_end":"167","order":83},
+        "85":{"id":85,"media_file_order":0,"time_start":28.15,"time_end":28.37,"text_order":"0","character_group_start":"168","character_group_end":"169","order":84},
+        "86":{"id":86,"media_file_order":0,"time_start":28.37,"time_end":29.35,"text_order":"0","character_group_start":"170","character_group_end":"171","order":85},
+        "87":{"id":87,"media_file_order":0,"time_start":29.35,"time_end":29.4,"text_order":"0","character_group_start":"172","character_group_end":"173","order":86},
+        "88":{"id":88,"media_file_order":0,"time_start":29.4,"time_end":29.63,"text_order":"0","character_group_start":"174","character_group_end":"175","order":87},
+        "89":{"id":89,"media_file_order":0,"time_start":29.63,"time_end":29.86,"text_order":"0","character_group_start":"176","character_group_end":"177","order":88},
+        "90":{"id":90,"media_file_order":0,"time_start":29.86,"time_end":30.6,"text_order":"0","character_group_start":"178","character_group_end":"179","order":89},
+        "91":{"id":91,"media_file_order":0,"time_start":30.6,"time_end":30.88,"text_order":"0","character_group_start":"180","character_group_end":"181","order":90},
+        "92":{"id":92,"media_file_order":0,"time_start":30.88,"time_end":31.86,"text_order":"0","character_group_start":"182","character_group_end":"183","order":91},
+        "93":{"id":93,"media_file_order":0,"time_start":31.86,"time_end":32.09,"text_order":"0","character_group_start":"184","character_group_end":"185","order":92},
+        "94":{"id":94,"media_file_order":0,"time_start":32.09,"time_end":32.6,"text_order":"0","character_group_start":"186","character_group_end":"187","order":93},
+        "95":{"id":95,"media_file_order":0,"time_start":32.6,"time_end":33.11,"text_order":"0","character_group_start":"188","character_group_end":"189","order":94},
+        "96":{"id":96,"media_file_order":0,"time_start":33.11,"time_end":33.16,"text_order":"0","character_group_start":"190","character_group_end":"191","order":95},
+        "97":{"id":97,"media_file_order":0,"time_start":33.16,"time_end":33.62,"text_order":"0","character_group_start":"192","character_group_end":"193","order":96},
+        "98":{"id":98,"media_file_order":0,"time_start":33.62,"time_end":34.13,"text_order":"0","character_group_start":"194","character_group_end":"195","order":97},
+        "99":{"id":99,"media_file_order":0,"time_start":34.13,"time_end":34.37,"text_order":"0","character_group_start":"196","character_group_end":"197","order":98},
+        "100":{"id":100,"media_file_order":0,"time_start":34.37,"time_end":35.34,"text_order":"0","character_group_start":"198","character_group_end":"199","order":99},
+        "101":{"id":101,"media_file_order":0,"time_start":35.34,"time_end":35.62,"text_order":"0","character_group_start":"200","character_group_end":"201","order":100},
+        "102":{"id":102,"media_file_order":0,"time_start":35.62,"time_end":35.85,"text_order":"0","character_group_start":"202","character_group_end":"203","order":101},
+        "103":{"id":103,"media_file_order":0,"time_start":35.85,"time_end":36.36,"text_order":"0","character_group_start":"204","character_group_end":"205","order":102},
+        "104":{"id":104,"media_file_order":0,"time_start":36.36,"time_end":36.92,"text_order":"0","character_group_start":"206","character_group_end":"207","order":103},
+        "105":{"id":105,"media_file_order":0,"time_start":36.92,"time_end":37.15,"text_order":"0","character_group_start":"208","character_group_end":"209","order":104},
+        "106":{"id":106,"media_file_order":0,"time_start":37.15,"time_end":37.66,"text_order":"0","character_group_start":"210","character_group_end":"211","order":105},
+        "107":{"id":107,"media_file_order":0,"time_start":37.66,"time_end":37.89,"text_order":"0","character_group_start":"212","character_group_end":"213","order":106},
+        "108":{"id":108,"media_file_order":0,"time_start":37.89,"time_end":38.17,"text_order":"0","character_group_start":"214","character_group_end":"215","order":107},
+        "109":{"id":109,"media_file_order":0,"time_start":38.17,"time_end":38.41,"text_order":"0","character_group_start":"216","character_group_end":"217","order":108},
+        "110":{"id":110,"media_file_order":0,"time_start":38.41,"time_end":38.64,"text_order":"0","character_group_start":"218","character_group_end":"219","order":109},
+        "111":{"id":111,"media_file_order":0,"time_start":38.64,"time_end":38.92,"text_order":"0","character_group_start":"220","character_group_end":"221","order":110},
+        "112":{"id":112,"media_file_order":0,"time_start":38.92,"time_end":39.15,"text_order":"0","character_group_start":"222","character_group_end":"223","order":111},
+        "113":{"id":113,"media_file_order":0,"time_start":39.15,"time_end":39.66,"text_order":"0","character_group_start":"224","character_group_end":"225","order":112},
+        "114":{"id":114,"media_file_order":0,"time_start":39.66,"time_end":40.4,"text_order":"0","character_group_start":"226","character_group_end":"227","order":113},
+        "115":{"id":115,"media_file_order":0,"time_start":40.4,"time_end":40.68,"text_order":"0","character_group_start":"228","character_group_end":"229","order":114},
+        "116":{"id":116,"media_file_order":0,"time_start":40.68,"time_end":41.15,"text_order":"0","character_group_start":"230","character_group_end":"231","order":115},
+        "117":{"id":117,"media_file_order":0,"time_start":41.15,"time_end":41.42,"text_order":"0","character_group_start":"232","character_group_end":"233","order":116},
+        "118":{"id":118,"media_file_order":0,"time_start":41.42,"time_end":41.47,"text_order":"0","character_group_start":"234","character_group_end":"235","order":117},
+        "119":{"id":119,"media_file_order":0,"time_start":41.47,"time_end":41.66,"text_order":"0","character_group_start":"236","character_group_end":"237","order":118},
+        "120":{"id":120,"media_file_order":0,"time_start":41.66,"time_end":41.71,"text_order":"0","character_group_start":"238","character_group_end":"239","order":119}
+        }
+        }
         $(document).ready(function(){
            $('#jquery_jplayer_1').mediaAlignedTextEditor({'json_alignment': json_alignment});
         });
@@ -398,6 +406,8 @@
 <button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('startManualAlignment')">start manual alignment</button>
 <button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('recordManualTime')">record manual time</button>
 <button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('pauseManualAlignment')">pause manual time</button>
+<button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('saveManualAlignment')">save manual time</button>
+<button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('outputAlignment')">output alignment</button>
 <br /><br />
 
 <a href="#" onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('zoomTimeEditor', -1)">zoom in</a>
@@ -405,8 +415,8 @@
 
 
 <div id="mat_time_editor" style="overflow: auto">
-    <div id="mat_timeline" style="border: 1px solid black;">
-        
+    <div id="mat_timeline">
+        <div id="mat_time_slider"></div>
     </div>
 </div>
 
@@ -414,7 +424,7 @@
 <div id="mat_manual_editor">
     start time: <input type="text" id="mat_editor_start_time" size="5"/>
     end time: <input type="text" id="mat_editor_end_time" size="5"/>
-    <button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('updateSegmentTimeManual');">update time</button>
+    <button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('updateSegmentTime');">update time</button>
     <button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('playCurrentSegment');">play</button>
     &nbsp; <a href="#" onclick="alert('cancel changes')">reset</a>
 </div>
