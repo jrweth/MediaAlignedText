@@ -275,11 +275,14 @@
      */
     var _initTextSegmentOrder = function($this) {
         var data = $this.data('mediaAlignedText');
+        var order = 0;
         data.text_segment_order = new Array();
         
         //loop through and index the media_file_segments
         for(var id in data.json_alignment.text_segments) {
-            data.text_segment_order.push(id);
+            data.text_segment_order[order] = id;
+            data.json_alignment.text_segments[id].order = order;
+            order++;
         }
         
         //write back to the data object
