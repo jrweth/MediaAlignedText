@@ -204,7 +204,7 @@
         
         for(var text_order in json_alignment.texts) {
             //enter the text title
-            html = html+'<div class="text_title">'+json_alignment.texts[text_order].title+'</div>';
+            html = html+'<div class="mat_text_title">'+json_alignment.texts[text_order].title+'</div>';
             
             //loop through all the characater groups for this text and add to the html
             for(var char_group_order in json_alignment.texts[text_order].character_groups) {
@@ -241,6 +241,7 @@
         //add the click function to the words
         $('a.mat_char_group_word').click(function() {
             $this.mediaAlignedText('charGroupClicked', $(this).attr('id'));
+            return(false);
         });
     };
     
