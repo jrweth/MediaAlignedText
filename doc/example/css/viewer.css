@@ -1,5 +1,7 @@
 @CHARSET "ISO-8859-1";
 
+/* Specific Div Styling ********************************************/
+
 
 #mat_text_viewer {
     margin-top: 10px;
@@ -8,52 +10,53 @@
     border:1px solid blue;
     overflow: auto;
     padding: 3px;
-    line-height: 150%;
 }
 
-
-
-a.mat_char_group_word {
-	text-decoration: none;
-	color: #000000;
-    border-bottom: 3px solid transparent;
-    margin-top: 3px;
+#mat_time_slider {
+    position: absolute;
+    width: 500px;
 }
 
-span.mat_char_group_non_word {
+#mat_timeline {
+    position: relative;
+    height: 60px;
+}
+
+#mat_time_editor {
+    width: 500px;
+    height: 80px;
+}
+
+/* General Class Styling ********************************************/
+
+.mat_text_title {
+    font-weight: bold;
+}
+
+a.mat_char_group_word, span.mat_char_group_non_word {
     text-decoration: none;
-    color: #000000;
-    border-bottom: 3px solid transparent;
+    border-bottom: 1px solid transparent;
     margin-top: 3px;
+    color: #000000;
 }
+
 
 a.highlighted_text_segment, span.highlighted_text_segment{
-    color: purple;
-    border-bottom: 3px solid black;
+    background-color: rgba(200,200,200,0.5);
     margin-top: 3px;
+    border-bottom: 1px solid black;
 }
+
 .mat_time_segment {
 	position: absolute;
 	height: 36px;
 	border-top: 3px solid transparent;
 	border-right: 1px solid black;
+	border-left: 1px solid black;
 	overflow: hidden;
 }
+
 .highlighted_time_segment {
     border-top: 3px solid black;
 }
-#mat_time_slider {
-	position: absolute;
-	width: 500px;
-}
 
-#mat_timeline {
-	position: relative;
-	height: 60px;
-}
-
-#mat_time_editor {
-	width: 500px;
-	height: 80px;
-	border: 1px solid black;
-}
