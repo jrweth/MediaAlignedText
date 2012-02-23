@@ -11,7 +11,7 @@
     <script  type="text/javascript" src="mat_resources/js/jquery.mediaAlignedTextEditor.js"></script>
     <script type="text/javascript">
         var json_alignment = {
-    "media_files":[{"title":"The Hobbit - Chapter 1a","url":"media_files/hobbit-1a.mp3","media_type":"AUDIO","file_type":"mp3","length":42}],
+    "media_files":[{"title":"The Hobbit - Chapter 1a","url":"media_files/hobbit-1a.mp3","media_type":"AUDIO","file_type":"mp3","duration":42}],
     "texts":[{
         "title":"The Hobbit - Chapter 1a",
         "character_groups":[
@@ -402,7 +402,10 @@
 
 <div id="mat_text_viewer"></div>
 
-<button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('createSegments', 'word')">create word segments</button>
+<button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('createSegments', 'WORD')">create word segments</button>
+<button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('createSegments', 'LINE')">create line segments</button>
+<button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('createSegments', 'SENTENCE')">create sentence segments</button>
+<button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('createSegments', 'PUNCTUATION')">create punctuation segments</button>
 <button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('startManualAlignment')">start manual alignment</button>
 <button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('recordManualTime')">record manual time</button>
 <button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('pauseManualAlignment')">pause manual time</button>
@@ -428,6 +431,51 @@
     <button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('playCurrentSegment');">play</button>
     &nbsp; <a href="#" onclick="alert('cancel changes')">reset</a>
 </div>
+
+<fieldset id="mat_media_file_edit">
+    <legend>Update Media File</legend>
+    <div>
+        <label for="mat_media_url">Media URL</label>
+        <input type="text" id="mat_media_url" />
+    </div>
+    <div>
+        <label for="mat_media_title">Media Title</label>
+        <input type="text" id="mat_media_title" />
+    </div>
+    <div>
+        <label for="mat_media_type">Media Type</label>
+        <select id="mat_media_type">
+            <option value="AUDIO">Audio</option>
+        </select>
+    </div>
+    <div>
+        <label for="mat_media_file_type">File Type</label>
+        <select id="mat_media_file_type">
+            <option value="mp3">mp3</option>
+        </select>
+    </div>
+    <button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('updateMedia', {
+        'url': $('#mat_media_url').val(),
+        'title': $('#mat_media_title').val(),
+        'media_type': $('#mat_media_type').val(),
+        'file_type': $('#mat_media_file_type').val()})"> update media file</button>
+    
+</fieldset>
+
+<fieldset id="mat_media_text_edit">
+    <legend>Update Text</legend>
+    <div>
+        <label for="mat_text_title">Text Title</label>
+        <input type="text" id="mat_text_title" />
+    </div>
+    <div>
+        <label for="mat_text">Text</label>
+        <textarea id="mat_text"></textarea>
+    </div>
+    
+	
+	<button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('updateText', $('#mat_text_title').val(), $('#mat_text').val())"> update text</button>
+</fieldset>
 
 <div id="mat_output"></div>
 </body>
