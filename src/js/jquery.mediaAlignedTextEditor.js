@@ -600,7 +600,7 @@
         
         var text_segment = data.json_alignment.text_segments[text_segment_id];
         
-        $('.ui-slider-range').css('background-color', editor_data.color_toggle[text_segment.order % 4]);
+        $('.ui-slider-range').css('background', editor_data.color_toggle[text_segment.order % 4]);
         //get starting time
         if(text_segment.order == 0) {
             var time_start = text_segment.time_start;
