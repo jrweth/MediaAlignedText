@@ -444,6 +444,76 @@
              _initTimeEditor($this);
              
          },
+        
+         /**
+          * Create New Text Objects and clear all other groupings
+          * 
+          * @param title         The Title of the Text
+          * @param text_string   The string of the text to be parsed
+          * @param text_order    The order that this text comes in the flow of text
+          */
+         'updateHyperAudioText' : function(title, text_string, text_order) {
+             var $this = $(this);
+             var data = $this.data('mediaAlignedText');
+             var start_time;
+             
+             //set default text order
+             if (text_order == undefined) text_order = 0;
+             
+             var text  = {'title': title, 'character_groups': []};
+             var text_segments = {};
+             var segment_count =0;
+             
+             //split the string on either non word characters or html tags
+             //@todo make this a little more sophisticated - check for nonclosed tags etc.
+             var text_array = text_string.split(/(<span [^>]*data-m=[^>]*>[^<]*<\/span>)/m);
+             
+             //loop through text array and add to text object
+             for(var i=0; i < text_array.length; i++) {
+                 //search spans tagged with data-m attribute and shove them into the WORD groups so we can sync on them
+                 if(text_array[i].indexOf('data-m') > -1) {
+                     var matches = text_array[i].match(/<span.*data-m="(.*)".*>(.*)<\/span>/);
+                     text.character_groups[i] = {"chars": text_array[i],"type":"WORD"};
+                     
+                     //add the text segment
+                     text_segments[segment_count] = {
+                         "id":segment_count,
+                         "media_file_order":0,
+                         "time_start":parseFloat(matches[1]/1000);,
+                         "time_end": null,
+                         "text_order":"0",
+                         "character_group_start": i,
+                         "character_group_end": i,
+                         "order":segment_count
+                     };
+                     
+                     //update time_end of previous segment
+                     if(segment_count > 0) text_segments[segment_count-1].time_end = parseFloat(matches[1]/1000);
+                     
+                     //update segmentcount
+                     segment_count++;
+                 }
+                 //otherwise, we will shove it into a tag reference //hack hack hack
+                 else {
+                     text.character_groups[i] = {"chars": text_array[i],"type":"TAG"};
+                 }
+             }
+             
+             data.json_alignment.texts[text_order] = text;
+             data.json_alignment.text_segments = text_segments;
+             
+             //clear the previous segments
+             $this.mediaAlignedTextEditor('clearSegments');
+             
+             //save the new text back to the object
+             $this.data('mediaAlignedText', data);
+             
+             //refresh display 
+             $this.mediaAlignedText('refreshSegments');
+
+             _initTimeEditor($this);
+             
+         },
          
         /**
          * zoom into or out of the time editor
@@ -466,6 +536,45 @@
         }
     };
     
+    
+    var _getHyperAudioText = function($this, text_order) {
+    /**
+     * Get the text in hyper audio format
+     * 
+     * @param jQueryObject the self-referential Jquery object to retrive the text from
+     * @param text_order   the order of the text to retrieve
+     */
+        var data = $this.data('mediaAlignedText');
+        var texts = $this.data('mediaAlignedText').json_alignment.texts;
+        if(text_order == undefined) text_order = 0;
+        var raw_text = '';
+        var breakTag = '<br />';
+        
+        for(i = 0; i < texts[text_order].character_groups.length; i++) {
+            var char_group = texts[text_order].character_groups[i];
+            var text_segment_id = data.text_char_group_segment_id_map[text_order+ '_' +i];
+            
+            if( text_segment_id ) {
+                var text_segment = data.json_alignment.text_segments[text_segment_id];
+                //go to the place in the media file 
+                if(texts[text_order].character_groups[i].type == 'WORD') {
+                    raw_text = raw_text + '<span data-m="' + Math.round(text_segment.time_start*1000) + '">' + char_group.chars + '</span>\n';
+                }
+                //for non-word characater_groups make sure to put in line breaks
+                else if(char_group.type == 'NON_WORD') {
+                    raw_text = raw_text + char_group.chars.replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
+                    
+                }
+                
+                //for tag character groups, just ouptut the tag
+                else if(char_group.type == 'TAG') {
+                    raw_text = char_group.chars;
+                }
+            }
+        }
+       
+        return raw_text;
+    }
     
     /**
      * Get the raw text 
@@ -524,7 +633,7 @@
         $('#mat_media_type').val(data.json_alignment.media_files[0].media_type);
         $('#mat_media_file_type').val(data.json_alignment.media_files[0].media_file_type);
         $('#mat_text_title').val(data.json_alignment.texts[0].title);
-        $('#mat_text').val(_getRawText($this,0));
+        $('#mat_text').val(_getHyperAudioText($this,0));
         
     };
     
