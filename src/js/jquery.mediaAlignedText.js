@@ -68,9 +68,7 @@
             
             //set the initial media file for the jplayer
             options.jplayer_options.ready = function() {
-                $(this).jPlayer("setMedia", {
-                    mp3: options.json_alignment.media_files[0].url
-                  });
+                $(this).jPlayer("setMedia", options.json_alignment.media_files[0].media);
             };
             
             //initialize all the mappings and components
@@ -179,6 +177,15 @@
     //initialize the Jplayer
     var _initJplayer = function ($this, options) {
         
+        //get the media types supplied by looking at the first media file
+        var types_supplied = '';
+        for(i in $this.data('mediaAlignedText').json_alignment.media_files[0].media) {
+            types_supplied = types_supplied + i + ',';
+        }
+        //knock off the last comma
+        types_supplied = types_supplied.substring(0, types_supplied.length-1);
+        
+        //initiate the jplayer
         var options = $.extend({
               swfPath: 'js',
               supplied: 'mp3',

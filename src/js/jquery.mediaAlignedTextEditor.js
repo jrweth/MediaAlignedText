@@ -329,7 +329,7 @@
             
             if(media_order == undefined) media_order = 0;
             
-            data.json_alignment.media_files[media_order] = media_def;
+            data.json_alignment.media_files[media_order].media[media_def.file_type] = media_def.url;
             
             $this.data('mediaAlignedText', data);
         },
@@ -519,7 +519,7 @@
     var _initFileAndTextLoader = function($this) {
         var data = $this.data('mediaAlignedText');
         
-        $('#mat_media_url').val(data.json_alignment.media_files[0].url);
+        $('#mat_media_url').val(data.json_alignment.media_files[0].media.mp3);
         $('#mat_media_title').val(data.json_alignment.media_files[0].title);
         $('#mat_media_type').val(data.json_alignment.media_files[0].media_type);
         $('#mat_media_file_type').val(data.json_alignment.media_files[0].media_file_type);

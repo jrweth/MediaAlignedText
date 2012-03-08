@@ -11,8 +11,17 @@
     <script  type="text/javascript" src="mat_resources/js/jquery.mediaAlignedTextEditor.js"></script>
     <script type="text/javascript">
         var json_alignment = {
-    "media_files":[{"title":"The Hobbit - Chapter 1a","url":"media_files/hobbit-1a.mp3","media_type":"AUDIO","file_type":"mp3","duration":42}],
-    "texts":[{
+        "media_files":
+            [{
+                "title":"The Hobbit - Chapter 1a",
+                "media_type":"AUDIO",
+                "duration":42,
+                "media": {
+                    mp3: "media_files/hobbit-1a.mp3",
+                    wav: "media_files/hobbit-1a.wav"
+                }
+            }],
+        "texts":[{
         "title":"The Hobbit - Chapter 1a",
         "character_groups":[
             {"chars":"In","type":"WORD"},
