@@ -35,15 +35,8 @@
     font-weight: bold;
 }
 
-a.mat_char_group_word, span.mat_char_group_non_word {
-    text-decoration: none;
-    border-bottom: 1px solid transparent;
-    margin-top: 3px;
-    color: #000000;
-}
 
-
-a.highlighted_text_segment, span.highlighted_text_segment{
+.highlighted_text_segment{
     background-color: rgba(200,200,200,0.5);
     margin-top: 3px;
     border-bottom: 1px solid black;
