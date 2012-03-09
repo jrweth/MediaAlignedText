@@ -479,7 +479,7 @@
                      text_segments[segment_count] = {
                          "id":segment_count,
                          "media_file_order":0,
-                         "time_start":parseFloat(matches[1]/1000);,
+                         "time_start":parseFloat(matches[1]/1000),
                          "time_end": null,
                          "text_order":"0",
                          "character_group_start": i,
