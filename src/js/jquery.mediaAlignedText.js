@@ -44,12 +44,12 @@
             var options = $.extend({
                 'json_alignment'            : {},                    //json alignment object
                 'jplayer_controls_id'       : 'mat_jplayer_controls',//id of the div where jplayer controls reside
-                'text_viewer_id'            : 'mat_text_viewer',     //id of the div where the text is displayed
+                'text_viewer_css_selector'  : '#mat_text_viewer',     //id of the div where the text is displayed
                 'jplayer_options'           : {},                    //additional jplayer options to initiate
                 'jplayer_control_options'   : {},                    //options to send to the jplayer control generator
                 'generate_jplayer_controls' : true,                  //flag indicating if controls should be generated or not
                 'highlight_function'        : _textSegmentHighlight, //the function to use to highlight - requires object and text_segment_id as arguments
-                'highlight_remove_function' : _textSegmentRemoveHighlight  //function to remove highligh - requires object and text_segment_id as arguments
+                'highlight_remove_function' : _textSegmentRemoveHighlight,  //function to remove highligh - requires object and text_segment_id as arguments
             }, options);
             
             //save options to the objects namespaced data holder
@@ -74,7 +74,7 @@
             //initialize all the mappings and components
             _initTextSegments($this);
             _initJplayer($this, options.jplayer_options);
-            _initText($this, options.text_viewer_id, options.json_alignment);
+            _initText($this, options.text_viewer_css_selector, options.json_alignment);
             
         },
         
@@ -121,7 +121,7 @@
             //initialize all the mappings and components
             _initTextCharGroupSegmentIdMap($this);
             _initTextSegmentOrder($this);
-            _initText($this, data.text_viewer_id, data.json_alignment);
+            _initText($this, data.text_viewer_css_selector, data.json_alignment);
             
         }
     };
@@ -200,10 +200,10 @@
      * @todo clean up the html generation - different char_group_types need some thought 
      * 
      * @param JqueryObject  $this          The jquery object which the mediaAlignedText has been 
-     * @param String        text_viewer_id  
+     * @param String        text_viewer_css_selector  
      * @param Object        json_alignment  
      */
-    var _initText = function ($this, text_viewer_id, json_alignment) {
+    var _initText = function ($this, text_viewr_css_selector, json_alignment) {
         var html = '';
         var char_group = null;
         var breakTag = '<br />';
@@ -242,7 +242,7 @@
             }
         }
         //populate the text in the text viewer
-        $('#'+text_viewer_id).html(html);
+        $(text_viewr_css_selector).html(html);
         
         //add the click function to the words
         $('a.mat_char_group_word').click(function() {
@@ -361,7 +361,7 @@
      */
     var _textSegmentHighlight = function($this, text_segment_id) {
         $('.mat_text_segment_'+text_segment_id).addClass('highlighted_text_segment');
-        $('#'+$this.data('mediaAlignedText').text_viewer_id).scrollTo('.highlighted_text_segment', 250, {'axis': 'y', 'offset': -20});
+        $($this.data('mediaAlignedText').text_viewer_css_selector).scrollTo('.highlighted_text_segment', 250, {'axis': 'y', 'offset': -20});
     };
     
     /**
