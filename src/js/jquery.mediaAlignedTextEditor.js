@@ -122,6 +122,7 @@
             
             //get default options 
             var options = $.extend({
+                'editor_css_selector'       : '#mat_editor',
                 'json_alignment'            : {},                    //json alignment object
                 'viewable_media_segments'   : 5, //average number of segments viewable on the viewer
                 'color_toggle'              : ['rgb(198, 230 ,247)', 'rgb(240, 236,180)', 'rgb(181, 247, 229)', 'rgb(255, 212, 179)'], //array of colors to toggle through
@@ -651,7 +652,7 @@
         
         //scroll to the appropriate spot of the text
         if($('.highlighted_text_segment').length > 0) {
-            $('#'+$this.data('mediaAlignedText').text_viewer_id).scrollTo('.highlighted_text_segment', 250, {'axis': 'y', 'offset': -20});
+            $($this.data('mediaAlignedText').text_viewer_css_selector).scrollTo('.highlighted_text_segment', 250, {'axis': 'y', 'offset': -20});
         }
         
         //scroll to the appropriate spot of the time line
