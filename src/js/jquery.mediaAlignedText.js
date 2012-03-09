@@ -72,8 +72,7 @@
             };
             
             //initialize all the mappings and components
-            _initTextCharGroupSegmentIdMap($this);
-            _initTextSegmentOrder($this);
+            _initTextSegments($this);
             _initJplayer($this, options.jplayer_options);
             _initText($this, options.text_viewer_id, options.json_alignment);
             
@@ -252,46 +251,20 @@
         });
     };
     
-    /**
-     * initialize the mapping between char groups and text segments
-     */
-    var _initTextCharGroupSegmentIdMap = function($this){
-        var data = $this.data('mediaAlignedText');
-        var text_segment = null;
-        var text_char_group_segment_id_map = {};
-        
-        //loop through all text segments to look for matches on child char groups
-        for(var text_segment_key in data.json_alignment.text_segments) {
-            //set the text_segment
-            text_segment = data.json_alignment.text_segments[text_segment_key];
-            for(i = text_segment.character_group_start; i <= text_segment.character_group_end; i++) {
-                text_char_group_segment_id_map[text_segment.text_order+'_'+i] = text_segment.id;
-            }
-        }
-        
-        //add the text_char_group map to data object
-        data.text_char_group_segment_id_map = text_char_group_segment_id_map;
-        
-        
-        //reset updated data object
-        $this.data('mediaAlignedText', data);
-    };
     
     /**
      * initialize an ordered index of text segments
      * @todo it is assumed the text segments are listed in time order - should be checked
      */
-    var _initTextSegmentOrder = function($this) {
+    var _initTextSegments = function($this) {
         var data = $this.data('mediaAlignedText');
         var order = 0;
+        var text_segments = {};
+        
+        $(data.)
+        {"id":1,"media_file_order":0,"time_start":0,"time_end":1.3,"text_order":"0","character_group_start":"0","character_group_end":"1","order":0}
         data.text_segment_order = new Array();
         
-        //loop through and index the media_file_segments
-        for(var id in data.json_alignment.text_segments) {
-            data.text_segment_order[order] = id;
-            data.json_alignment.text_segments[id].order = order;
-            order++;
-        }
         
         //write back to the data object
         $this.data('mediaAlignedText', data);
