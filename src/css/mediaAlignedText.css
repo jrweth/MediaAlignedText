@@ -36,7 +36,7 @@
 }
 
 
-.highlighted_text_segment{
+.mat_highlighted_text_segment{
     background-color: rgba(200,200,200,0.5);
     margin-top: 3px;
     border-bottom: 1px solid black;
@@ -51,7 +51,7 @@
 	overflow: hidden;
 }
 
-.highlighted_time_segment {
+.mat_highlighted_time_segment {
     border-top: 3px solid black;
 }
 
