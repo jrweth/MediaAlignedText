@@ -55,3 +55,15 @@
     border-top: 3px solid black;
 }
 
+.mat_toggle_bg_color_0 {
+	background-color: rgb(198, 230 ,247);
+}
+.mat_toggle_bg_color_1 {
+    background-color: rgb(240, 236,180);
+}
+.mat_toggle_bg_color_2 {
+    background-color: rgb(181, 247, 229);
+}
+.mat_toggle_bg_color_3 {
+    background-color: rgb(255, 212, 179);
+}
