@@ -610,21 +610,21 @@
     var _textSegmentHighlight = function($this, text_segment_index) {
         
         //remove previous highlights
-        $('.highlighted_time_segment').removeClass('highlighted_time_segment');
-        $('.highlighted_text_segment').removeClass('highlighted_text_segment');
+        $('.mat_highlighted_time_segment').removeClass('mat_highlighted_time_segment');
+        $('.mat_highlighted_text_segment').removeClass('mat_highlighted_text_segment');
         
         //add the highlight classes 
-        $('#time_segment_'+text_segment_index).addClass('highlighted_time_segment');
-        $('[data-mat_segment='+text_segment_index+']').addClass('highlighted_text_segment');
+        $('#time_segment_'+text_segment_index).addClass('mat_highlighted_time_segment');
+        $('[data-mat_segment='+text_segment_index+']').addClass('mat_highlighted_text_segment');
         
         //scroll to the appropriate spot of the text
-        if($('.highlighted_text_segment').length > 0) {
-            $($this.data('mediaAlignedText').text_viewer_css_selector).scrollTo('.highlighted_text_segment', 250, {'axis': 'y', 'offset': -20});
+        if($('.mat_highlighted_text_segment').length > 0) {
+            $($this.data('mediaAlignedText').text_viewer_css_selector).scrollTo('.mat_highlighted_text_segment', 250, {'axis': 'y', 'offset': -20});
         }
         
         //scroll to the appropriate spot of the time line
-        if($('.highlighted_time_segment').length > 0) {
-            $('#mat_time_editor').scrollTo('.highlighted_time_segment', 100, {'axis': 'x', 'offset': -200});
+        if($('.mat_highlighted_time_segment').length > 0) {
+            $('#mat_time_editor').scrollTo('.mat_highlighted_time_segment', 100, {'axis': 'x', 'offset': -200});
         }
         
         //populate the fields for manual entry
@@ -648,10 +648,10 @@
      */
     var _textSegmentRemoveHighlight = function($this, text_segment_index){
 
-        $('[data-mat_segment='+text_segment_index+']').removeClass('highlighted_text_segment');
+        $('[data-mat_segment='+text_segment_index+']').removeClass('mat_highlighted_text_segment');
         /*
-        $('#time_segment_'+text_segment_index).removeClass('highlighted_time_segment');
-        $('.mat_text_segment_'+text_segment_index).removeClass('highlighted_text_segment');
+        $('#time_segment_'+text_segment_index).removeClass('mat_highlighted_time_segment');
+        $('.mat_text_segment_'+text_segment_index).removeClass('mat_highlighted_text_segment');
         $('#mat_editor_start_time').val('');
         $('#mat_editor_end_time').val('');
         */
