@@ -50,6 +50,8 @@
                 'generate_jplayer_controls' : true,                  //flag indicating if controls should be generated or not
                 'highlight_function'        : _textSegmentHighlight, //the function to use to highlight - requires object and text_segment_id as arguments
                 'highlight_remove_function' : _textSegmentRemoveHighlight,  //function to remove highligh - requires object and text_segment_id as arguments
+                'time_start_attribute'      : 'data-time_start',
+                'time_end_attribute'        : 'data-time_end'
             }, options);
             
             //save options to the objects namespaced data holder
@@ -99,13 +101,13 @@
          * play the media file for just the text segment 
          * @param integer  text_segment_index   Index of the text_segment to be played
          */
-        'playTextSegment' : function(text_segment_indext) {
+        'playTextSegment' : function(text_segment_index) {
             var $this = $(this);
-            var text_segment = $this.data('mediaAlignedText').text_segments[text_segment_id];
-            $this.jPlayer('play', text_segment.time_start);
+            var text_segment = $this.data('mediaAlignedText').text_segments[text_segment_index];
+            $this.jPlayer('play', text_segment.time_start / 1000);
             
             //stop the jPlayer when segment is done
-            var t = setTimeout("$('" + $this.attr('id') + "').jPlayer('pause')", 1000*(text_segment.time_end - text_segment.time_start));
+            var t = setTimeout("$('#" + $this.attr('id') + "').jPlayer('pause')", (text_segment.time_end - text_segment.time_start)/1000);
         },
         
         'refreshSegments' : function() {
@@ -118,46 +120,73 @@
     
     var _checkTimeChange = function($this){
         var data = $this.data('mediaAlignedText');
+        
+        //need to fix for times over 1 minute
         var current_time = parseFloat($this.data("jPlayer").status.currentTime)*1000;
         var current_text_segment_invalid = false;
         
-        var current_text_segment = data.current_text_segment;
-        
-        //get start/end times for the current_text_segment
-        if(current_text_segment == undefined) {
-            current_text_segment_invalid = true;
+        //get current start and end times as a convenience
+        if(data.current_text_segment_index == undefined) {
+            var current_segment_start = -1;
+            var current_segment_end = -1;
         }
         else {
-            var current_segment_start = parseFloat(current_text_segment.time_start);
-            var current_segment_end = parseFloat(current_text_segment.time_end);
-            if(current_time < current_segment_start || current_time > current_segment_end) {
-                
-                //unset the current_text_segment if necessary
-                data.current_text_segment = undefined;
-                current_text_segment_invalid = true;
-                
-                //unset the current text segment to remove highlight
-                if(data.current_text_segment_index) data.highlight_remove_function($this, data.current_text_segment_index);
-            }
+            var segment = data.text_segments[data.current_text_segment_index];
+            var current_segment_start = parseFloat(segment.time_start);
+            var current_segment_end = parseFloat(segment.time_end);
         }
         
-        //try to find a new matching media segment
-        if(current_text_segment_invalid) {
-            //search for new text_segment
-            //this needs to be optimized!!!!  shouldn't try to scan whole array each time
-            for(var text_segment_index in data.text_segments) {
+        //check if we are still in the timeframe of the currently selected text segment
+        if(current_time < current_segment_start || current_time > current_segment_end) {
+            
+            //unset the current text segment to remove highlight
+            if(data.current_text_segment_index != undefined) {
+                
+                data.highlight_remove_function($this, data.current_text_segment_index);
+                //unset the current_text_segment if necessary
+                data.current_text_segment = undefined;
+                data.current_text_segment_index = undefined;
+                current_text_segment_invalid = true;
+
+            }
+
+            //set up search for new text_segment starting from current segment and proceeding accordingly
+            if(data.current_text_segment_index == undefined) {
+                var start = 0;
+                var step = 1;
+                var end = data.text_segments.length -1;
+            }
+            else if (current_time > current_segment_end) {
+                var start = data.current_text_segment_index;
+                var step = 1;
+                var end = data.text_segments.length -1;
+            }
+            else {
+                var start = data.current_text_segment_index;
+                var step = -1;
+                var end = 0;
+            }
+            
+            //loop through and search for the next matching segment
+            for(i = start; i != end; i = i + step) {
                 
                 //set the text_segment var for convenience
-                var text_segment = data.text_segments[text_segment_index];
+                var text_segment = data.text_segments[i];
                 if(text_segment.time_start < current_time && text_segment.time_end > current_time) {
-
-                    data.current_text_segment = text_segment;
-                    _setCurrentTextSegment($this, text_segment_index);
+                    _setCurrentTextSegment($this, i);
+                    return(true);
                 }
-                
+                //check to see if we are seeking forwards and we've passed it already
+                else if(step == 1 && text_segment.time_start > current_time){
+                    break;
+                }
+                //check to see if we are seeking backwards and we've passed it already
+                else if(step == -1 && text_segment.time_end < current_time) {
+                    break;
+                }
             }
         }
-        //reset the data 
+        //no match - must not have found one - save here to make sure current is unset
         $this.data('mediaAlignedText', data);
     };
     
@@ -192,17 +221,25 @@
         var order = 0;
         var text_segments = new Array();
         
-        $(data.text_viewer_css_selector + " [data-mat_start]").each(function(index) {
+        $(data.text_viewer_css_selector + ' [' + data.time_start_attribute + ']').each(function(index) {
             var $this = $(this);
             $this.addClass('mat_text_segment');
             $this.attr('data-mat_segment', index);
-            text_segments[index] = {'time_start': parseFloat($this.attr('data-mat_start'))};
-            if(index > 0) text_segments[index-1].time_end = parseFloat($this.attr('data-mat_start'));
+            text_segments[index] = {'time_start': parseFloat($this.attr(data.time_start_attribute))};
+            
+            if($this.attr(data.time_end_attribute)) {
+                text_segments[index].time_end = $this.attr(data.time_end_attribute);
+            }
+            
+            //add end time to previous segment if not yet defined
+            if(index > 0 && text_segments[index-1].time_end == undefined) {
+                text_segments[index-1].time_end = parseFloat($this.attr(data.time_start_attribute));
+            }
         });
         
         $(data.text_viewer_css_selector).on(
             'click.mediaAlignedText',
-            '[data-mat_start]',
+            '[' + data.time_start_attribute +']',
             {'parent' : $this},
             function(event) {
                 event.data.parent.mediaAlignedText('textSegmentClicked', $(this).attr('data-mat_segment'));
@@ -283,17 +320,17 @@
         if (data.current_text_segment_index == text_segment_index) {
             return true;
         }
-        //if current text segment not yet set then simply set it and highlight it
-        else if (data.current_text_segment_index == undefined) {
-            data.current_text_segment_index= text_segment_index;
-            data.highlight_function($this, text_segment_index);
-        }
-        //must already be set, so unhiglight old one and set new one
-        else {
+        //if current text segment already set unhighlight it
+        if (data.current_text_segment_index == undefined) {
             data.highlight_remove_function($this, data.current_text_segment_index);
-            data.current_text_segment_index = text_segment_index;
-            data.highlight_function($this, text_segment_index);
         }
+        
+        //set new values for current and then highlight
+        data.current_text_segment_index= text_segment_index;
+        data.current_text_segment = data.text_segments[text_segment_index];
+        data.highlight_function($this, text_segment_index);
+        
+        $this.data('mediaAlignedText', data);
     };
     
     /**
@@ -303,8 +340,8 @@
      * @param text_segment_index  integer  The index of the textSegment to be highlighted
      */
     var _textSegmentHighlight = function($this, text_segment_index) {
-        $('[data-mat_segment='+text_segment_index+']').addClass('highlighted_text_segment');
-        $($this.data('mediaAlignedText').text_viewer_css_selector).scrollTo('.highlighted_text_segment', 250, {'axis': 'y', 'offset': -20});
+        $('[data-mat_segment='+text_segment_index+']').addClass('mat_highlighted_text_segment');
+        $($this.data('mediaAlignedText').text_viewer_css_selector).scrollTo('.mat_highlighted_text_segment', 250, {'axis': 'y', 'offset': -20});
     };
     
     /**
@@ -314,7 +351,7 @@
      * @param text_segment_index  integer  The id of the textSegment to have highlighting removed
      */
     var _textSegmentRemoveHighlight = function($this, text_segment_index){
-        $('[data-mat_segment='+text_segment_index+']').removeClass('highlighted_text_segment');
+        $('[data-mat_segment='+text_segment_index+']').removeClass('mat_highlighted_text_segment');
     };
     
 })( jQuery );
