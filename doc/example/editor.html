@@ -11,18 +11,9 @@
     <script  type="text/javascript" src="mat_resources/js/jquery.mediaAlignedTextEditor.js"></script>
     <script type="text/javascript">
 
-    var media_files = [{
-        "title":"The Hobbit - Chapter 1a",
-        "media_type":"AUDIO",
-        "duration":42000,
-        "media": {
-            mp3: "media_files/hobbit-1a.mp3",
-            wav: "media_files/hobbit-1a.wav"
-        }
-    }];
 
      $(document).ready(function(){
-        $('#jquery_jplayer_1').mediaAlignedTextEditor({'media_files': media_files});
+        $('#jquery_jplayer_1').mediaAlignedTextEditor();
      });
 
     </script>
@@ -35,137 +26,53 @@
 </head>
 <body>
 
-<h1>Media Aligned Text</h1>
+<h1>Media Aligned Text Editor</h1>
+
+
+<fieldset>
+    <legend><a href="#" onclick="$('#mat_init').toggle(200); return false;">Input Media File and Text</a></legend>
+    <div id="mat_init">
+        <div>
+            <label for="mat_media_url">Media URL</label>
+            <input type="text" id="mat_media_url" value ="http://media.sas.upenn.edu/pennsound/authors/Ashbery/11-10-87/Ashbery-John_02_Some-Trees_Harvard_11-10-87.mp3"/>
+        </div>
+        <div>
+            <label for="mat_duration">Duration in seconds</label>
+            <input type="text" id="mat_duration" />
+        </div>
+        <div>
+            <label for="mat_media_file_type">Media File Type</label>
+            <select id="mat_media_file_type">
+                <option value="mp3">mp3</option>
+            </select>
+        </div>
+        <div>
+            <label for="mat_init_type">Text Initialization Type</label>
+            <select id="mat_init_type">
+                <option value="WORD">Plain Text - Create Word Segments</option>
+                <option value="LINE">Plain Text - Create Line Segments</option>
+                <option value="SENTENCE">Plain Text - Create Sentence Segments</option>
+                <option value="WORD">Plain Text - Create Stanza Segments</option>
+                <option value="TAGGED">Text Already Segmented and Tagged</option>
+            </select>
+        </div>
+        <div>
+            <textarea id="mat_text_input" rows="3" cols="70">Here is my text area</textarea>
+        </div>
+        <button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('initMediaText', {
+            'url': $('#mat_media_url').val(),
+            'duration': $('#mat_duration').val(),
+            'file_type': $('#mat_media_file_type').val(),
+            'text_init_type': $('#mat_init_type').val(),
+            'text': $('#mat_text_input').val()}); $('#mat_init').hide('200');">Intialize Alignment</button>
+    </div>
+</fieldset>
 
 <div id="jquery_jplayer_1"></div>
 
 <div id="mat_jplayer_controls" style="width: 800px"></div>
 
 <div id="mat_text_viewer">
-<span data-time_start="0">In</span>
- <span data-time_start="1300">a <strong>here is strong</strong></span>
- <span data-time_start="1530">hole</span>
- <span data-time_start="1760">in</span>
- <span data-time_start="1810">the</span>
- <span data-time_start="2040">ground</span>
- <span data-time_start="2790">there</span>
- <span data-time_start="3020">lived</span>
- <span data-time_start="3300">a</span>
- <span data-time_start="3530">hobbit</span>
-. <span data-time_start="4550">Not</span>
- <span data-time_start="4780">a</span>
- <span data-time_start="4830">nasty</span>
-, <span data-time_start="5290">dirty</span>
-, <span data-time_start="5530">wet</span>
- <span data-time_start="6040">hole</span>
-, <span data-time_start="6780">filled</span>
- <span data-time_start="7010">with</span>
- <span data-time_start="7290">the</span>
- <span data-time_start="7340">ends</span>
- <span data-time_start="7520">of</span>
- <span data-time_start="7800">worms</span>
- <span data-time_start="8270">and</span>
- <span data-time_start="8540">an</span>
- <span data-time_start="8780">oozy</span>
- <span data-time_start="9010">smell</span>
-, <span data-time_start="10030">nor</span>
- <span data-time_start="10260">yet</span>
- <span data-time_start="10540">a</span>
- <span data-time_start="10770">dry</span>
-, <span data-time_start="11050">bare</span>
-, <span data-time_start="11520">sandy</span>
- <span data-time_start="11800">hole</span>
- <span data-time_start="12260">with</span>
- <span data-time_start="12540">nothing</span>
- <span data-time_start="12770">in</span>
- <span data-time_start="12820">it</span>
- <span data-time_start="13050">to</span>
- <span data-time_start="13280">sit</span>
- <span data-time_start="13510">down</span>
- <span data-time_start="13790">on</span>
- <span data-time_start="14020">or</span>
- <span data-time_start="14070">to</span>
- <span data-time_start="14300">eat</span>
-: <span data-time_start="15050">it</span>
- <span data-time_start="15280">was</span>
- <span data-time_start="15510">a</span>
- <span data-time_start="15560">hobbit</span>
--<span data-time_start="15790">hole</span>
-, <span data-time_start="16530">and</span>
- <span data-time_start="16580">that</span>
- <span data-time_start="16810">means</span>
- <span data-time_start="17090">comfort</span>
-.<br />
-<br />
-<span data-time_start="18580">It</span>
- <span data-time_start="18810">had</span>
- <span data-time_start="19090">a</span>
- <span data-time_start="19140">perfectly</span>
- <span data-time_start="19320">round</span>
- <span data-time_start="19600">door</span>
- <span data-time_start="19830">like</span>
- <span data-time_start="20060">a</span>
- <span data-time_start="20340">porthole</span>
-, <span data-time_start="21080">painted</span>
- <span data-time_start="21320">green</span>
-, <span data-time_start="22380">with</span>
- <span data-time_start="22430">a</span>
- <span data-time_start="22620">shiny</span>
- <span data-time_start="22850">yellow</span>
- <span data-time_start="23130">brass</span>
- <span data-time_start="23360">knob</span>
- <span data-time_start="23870">in</span>
- <span data-time_start="24100">the</span>
- <span data-time_start="24150">exact</span>
- <span data-time_start="24610">middle</span>
-. <span data-time_start="25870">The</span>
- <span data-time_start="25920">door</span>
- <span data-time_start="26380">opened</span>
- <span data-time_start="26610">on</span>
- <span data-time_start="26840">to</span>
- <span data-time_start="27120">a</span>
- <span data-time_start="27170">tube</span>
--<span data-time_start="27350">shaped</span>
- <span data-time_start="27630">hall</span>
- <span data-time_start="28100">like</span>
- <span data-time_start="28150">a</span>
- <span data-time_start="28370">tunnel</span>
-: <span data-time_start="29350">a</span>
- <span data-time_start="29400">very</span>
- <span data-time_start="29630">comfortable</span>
- <span data-time_start="29860">tunnel</span>
- <span data-time_start="30600">without</span>
- <span data-time_start="30880">smoke</span>
-, <span data-time_start="31860">with</span>
- <span data-time_start="32090">panelled</span>
- <span data-time_start="32600">walls</span>
-, <span data-time_start="33110">and</span>
- <span data-time_start="33160">floors</span>
- <span data-time_start="33620">tiled</span>
- <span data-time_start="34130">and</span>
- <span data-time_start="34370">carpeted</span>
-, <span data-time_start="35340">provided</span>
- <span data-time_start="35620">with</span>
- <span data-time_start="35850">polished</span>
- <span data-time_start="36360">chairs</span>
-, <span data-time_start="36920">and</span>
- <span data-time_start="37150">lots</span>
- <span data-time_start="37660">and</span>
- <span data-time_start="37890">lots</span>
- <span data-time_start="38170">of</span>
- <span data-time_start="38410">pegs</span>
- <span data-time_start="38640">for</span>
- <span data-time_start="38920">hats</span>
- <span data-time_start="39150">and</span>
- <span data-time_start="39660">coats</span>
- - <span data-time_start="40400">the</span>
- <span data-time_start="40680">hobbit</span>
- <span data-time_start="41150">was</span>
- <span data-time_start="41420">fond</span>
- <span data-time_start="41470">of</span>
- <span data-time_start="41660" data-time_end="42000">visitors</span>
-. 
-
 </div>
 
 <div id="mat_editor">
@@ -196,47 +103,6 @@
     &nbsp; <a href="#" onclick="alert('cancel changes')">reset</a>
 </div>
 
-<fieldset id="mat_media_file_edit">
-    <legend>Update Media File</legend>
-    <div>
-        <label for="mat_media_url">Media URL</label>
-        <input type="text" id="mat_media_url" />
-    </div>
-    <div>
-        <label for="mat_media_title">Media Title</label>
-        <input type="text" id="mat_media_title" />
-    </div>
-    <div>
-        <label for="mat_media_type">Media Type</label>
-        <select id="mat_media_type">
-            <option value="AUDIO">Audio</option>
-        </select>
-    </div>
-    <div>
-        <label for="mat_media_file_type">File Type</label>
-        <select id="mat_media_file_type">
-            <option value="mp3">mp3</option>
-        </select>
-    </div>
-    <button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('updateMedia', {
-        'url': $('#mat_media_url').val(),
-        'title': $('#mat_media_title').val(),
-        'media_type': $('#mat_media_type').val(),
-        'file_type': $('#mat_media_file_type').val()})"> update media file</button>
-    
-</fieldset>
-
-<fieldset id="mat_media_text_edit">
-    <legend>Update Text</legend>
-    <div>
-        <label for="mat_text">Text</label>
-        <textarea id="mat_text" rows="10" cols="70"></textarea>
-    </div>
-	<button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('createSegments', 'WORD')">create word segments</button>
-	<button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('createSegments', 'LINE')">create line segments</button>
-	<button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('createSegments', 'SENTENCE')">create sentence segments</button>
-	<button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('createSegments', 'PUNCTUATION')">create punctuation segments</button>
-</fieldset>
 
 <textarea id="mat_output">  here is some outup</textarea>
 <div id="mat_temp" ></div>
