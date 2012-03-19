@@ -1,6 +1,6 @@
 /**
  * jQuery.MediaAlignedText
- * Copyright (c) 2012 J. Reuben Wetherbee - jreubenwetherbee(at)gmail(dot)com
+ * Copyright (c) 2012 J. Reuben Wetherbee - jrweth(at)gmail(dot)com
  * Licensed under MIT
  *
  * @projectDescription Handles the playback of MediaFiles along with aligned text
@@ -64,14 +64,18 @@
             
             //initialized jplayer controls
             if(options.generate_jplayer_controls) {
-                options.jplayer_control_options.title = options.media_files[0].title;
+                if(options.media_files[0] != undefined) {
+                    options.jplayer_control_options.title = options.media_files[0].title;
+                }
                 $('#'+options.jplayer_controls_id).html(_getJplayerContainerHtml(options.jplayer_control_options));
             }
             
             //set the initial media file for the jplayer
-            options.jplayer_options.ready = function() {
-                $(this).jPlayer("setMedia", options.media_files[0].media);
-            };
+            if(options.media_files != undefined) {
+                options.jplayer_options.ready = function() {
+                    $(this).jPlayer("setMedia", options.media_files[0].media);
+                };
+            }
             
             //initialize all the mappings and components
             _initTextSegments($this);
@@ -107,7 +111,7 @@
             $this.jPlayer('play', text_segment.time_start / 1000);
             
             //stop the jPlayer when segment is done
-            var t = setTimeout("$('#" + $this.attr('id') + "').jPlayer('pause')", (text_segment.time_end - text_segment.time_start)/1000);
+            var t = setTimeout("$('#" + $this.attr('id') + "').jPlayer('pause')", text_segment.time_end - text_segment.time_start);
         },
         
         'refreshSegments' : function() {
@@ -121,7 +125,6 @@
     var _checkTimeChange = function($this){
         var data = $this.data('mediaAlignedText');
         
-        //need to fix for times over 1 minute
         var current_time = parseFloat($this.data("jPlayer").status.currentTime)*1000;
         var current_text_segment_invalid = false;
         
@@ -137,9 +140,10 @@
         }
         
         //check if we are still in the timeframe of the currently selected text segment
-        if(current_time < current_segment_start || current_time > current_segment_end) {
-            
-            //unset the current text segment to remove highlight
+        if(current_time >= current_segment_start && current_time <= current_segment_end) {
+            return true;
+        }
+        else {    //unset the current text segment to remove highlight
             if(data.current_text_segment_index != undefined) {
                 
                 data.highlight_remove_function($this, data.current_text_segment_index);
@@ -174,6 +178,7 @@
                 var text_segment = data.text_segments[i];
                 if(text_segment.time_start < current_time && text_segment.time_end > current_time) {
                     _setCurrentTextSegment($this, i);
+                    //check for the next match
                     return(true);
                 }
                 //check to see if we are seeking forwards and we've passed it already
@@ -195,9 +200,15 @@
         
         //get the media types supplied by looking at the first media file
         var types_supplied = '';
-        for(i in $this.data('mediaAlignedText').media_files[0].media) {
-            types_supplied = types_supplied + i + ',';
+        if(options.media_files == undefined) {
+            types_supplied = 'mp3';
         }
+        else {
+            for(i in $this.data('mediaAlignedText').media_files[0].media) {
+                types_supplied = types_supplied + i + ',';
+            }
+        }
+        
         //knock off the last comma
         types_supplied = types_supplied.substring(0, types_supplied.length-1);
         
@@ -205,7 +216,7 @@
         var options = $.extend({
               swfPath: 'js',
               supplied: 'mp3',
-              timeupdate: function() {_checkTimeChange($(this))}
+              timeupdate: function() {_checkTimeChange($(this));}
         }, options);
         
         $this.jPlayer(options);
