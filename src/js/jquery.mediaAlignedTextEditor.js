@@ -33,19 +33,17 @@
     /**
      * Define the following public methods
      * - clearAlignment       Remove all segment and time alignment
-     * - createSegments       Remove all current segments and create new ones based on a given text delimiter
      * - init                 Initialize the MediaAlignedText
+     * - initMediaText        Create new text encoded json_alignment based upon passed in plain text
      * - outputAlignment      Output the current alignment
      * - pauseManualAlignment Pause the manual alignment that is currently being recorded
      * - playCurrentSegment   Play the currentlu selected segment via the player
      * - recordManualTime     called when user clicks button to record time
-     * - reinitMediaFile      Reinitialize the media file
      * - saveManualAlignment  save the manual alignment that has been recorded
      * - startManualAlignment start the recording for manual alignment
      * - timeSegmentClicked   Handles when user clicks on a particular time segment
      * - updateMedia          Handles changing the Media file referenced
      * - updateSegmentTime    Handles updating the text segment start and end parameters
-     * - updateText           Create new text encoded json_alignment based upon passed in text
      * - zoomTimeEditor       zoom the time editor in or out
      */
     var public_methods = {
@@ -96,7 +94,7 @@
                 'color_toggle_classes'      : ['mat_toggle_bg_color_0', 'mat_toggle_bg_color_1', 'mat_toggle_bg_color_2', 'mat_toggle_bg_color_3'], //array of classes to toggle through
                 'highlight_function'        : _textSegmentHighlight, //the function to use to highlight - requires object and text_segment_index as arguments
                 'highlight_remove_function' : _textSegmentRemoveHighlight  //function to remove highligh - requires object and text_segment_index as arguments
-                }, options);
+            }, options);
 
             
             //if data not yet initialized set here
@@ -115,6 +113,89 @@
             
             _initTimeEditor($this);
             
+        },
+        
+
+        /**
+         * Create html hyperaudio markup from plain text 
+         * 
+         * @param text_string   The string of the text to be parsed
+         * @param break_on      The type of textual element to break
+         * @param tag           The tag to mark the segments with (defaults to 'span')
+         */
+        'initMediaText' : function(options) {
+            var $this = $(this);
+            var data = $this.data('mediaAlignedText');
+
+            var options = $.extend({
+                'media_file_type'           : 'mp3',  //type of media file
+                'text_init_type'            : 'WORD', //what to break on (can be WORD, LINE, SENTENCE, STANZA, TAGGED(already tagged)
+                'tag'                       : 'span', // the tag to enclose the text segments in
+                'url'                       : '', //url of the media file
+                'duration'                  : 0, //duration in milliseconds of the media file
+                'text'                      : '' //the text to align
+                }, options);
+            
+            if(options.text_init_type == 'TAGGED') {
+                $(data.text_viewer_css_selector).html(options.text);
+            }
+            else {
+                if(options.tag == undefined) tag = 'span';
+                
+                switch(options.text_init_type)
+                {
+                case 'WORD':
+                    var pattern = new RegExp(/(\s+)/);
+                    break;
+                case 'LINE':
+                    var pattern = new RegExp(/(\n+)/);
+                    break;
+                case 'SENTENCE':
+                    var pattern = new RegExp(/(\.|\?|!)/);
+                    break;
+                case 'STANZA':
+                    var pattern = new RegExp(/(\n+)/);
+                    break;
+                default:
+                    var pattern = new RegExp('(' + options.text_init_type + ')');
+                }
+                
+                //split text on the pattern determined above
+                var segments = options.text.split(pattern);
+                
+                //loop through text and 
+                var html = '';
+                for(i = 0; i < segments.length; i++) {
+                    if(i % 2 == 0 && segments[i].match(/\w/)) {
+                        html = html + '<' + options.tag  + ' ' + data.time_start_attribute + '="-1">' + segments[i] + '</' + options.tag + '>';
+                    }
+                    else {
+                        html = html + segments[i];
+                    }
+                }
+                
+                //change line breaks to br tags
+                html = html.replace(/\n/g, "<br />\n");
+                
+                $(data.text_viewer_css_selector).html(html);
+            }
+            
+            var media_def = {'duration': parseFloat(options.duration), 'media' : {}};
+            media_def.media[options.media_file_type] = options.url;
+            
+            //load the media file into the player and load to get the duration
+            $this.jPlayer("setMedia", media_def.media);
+            $this.jPlayer('play', 0);
+            $this.jPlayer('pause');
+           
+            data.media_files[0] = media_def;
+            
+            $this.data('mediaAlignedText', data);
+            
+            //initialize the player
+            $this.mediaAlignedText('refreshSegments');
+            
+            _initTimeEditor($this);
         },
         
         'outputAlignment' : function() {
@@ -137,6 +218,9 @@
             
             //remove empty class declarations
             html = html.replace(/ class="\s*"/gi,'');
+            
+            //make sure br are properly encoded
+            html = html.replace(/<br>/g, "<br />");
             
             $('#mat_output').val(html).show();
 
@@ -319,7 +403,7 @@
             
             if(media_order == undefined) media_order = 0;
             
-            data.json_alignment.media_files[media_order].media[media_def.file_type] = media_def.url;
+            data.media_files[media_order].media[media_def.file_type] = media_def.url;
             
             $this.data('mediaAlignedText', data);
         },
@@ -385,56 +469,6 @@
          },
          
 
-         /**
-          * Create New Text Objects and clear all other groupings
-          * 
-          * @param title         The Title of the Text
-          * @param text_string   The string of the text to be parsed
-          * @param text_order    The order that this text comes in the flow of text
-          */
-         'updateText' : function(title, text_string, text_order) {
-             var $this = $(this);
-             var data = $this.data('mediaAlignedText');
-             
-             //set default text order
-             if (text_order == undefined) text_order = 0;
-             
-             var text  = {'title': title, 'character_groups': []};
-             
-             //split the string on either non word characters or html tags
-             //@todo make this a little more sophisticated - check for nonclosed tags etc.
-             var text_array = text_string.split(/([^\w'<>]+|<[^<>]+>)/);
-             
-             //loop through text array and add to text object
-             for(var i=0; i < text_array.length; i++) {
-                 //search for a tag group
-                 if(text_array[i].indexOf('<') > -1) {
-                     text.character_groups[i] = {"chars": text_array[i],"type":"TAG"};
-                 }
-                 //search for words
-                 else if (text_array[i].match(/\w/)) {
-                     text.character_groups[i] = {"chars": text_array[i],"type":"WORD"};
-                 }
-                 //must be a non word
-                 else {
-                     text.character_groups[i] = {"chars": text_array[i],"type":"NON_WORD"};
-                 }
-             }
-             
-             data.json_alignment.texts[text_order] = text;
-             
-             //clear the previous segments
-             $this.mediaAlignedTextEditor('clearSegments');
-             
-             //save the new text back to the object
-             $this.data('mediaAlignedText', data);
-             
-             //refresh display 
-             $this.mediaAlignedText('refreshSegments');
-
-             _initTimeEditor($this);
-             
-         },
         
          
         /**
@@ -444,14 +478,16 @@
          */
         'zoomTimeEditor' : function(zoom_factor) {
             var $this = $(this);
-            var data = $this.data('mediaAlignedTextEditor');
+            var editor_data = $this.data('mediaAlignedTextEditor');
+            var data = $this.data('mediaAlignedText');
             
-            data.viewable_media_segments = Math.ceil(Math.pow(2, zoom_factor)*data.viewable_media_segments);
-
+            editor_data.viewable_media_segments = Math.ceil(Math.pow(2, zoom_factor)*editor_data.viewable_media_segments);
+            
             //check to make sure haven't zoomed out too far
-            if(data.viewable_media_segments > data.text_segments.length) {
-                data.viewable_media_segments = data.text_segments.length;
+            if(editor_data.viewable_media_segments > data.text_segments.length) {
+                editor_data.viewable_media_segments = data.text_segments.length;
             }
+            $this.data('mediaAlingedTextEditor', editor_data);
             
             _initTimeEditor($this);
         }
@@ -502,12 +538,15 @@
      * Refresh the time editor starting with the first
      */
     var _initTimeEditor = function($this) {
+
         var editor_data = $this.data('mediaAlignedTextEditor');
         var data = $this.data('mediaAlignedText');
         var text_segments = $this.data('mediaAlignedText').text_segments;
+
+        if(data.media_files[0] == undefined) return false;
         
       //@todo make total timespan based upon total media file times not just first one
-        editor_data.time_editor_total_duration = data.media_files[0].duration;
+        editor_data.time_editor_total_duration = data.media_files[0].duration * 1000;
         editor_data.time_editor_viewable_timespan = editor_data.viewable_media_segments * editor_data.time_editor_total_duration/text_segments.length;
         editor_data.time_editor_width_per_milisecond = $('#mat_time_editor').width() / editor_data.time_editor_viewable_timespan; 
 
@@ -554,7 +593,6 @@
         
         $('#mat_time_slider').hide();
         
-        //_initFileAndTextLoader($this);
         
     };
     /**
@@ -669,6 +707,10 @@
         //@todo data validation
         data.text_segments[text_segment_index].time_start = parseFloat(time_start);
         data.text_segments[text_segment_index].time_end = parseFloat(time_end);
+        
+        //update the html
+        $('[data-mat_segment="' + text_segment_index + '"]').attr(data.time_start_attribute, time_start);
+        $('[data-mat_segment="' + text_segment_index + '"]').attr(data.time_end_attribute, time_end);
         
         //update the time segments
         var width = Math.round((time_end - time_start) * editor_data.time_editor_width_per_milisecond);
