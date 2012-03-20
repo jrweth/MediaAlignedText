@@ -5,20 +5,18 @@ What is MediaAlignedText?
 -------------------------
 The basic purpose of the MediaAlignedText project is to provide support in synchronizing audio/video playback with corresponding text.
 
-The initial focus is an HTML5 audio player which has typical audio controls. Additionally the media files are time-aligned to corresponding text segments.  When each segment of audio is played, then the corresponding text segment is highlighted. Also, when a text segment is selected (e.g. by a click), then the audio player tracks to the aligned time.
+The initial focus is an HTML5 audio player which has typical audio controls linked to time-aligned html text segments.  When each segment of audio is played, then the corresponding text segment is highlighted. Also, when a text segment is selected (e.g. by a click), then the audio player tracks to the aligned time.
 
 
-Functionality
+Modules
 -------------
-At it simplest, MediaAlignedText is merely a javascript library that handles the playback of aligned media and text in a web browser. In this case all that is needed to use the player is the javascript library (including other libraries dependencies), a media file, and the json-encoded alignment data connecting the media files to the text.
-
-The additional functionality is for handling the generation, manipulation and storage of the alignment data in a database.  Also, since the this data lends itself well to audio book formats, there is a planned module which allows export and import from the Epub format.
+Player:  The MediaAlignedText Player is a javascript library written as a jQuery plugin that handles the playback of aligned media and text in a web browser. All that is needed to use the player is the javascript library (including other javascript libraries dependencies), a publically accessible media file, and the html tagged version of text containing the alignment data.
 
 
-Requirements
-------------
+Editor:  The MediaAlignedText Editor is a javascript library that extends the functionality of the MediaAlignedText Player by allowing the user to create and edit the alignment data linking the media and the text.
 
-PHP 5.3 + Mysql (for additional alignment generation, manipulation and database functionality)
+
+AutoAligner:  (proposed) The AutoAligner is a server side program that will take a media file and corresponding text and automatically create the html tagged text for use by the MediaAlignedText Player.
 
 Dependencies
 ------------
@@ -26,7 +24,7 @@ Dependencies
 Library Dependencies:
 
 javascript:
-jquery (version v1.6.4+) 
+jquery (version v1.7+) 
 jplayer (Version: 2.1.0)
 jquery.scrollto
-jquery.ui
+jquery.ui (MediaAlignedText Editor only)
