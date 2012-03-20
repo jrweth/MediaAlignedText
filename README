@@ -18,13 +18,13 @@ Editor:  The MediaAlignedText Editor is a javascript library that extends the fu
 
 AutoAligner:  (proposed) The AutoAligner is a server side program that will take a media file and corresponding text and automatically create the html tagged text for use by the MediaAlignedText Player.
 
-Dependencies
-------------
+
 
 Library Dependencies:
+-------------------
 
 javascript:
-jquery (version v1.7+) 
-jplayer (Version: 2.1.0)
-jquery.scrollto
-jquery.ui (MediaAlignedText Editor only)
+ jquery (version v1.7+) 
+ jplayer (Version: 2.1.0)
+ jquery.scrollto
+ jquery.ui (MediaAlignedText Editor only)
