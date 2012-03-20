@@ -1,14 +1,14 @@
 <html>
 <head>
-    <link type="text/css" href="skin/jplayer.blue.monday.css" rel="stylesheet" />
-    <link type="text/css" href="mat_resources/css/mediaAlignedText.css" rel="stylesheet" />
+    <link type="text/css" href="css/skin/jplayer.blue.monday.css" rel="stylesheet" />
+    <link type="text/css" href="css/mediaAlignedText.css" rel="stylesheet" />
     <link type="text/css" href="css/jquery-ui-1.8.17.custom.css" rel="stylesheet" />
     <script  type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery.jplayer.min.js"></script>
     <script type="text/javascript" src="js/jquery.scrollTo-min.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.8.17.custom.min.js"></script>
-    <script  type="text/javascript" src="mat_resources/js/jquery.mediaAlignedText.js"></script>
-    <script  type="text/javascript" src="mat_resources/js/jquery.mediaAlignedTextEditor.js"></script>
+    <script  type="text/javascript" src="js/jquery.mediaAlignedText.js"></script>
+    <script  type="text/javascript" src="js/jquery.mediaAlignedTextEditor.js"></script>
     <script type="text/javascript">
 
 
@@ -34,11 +34,11 @@
     <div id="mat_init">
         <div>
             <label for="mat_media_url">Media URL</label>
-            <input type="text" id="mat_media_url" value ="http://media.sas.upenn.edu/pennsound/authors/Ashbery/11-10-87/Ashbery-John_02_Some-Trees_Harvard_11-10-87.mp3"/>
+            <input type="text" id="mat_media_url" value ="media_files/hobbit-1a.mp3"/>
         </div>
         <div>
             <label for="mat_duration">Duration in seconds</label>
-            <input type="text" id="mat_duration" />
+            <input type="text" id="mat_duration" value="42"/>
         </div>
         <div>
             <label for="mat_media_file_type">Media File Type</label>
@@ -57,7 +57,9 @@
             </select>
         </div>
         <div>
-            <textarea id="mat_text_input" rows="3" cols="70">Here is my text area</textarea>
+            <textarea id="mat_text_input" rows="3" cols="70">In a hole in the ground there lived a hobbit. Not a nasty, dirty, wet hole, filled with the ends of worms and an oozy smell, nor yet a dry, bare, sandy hole with nothing in it to sit down on or to eat: it was a hobbit-hole, and that means comfort.
+
+It had a perfectly round door like a porthole, painted green, with a shiny yellow brass knob in the exact middle. The door opened on to a tube-shaped hall like a tunnel: a very comfortable tunnel without smoke, with paneled walls, and floors tiled and carpeted, provided with polished chairs, and lots and lots of pegs for hats and coats - the hobbit was fond of visitors.</textarea>
         </div>
         <button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('initMediaText', {
             'url': $('#mat_media_url').val(),
