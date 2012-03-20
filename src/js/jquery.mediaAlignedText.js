@@ -351,6 +351,7 @@
      * @param text_segment_index  integer  The index of the textSegment to be highlighted
      */
     var _textSegmentHighlight = function($this, text_segment_index) {
+        $('.mat_highlighted_text_segment').removeClass('mat_highlighted_text_segment');
         $('[data-mat_segment='+text_segment_index+']').addClass('mat_highlighted_text_segment');
         $($this.data('mediaAlignedText').text_viewer_css_selector).scrollTo('.mat_highlighted_text_segment', 250, {'axis': 'y', 'offset': -20});
     };
