@@ -2,11 +2,19 @@
 
 /* Specific Div Styling ********************************************/
 
+/* STANDARD WIDTH */
+.STANDARD_WIDTH,
+#mat_text_viewer,
+#mat_time_slider,
+#mat_time_editor,
+#mat_init_alignment
+{
+    width: 420px;	
+}
 
 #mat_text_viewer {
     margin-top: 10px;
     height: 150px;
-    width: 420px;
     border:1px solid blue;
     overflow: auto;
     padding: 3px;
@@ -14,7 +22,6 @@
 
 #mat_time_slider {
     position: absolute;
-    width: 500px;
 }
 
 #mat_timeline {
@@ -23,7 +30,6 @@
 }
 
 #mat_time_editor {
-    width: 500px;
     height: 80px;
     padding-top: 5px;
     border: 1px solid black;
