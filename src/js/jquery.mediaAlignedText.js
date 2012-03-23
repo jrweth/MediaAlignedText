@@ -59,27 +59,20 @@
             var data = $this.data('mediaAlignedText');
             
             if(!data) {
-                $(this).data('mediaAlignedText', options);
+                $this.data('mediaAlignedText', options);
             }
             
             //initialized jplayer controls
             if(options.generate_jplayer_controls) {
-                if(options.media_files[0] != undefined) {
+                if(options.media_files[0] != undefined && options.media_files[0].title != undefined) {
                     options.jplayer_control_options.title = options.media_files[0].title;
                 }
                 $('#'+options.jplayer_controls_id).html(_getJplayerContainerHtml(options.jplayer_control_options));
             }
             
-            //set the initial media file for the jplayer
-            if(options.media_files != undefined) {
-                options.jplayer_options.ready = function() {
-                    $(this).jPlayer("setMedia", options.media_files[0].media);
-                };
-            }
-            
             //initialize all the mappings and components
             _initTextSegments($this);
-            _initJplayer($this, options.jplayer_options);
+            _initJplayer($this);
             
         },
         
@@ -89,15 +82,18 @@
             var $this = $(this);
             var data = $this.data('mediaAlignedText');
             
-            if( text_segment_index ) {
+            if( text_segment_index) {
                 var text_segment = data.text_segments[text_segment_index];
-                //go to the place in the media file 
-                if($this.data('jPlayer').status.paused) { //if player paused just advance
-                    $this.jPlayer('pause', text_segment.time_start/1000);
-                    _setCurrentTextSegment($this, text_segment_index);
-                }
-                else { // if player not paused then go to 
-                    $this.jPlayer('play', text_segment.time_start/1000);
+                _setCurrentTextSegment($this, text_segment_index);
+                
+                if(text_segment.time_start >= 0) {
+                    //go to the place in the media file 
+                    if($this.data('jPlayer').status.paused) { //if player paused just advance
+                        $this.jPlayer('pause', text_segment.time_start/1000);
+                    }
+                    else { // if player not paused then go to 
+                        $this.jPlayer('play', text_segment.time_start/1000);
+                    }
                 }
             }
         },
@@ -148,7 +144,6 @@
                 
                 data.highlight_remove_function($this, data.current_text_segment_index);
                 //unset the current_text_segment if necessary
-                data.current_text_segment = undefined;
                 data.current_text_segment_index = undefined;
                 current_text_segment_invalid = true;
 
@@ -196,30 +191,40 @@
     };
     
     //initialize the Jplayer
-    var _initJplayer = function ($this, options) {
+    var _initJplayer = function ($this) {
+        
+        var data = $this.data('mediaAlignedText');
         
         //get the media types supplied by looking at the first media file
         var types_supplied = '';
-        if(options.media_files == undefined) {
+        
+        //check to see if the media file is defined
+        if(data.media_files == undefined) {
             types_supplied = 'mp3';
         }
         else {
-            for(i in $this.data('mediaAlignedText').media_files[0].media) {
+            for(i in data.media_files[0].media) {
                 types_supplied = types_supplied + i + ',';
             }
+            
+            //load the media file
+            data.jplayer_options.ready = function() {
+                $(this).jPlayer("setMedia", data.media_files[0].media);
+            };
+            
+            //knock off the last comma
+            types_supplied = types_supplied.substring(0, types_supplied.length-1);
         }
         
-        //knock off the last comma
-        types_supplied = types_supplied.substring(0, types_supplied.length-1);
         
         //initiate the jplayer
-        var options = $.extend({
+        data.jplayer_options = $.extend({
               swfPath: 'js',
-              supplied: 'mp3',
+              supplied: types_supplied,
               timeupdate: function() {_checkTimeChange($(this));}
-        }, options);
+        }, data.jplayer_options);
         
-        $this.jPlayer(options);
+        $this.jPlayer(data.jplayer_options);
     };
     
     
@@ -247,6 +252,17 @@
                 text_segments[index-1].time_end = parseFloat($this.attr(data.time_start_attribute));
             }
         });
+        
+        //set the time end for the last segment
+        if(text_segments.length && text_segments[text_segments.length - 1].time_end == undefined) {
+            //if time_start is undefined or -1 set to -1
+            if(text_segments[text_segments.length - 1].time_start >= 0 && data.media_files[0].duration > 0) {
+                text_segments[text_segments.length - 1].time_end = data.media_files[0].duration;
+            }
+            else { //set to the start time
+                text_segments[text_segments.length -1].time_end = text_segments[text_segments.length -1].time_start;
+            }
+        }
         
         $(data.text_viewer_css_selector).on(
             'click.mediaAlignedText',
@@ -332,16 +348,16 @@
             return true;
         }
         //if current text segment already set unhighlight it
-        if (data.current_text_segment_index == undefined) {
+        if (data.current_text_segment_index != undefined) {
             data.highlight_remove_function($this, data.current_text_segment_index);
         }
         
         //set new values for current and then highlight
         data.current_text_segment_index= text_segment_index;
-        data.current_text_segment = data.text_segments[text_segment_index];
+        $this.data('mediaAlignedText', data);
+        
         data.highlight_function($this, text_segment_index);
         
-        $this.data('mediaAlignedText', data);
     };
     
     /**
@@ -351,7 +367,6 @@
      * @param text_segment_index  integer  The index of the textSegment to be highlighted
      */
     var _textSegmentHighlight = function($this, text_segment_index) {
-        $('.mat_highlighted_text_segment').removeClass('mat_highlighted_text_segment');
         $('[data-mat_segment='+text_segment_index+']').addClass('mat_highlighted_text_segment');
         $($this.data('mediaAlignedText').text_viewer_css_selector).scrollTo('.mat_highlighted_text_segment', 250, {'axis': 'y', 'offset': -20});
     };
