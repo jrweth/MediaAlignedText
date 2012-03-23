@@ -46,7 +46,29 @@
      * - zoomTimeEditor       zoom the time editor in or out
      */
     var public_methods = {
+         'cancelManualAlignment' : function() {
+             var $this = $(this);
+             var data = $this.data('mediaAlignedText');
+             var editor_data = $this.data('mediaAlignedTextEditor');
+             
+             //reset buttons
+             //remove start button
+             $(editor_data.editor_css_selector + ' .mat_start_alignment').show();
+             $(editor_data.editor_css_selector + ' .mat_pause_alignment').hide();
+             $(editor_data.editor_css_selector + ' .mat_resume_alignment').hide();
+             $(editor_data.editor_css_selector + ' .mat_record_time').hide();
+             $(editor_data.editor_css_selector + ' .mat_save_alignment').hide();
+             $(editor_data.editor_css_selector + ' .mat_cancel_alignment').hide();
+             
 
+             //move out of editor mode
+             data.check_time_disabled = false;
+             editor_data.manual_text_segment_alignment = new Array();
+             
+             //persist data
+             $this.data('mediaAlignedText', data);
+             $this.data('mediaAlignedTextEditor', editor_data);
+         }, 
          /**
           * clears the timing for segments by setting the start_time and end time to -1
           * 
@@ -68,12 +90,17 @@
             }
             
             for(i = text_segment_index_start; i <= text_segment_index_end; i++) {
-                data.text_segments[i].time_start = -1;
-                data.text_segments[i].time_end = -1;
+                _updateSegmentTime($this, i, -1, -1)
             }
             
             //save data back to the object
             $this.data('mediaAlignedText', data);
+            
+            //refresh Timeline Editor
+            _initTimeEditor($this);
+            
+            //refresh output
+            $this.mediaAlignedTextEditor('outputAlignment');
         }, 
         
         /**
@@ -143,7 +170,7 @@
                     if(i % 2 == 0 && segments[i].match(/\w/)) {
                         html = html + '<' + options.eclosing_tag  + ' ' + options.media_aligned_text_options.time_start_attribute + '="-1">' 
                                 + segments[i] 
-                                + '</' + options.eclosing_tag + '>';
+                                + '</' + options.eclosing_tag + '>~~~END_TAG~~~';
                     }
                     else {
                         html = html + segments[i];
@@ -152,10 +179,14 @@
                 
                 //change line breaks to br tags
                 html = html.replace(/\n/g, "<br />\n");
+                html = html.replace(/~~~END_TAG~~~/g, "\n");
+                
+                //add line endings in for each segment
             }
 
             //set mat_text_viewer html
             $(options.media_aligned_text_options.text_viewer_css_selector).html(html);
+            $(options.editor_css_selector + ' .mat_output').val(html);
             
             //initialize the media file options for the MediaAlignedText player
             var media_files = new Array({'duration': parseFloat(options.duration), 'media_type': 'AUDIO', 'media': {}});
@@ -197,7 +228,7 @@
             //make sure br are properly encoded
             html = html.replace(/<br>/g, "<br />");
             
-            $('#mat_output').val(html).show();
+            $(editor_data.editor_css_selector + ' .mat_output').val(html);
 
         },
         
@@ -211,13 +242,19 @@
 
             $(editor_data.editor_css_selector + ' .mat_resume_alignment').show();
             $(editor_data.editor_css_selector + ' .mat_save_alignment').show();
+            $(editor_data.editor_css_selector + ' .mat_cancel_alignment').show();
             $(editor_data.editor_css_selector + ' .mat_pause_alignment').hide();
             $(editor_data.editor_css_selector + ' .mat_record_time').hide();
             
             //save the end position for the previous segment
             editor_data.manual_text_segment_alignment[editor_data.manual_text_segment_position] = current_time;
             
+            
+            $this.data('mediaAlignedTextEditor', editor_data);
+            
             $this.jPlayer('pause');
+
+            $this.mediaAlignedText('textSegmentClicked', editor_data.manual_text_segment_position);
         },
         
         /**
@@ -244,8 +281,8 @@
             editor_data.manual_text_segment_position = editor_data.manual_text_segment_position + 1;
 
             //unhighlight and highlight the selected word
-            _textSegmentRemoveHighlight($this, $this.data('mediaAlignedText').current_text_segment_index);
-            _textSegmentHighlight($this, editor_data.manual_text_segment_position);
+            editor_data.highlight_remove_function($this, editor_data.manual_text_segment_position - 1);
+            editor_data.highlight_function($this, editor_data.manual_text_segment_position);
             $this.data('mediaAlignedTextEditor', editor_data);
             
         },
@@ -258,12 +295,12 @@
          * @param time_start
          * @param media_file_order_start
          */
-        'resumeManualAlignment':  function(text_segment_index_start, text_segment_index_end, time_start, media_file_order_start) {
+        'resumeManualAlignment':  function() {
             var $this = $(this);
             var editor_data = $this.data('mediaAlignedTextEditor');
             var last_time = editor_data.manual_text_segment_alignment[editor_data.manual_text_segment_alignment.length - 1];
             
-            $this.mediaAlignedText('startManualAlignment', editor_data.manual_text_segment_position, undefined, last_time);
+            _startRecording($this, editor_data.manual_text_segment_position + 1, last_time);
         },
         
         /**
@@ -274,7 +311,18 @@
             var data = $this.data('mediaAlignedText');
             var editor_data = $this.data('mediaAlignedTextEditor');
             
-            var previous_time_end = 0;
+            
+            //remove start button
+            $(editor_data.editor_css_selector + ' .mat_start_alignment').show();
+            $(editor_data.editor_css_selector + ' .mat_pause_alignment').hide();
+            $(editor_data.editor_css_selector + ' .mat_resume_alignment').hide();
+            $(editor_data.editor_css_selector + ' .mat_record_time').hide();
+            $(editor_data.editor_css_selector + ' .mat_save_alignment').hide();
+            $(editor_data.editor_css_selector + ' .mat_cancel_alignment').hide();
+            
+            //get the previous time ending
+            var previous_time_end = editor_data.manual_alignment_time_start;
+            
             //loop throuh the recorded alignment data and update text_segment data
             for(var text_segment_index in editor_data.manual_text_segment_alignment) {
                 var text_segment = data.text_segments[text_segment_index];
@@ -303,58 +351,54 @@
                 previous_time_end = time_end;
             }
             
+            data.check_time_disabled = false;
             //save data object for persistence
             $this.data('mediaAlignedText', data);
             
             _initTimeEditor($this);
             
+            $this.mediaAlignedTextEditor('outputAlignment');
         },
         
         /**
          * Start recording manual alignment 
          * 
          * @param text_segment_index_start  text_segment on which to start the alignment
-         * @param text_segment_index_start  text_segment on which to end the alignment
          * @param time_start
-         * @param media_file_order_start
+         * @param text_segment_index_end  text_segment on which to end the alignment
+         * @param media_file_order_start  media file order which alignment should begin in
          */
-        'startManualAlignment':  function(text_segment_index_start, text_segment_index_end, time_start, media_file_order_start) {
+        'startManualAlignment':  function(text_segment_index_start, time_start, text_segment_index_end, media_file_order_start) {
             var $this = $(this);
             var data = $this.data('mediaAlignedText');
             var editor_data = $this.data('mediaAlignedTextEditor');
             
+            //pause the jPlayer if it is playing
+            $this.jPlayer('pause');
             
-            //remove start button
-            $(editor_data.editor_css_selector + ' .mat_start_alignment').hide();
-            $(editor_data.editor_css_selector + ' .mat_pause_alignment').show();
-            $(editor_data.editor_css_selector + ' .mat_record_time').show().focus();
+            //set time start default
+            if(time_start == undefined) {
+                time_start = $this.data('jPlayer').status.currentTime;
+            }
             
+            //set text segment start default
+            if(text_segment_index_start == undefined) {
+                if (data.current_text_segment_index == undefined) {
+                    text_segment_index_start = 0;
+                }
+                else {
+                    text_segment_index_start = data.current_text_segment_index;
+                }
+            }
             
-            //add defaults if not set
-            if(time_start == undefined) time_start = 0;
-            if(text_segment_index_start == undefined) text_segment_index_start = 0;
-            if(text_segment_index_end == undefined) text_segment_index_end = data.text_segments.length - 1;
-            if(media_file_order_start == undefined) media_file_order_start = 0;
-            
-            //get the first text segment
-            var text_segment = data.text_segments[text_segment_index_start];
-            
-            //set the editor position
-            editor_data.manual_text_segment_position = text_segment_index_start;
+            //clear previous alignment
             editor_data.manual_text_segment_alignment = new Array();
+            editor_data.manual_alignment_time_start = time_start * 1000;
             
-            //clear the alignment data for the set 
-            $this.mediaAlignedTextEditor('clearAlignment', text_segment_index_start, text_segment_index_end);
+            //persist data
+            $this.data('medaiAlignedTextEditor', editor_data);
             
-            //position the highlight at the first word
-            _textSegmentHighlight($this, text_segment_index_start);
-            
-            //save data objects
-            $this.data('mediaAlignedTextEditor', editor_data);
-            
-            //begin playing
-            alert('To track the text along with the audio simply press the space bar.  Once you click OK, the audio will begin in 2 seconds.');
-            var t = setTimeout(function () {$this.jPlayer('play', time_start);}, 2000);
+            _startRecording($this, text_segment_index_start, time_start, text_segment_index_end, media_file_order_start);
         },
         
         /**
@@ -592,6 +636,58 @@
 
         $('#mat_time_slider').show();
     }
+    
+    /**
+     * Function to set up the recording
+     * 
+     * @param jQueryObject  $this                      The jQuery object which the MediaAlignedTextEditor is configured on
+     * @param Integer       text_segment_index_start   The index to start recording the time
+     * @param Float         time_start                 The time in seconds where the recording should start
+     * @param Integer       text_segment_index_end     The index when recording should automatically stop - defaults to last text_segment
+     * @param Integer       media_file_order_start     The order of the media file to begin (usually 0 unless using playlist)
+     */
+    var _startRecording = function($this, text_segment_index_start, time_start, text_segment_index_end, media_file_order_start) {
+        //initialize data object
+        var data = $this.data('mediaAlignedText');
+        var editor_data = $this.data('mediaAlignedTextEditor');
+        
+        //set defaults
+        if(text_segment_index_end == undefined) text_segment_index_end = data.text_segments.length - 1;
+        if(media_file_order_start == undefined) media_file_order_start = 0;
+        
+        //show and hide the correct buttons
+        $(editor_data.editor_css_selector + ' .mat_record_time').show();
+        $(editor_data.editor_css_selector + ' .mat_pause_alignment').show();
+        $(editor_data.editor_css_selector + ' .mat_start_alignment').hide();
+        $(editor_data.editor_css_selector + ' .mat_resume_alignment').hide();
+        $(editor_data.editor_css_selector + ' .mat_save_alignment').hide();
+        $(editor_data.editor_css_selector + ' .mat_cancel_alignment').hide();
+        
+        //set the editor position
+        editor_data.manual_text_segment_position = parseInt(text_segment_index_start);
+        editor_data.manual_text_segment_index_end = parseInt(text_segment_index_end);
+        
+        //set up manual alignment array if necessary
+        if(editor_data.manual_text_segment_alignment == undefined) {
+            editor_data.manual_text_segment_alignment = new Array();
+        }
+        
+        //position the highlight at the first word
+        _textSegmentHighlight($this, text_segment_index_start);
+        
+        //save data objects
+        $this.data('mediaAlignedTextEditor', editor_data);
+        data.check_time_disabled = true;
+        $this.data('mediaAlignedText', data);
+        
+        //begin playing and recording
+        alert('To track the text along with the audio simply press the space bar.  Once you click OK, the audio will begin in 1 second.');
+        var t = setTimeout(function () {$this.jPlayer('play', time_start);}, 1000);
+        
+        //set focus on recording
+        $(editor_data.editor_css_selector + ' .mat_record_time').focus();
+    };
+    
     /**
      * Highlight a particular time segment
      * 
@@ -600,9 +696,6 @@
      */
     var _textSegmentHighlight = function($this, text_segment_index) {
         
-        //remove previous highlights
-        $('.mat_highlighted_text_segment').removeClass('mat_highlighted_text_segment');
-        $('.mat_highlighted_time_segment').removeClass('mat_highlighted_time_segment');
         
         //add the highlight classes 
         $('#time_segment_'+text_segment_index).addClass('mat_highlighted_time_segment');
@@ -640,6 +733,7 @@
     var _textSegmentRemoveHighlight = function($this, text_segment_index){
 
         $('[data-mat_segment='+text_segment_index+']').removeClass('mat_highlighted_text_segment');
+        $('#time_segment_'+text_segment_index).removeClass('mat_highlighted_time_segment');
         /*
         $('#time_segment_'+text_segment_index).removeClass('mat_highlighted_time_segment');
         $('.mat_text_segment_'+text_segment_index).removeClass('mat_highlighted_text_segment');
