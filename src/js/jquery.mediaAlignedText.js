@@ -51,7 +51,8 @@
                 'highlight_function'        : _textSegmentHighlight, //the function to use to highlight - requires object and text_segment_id as arguments
                 'highlight_remove_function' : _textSegmentRemoveHighlight,  //function to remove highligh - requires object and text_segment_id as arguments
                 'time_start_attribute'      : 'data-time_start',
-                'time_end_attribute'        : 'data-time_end'
+                'time_end_attribute'        : 'data-time_end',
+                'check_time_disabled'       : false
             }, options);
             
             //save options to the objects namespaced data holder
@@ -120,6 +121,9 @@
     
     var _checkTimeChange = function($this){
         var data = $this.data('mediaAlignedText');
+        
+        //if checking time has been turned off then disable
+        if(data.check_time_disabled) return false;
         
         var current_time = parseFloat($this.data("jPlayer").status.currentTime)*1000;
         var current_text_segment_invalid = false;
