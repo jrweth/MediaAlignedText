@@ -189,15 +189,25 @@
             $(options.editor_css_selector + ' .mat_output').val(html);
             
             //initialize the media file options for the MediaAlignedText player
-            var media_files = new Array({'duration': parseFloat(options.duration), 'media_type': 'AUDIO', 'media': {}});
+            var media_files = new Array({'media_type': 'AUDIO', 'media': {}});
             media_files[0].media[options.media_file_type] = options.url;
             options.media_aligned_text_options.media_files = media_files;
+            
+            //set the on ready function -- this is to automatically load so duration can be found
+            options.media_aligned_text_options.jplayer_options = {'ready': function() {
+                var $this = $(this);
+                var data = $this.data('mediaAlignedText');
+                $this.jPlayer("setMedia", data.media_files[0].media);
+                $this.jPlayer('play');
+                $this.jPlayer('pause');
+                _afterLoadInit($this);
+            }};
+            
             
             //start the media aligned text stuff
             $this.mediaAlignedText(options.media_aligned_text_options);
             
             //initialize the editor
-            options.duration = parseFloat(options.duration);
             $this.data('mediaAlignedTextEditor', options);
             _initTimeEditor($this);
             
@@ -504,6 +514,18 @@
         }
     };
     
+    var _afterLoadInit = function($this) {
+        if($this.data('jPlayer').status.duration == 0) {
+            var t= setTimeout(function(){_afterLoadInit($this)},200);
+        }
+        else {
+            alert($this.data('jPlayer').status.duration);
+            var data = $this.data('mediaAlignedText');
+            data.media_files[0].duration = $this.data('jPlayer').status.duration;
+            $this.data('mediaAlignedText', data);
+            _initTimeEditor($this);
+        }
+    };
     
     /**
      * get the html for an individual time segment
