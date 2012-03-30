@@ -117,23 +117,18 @@
                 'text_init_type'            : 'WORD', //what to break on (can be WORD, LINE, SENTENCE, STANZA, TAGGED(already tagged)
                 'eclosing_tag'              : 'span', // the tag to enclose the text segments in
                 'url'                       : '', //url of the media file
-                'duration'                  : 0, //duration in milliseconds of the media file
                 'text'                      : '', //the text to align
                 'editor_css_selector'       : '#mat_editor', //css selector for editor
                 'viewable_media_segments'   : 5, //average number of segments viewable on the viewer
                 'color_toggle_classes'      : ['mat_toggle_bg_color_0', 'mat_toggle_bg_color_1', 'mat_toggle_bg_color_2', 'mat_toggle_bg_color_3'], //array of classes to toggle through
-                'highlight_function'        : _textSegmentHighlight, //the function to use to highlight - requires object and text_segment_index as arguments
-                'highlight_remove_function' : _textSegmentRemoveHighlight,  //function to remove highligh - requires object and text_segment_index as arguments
                 'media_aligned_text_options': {} //options to pass to the mediaAlignedText init function
             }, options);
-
-            //merge supplied mediaAlignedText options with default options
+            
+            //merge supplied mediaAlignedText options with default options 
             options.media_aligned_text_options = $.extend({
                 'text_viewer_css_selector'  : '#mat_text_viewer',    //id of the div where the text is displayed
                 'time_start_attribute'      : 'data-time_start',     //time_start attribute in aligned text
-                'time_end_attribute'        : 'data-time_end',       //time_end attribute in aligned text
-                'highlight_function'        : options.highlight_function,
-                'highligh_remove_function'  : options.highlight_remove_function
+                'time_end_attribute'        : 'data-time_end'       //time_end attribute in aligned text
             }, options.media_aligned_text_options);
             
             
@@ -193,22 +188,39 @@
             media_files[0].media[options.media_file_type] = options.url;
             options.media_aligned_text_options.media_files = media_files;
             
-            //set the on ready function -- this is to automatically load so duration can be found
-            options.media_aligned_text_options.jplayer_options = {'ready': function() {
-                var $this = $(this);
-                var data = $this.data('mediaAlignedText');
-                $this.jPlayer("setMedia", data.media_files[0].media);
-                $this.jPlayer('play');
-                $this.jPlayer('pause');
-                _afterLoadInit($this);
-            }};
-            
+            //set the on ready and progress event function -- this is to automatically load audio so duration can be found
+            options.media_aligned_text_options.jplayer_options = {
+                'ready': function() {
+                    var $this = $(this);
+                    var data = $this.data('mediaAlignedText');
+                    $this.jPlayer("setMedia", data.media_files[0].media);
+                    $this.jPlayer('play');
+                    $this.jPlayer('pause');
+                },
+                'progress' : function(event) {
+                    if(event.jPlayer.status.seekPercent === 100) {
+                        _afterLoadInit($this);
+                    }
+                }
+            };
             
             //start the media aligned text stuff
             $this.mediaAlignedText(options.media_aligned_text_options);
             
+            //bind the highlight functions to time editor functions\
+            $(document).bind('mediaAlignedText.highlight', function(event, parameters) {
+                _timeSegmentHighlight($this, parameters.text_segment_index);
+            });
+            
+            //bind the remove_highlight event to the remove_highlight function
+            $(document).bind('mediaAlignedText.highlight_remove', function(event, parameters) {
+                _timeSegmentHighlightRemove($this, parameters.text_segment_index);
+            });
+            
+            
             //initialize the editor
             $this.data('mediaAlignedTextEditor', options);
+            
             _initTimeEditor($this);
             
         },
@@ -291,8 +303,9 @@
             editor_data.manual_text_segment_position = editor_data.manual_text_segment_position + 1;
 
             //unhighlight and highlight the selected word
-            editor_data.highlight_remove_function($this, editor_data.manual_text_segment_position - 1);
-            editor_data.highlight_function($this, editor_data.manual_text_segment_position);
+            var previous_text_segment_index = editor_data.manual_text_segment_position - 1;
+            $(document).trigger('mediaAlignedText.highlight_remove', {'text_segment_index': previous_text_segment_index});
+            $(document).trigger('mediaAlignedText.highlight', {'text_segment_index': editor_data.manual_text_segment_position});
             $this.data('mediaAlignedTextEditor', editor_data);
             
         },
@@ -515,16 +528,12 @@
     };
     
     var _afterLoadInit = function($this) {
-        if($this.data('jPlayer').status.duration == 0) {
-            var t= setTimeout(function(){_afterLoadInit($this)},200);
-        }
-        else {
-            alert($this.data('jPlayer').status.duration);
-            var data = $this.data('mediaAlignedText');
-            data.media_files[0].duration = $this.data('jPlayer').status.duration;
-            $this.data('mediaAlignedText', data);
-            _initTimeEditor($this);
-        }
+
+        var data = $this.data('mediaAlignedText');
+        data.media_files[0].duration = $this.data('jPlayer').status.duration;
+        $this.data('mediaAlignedText', data);
+        _initTimeEditor($this);
+
     };
     
     /**
@@ -695,7 +704,7 @@
         }
         
         //position the highlight at the first word
-        _textSegmentHighlight($this, text_segment_index_start);
+        $(document).trigger('mediaAlignedText.highlight', {'text_segment_index' : text_segment_index_start}); 
         
         //save data objects
         $this.data('mediaAlignedTextEditor', editor_data);
@@ -716,17 +725,11 @@
      * @param jQueryObject     $this    The obect on which the mediaAlignedText has been instantiated
      * @param time_segment_id  integer  The id of the textSegment to be highlighted
      */
-    var _textSegmentHighlight = function($this, text_segment_index) {
+    var _timeSegmentHighlight = function($this, text_segment_index) {
         
         
         //add the highlight classes 
         $('#time_segment_'+text_segment_index).addClass('mat_highlighted_time_segment');
-        $('[data-mat_segment='+text_segment_index+']').addClass('mat_highlighted_text_segment');
-        
-        //scroll to the appropriate spot of the text
-        if($('.mat_highlighted_text_segment').length > 0) {
-            $($this.data('mediaAlignedText').text_viewer_css_selector).scrollTo('.mat_highlighted_text_segment', 250, {'axis': 'y', 'offset': -20});
-        }
         
         //scroll to the appropriate spot of the time line
         if($('.mat_highlighted_time_segment').length > 0) {
@@ -740,9 +743,9 @@
         if(text_segment != undefined) {
             $('#mat_editor_start_time').val(text_segment.time_start/1000);
             $('#mat_editor_end_time').val(text_segment.time_end/1000);
+            _setTimeSlider($this, parseFloat(text_segment_index));
         }
     
-        _setTimeSlider($this, parseFloat(text_segment_index));
         
     };
     
@@ -752,16 +755,8 @@
      * @param jQueryObject     $this   The obect on which the mediaAlignedText has been instantiated
      * @param text_segment_index  integer  The id of the textSegment to have highlighting removed
      */
-    var _textSegmentRemoveHighlight = function($this, text_segment_index){
-
-        $('[data-mat_segment='+text_segment_index+']').removeClass('mat_highlighted_text_segment');
+    var _timeSegmentHighlightRemove = function($this, text_segment_index){
         $('#time_segment_'+text_segment_index).removeClass('mat_highlighted_time_segment');
-        /*
-        $('#time_segment_'+text_segment_index).removeClass('mat_highlighted_time_segment');
-        $('.mat_text_segment_'+text_segment_index).removeClass('mat_highlighted_text_segment');
-        $('#mat_editor_start_time').val('');
-        $('#mat_editor_end_time').val('');
-        */
     };
     
     /**
