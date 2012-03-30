@@ -10,13 +10,13 @@ The initial focus is an HTML5 audio player which has typical audio controls link
 
 Modules
 -------------
-Player:  The MediaAlignedText Player is a javascript library written as a jQuery plugin that handles the playback of aligned media and text in a web browser. All that is needed to use the player is the javascript library (including other javascript libraries dependencies), a publically accessible media file, and the html tagged version of text containing the alignment data.
+Player:  The MediaAlignedText Player is a javascript library written as a jQuery plugin that handles the playback of aligned media and text in a web browser. All that is needed to use the player is the javascript library (including other javascript libraries dependencies), a publically accessible media file, and the audio tagged html version of text containing the alignment data.
 
 
-Editor:  The MediaAlignedText Editor is a javascript library that extends the functionality of the MediaAlignedText Player by allowing the user to create and edit the alignment data linking the media and the text.
+Editor:  The MediaAlignedText Editor is a javascript library that extends the functionality of the MediaAlignedText Player by allowing the user to create and edit the audio tagged html alignment data linking the media and the text.
 
 
-AutoAligner:  (proposed) The AutoAligner is a server side program that will take a media file and corresponding text and automatically create the html tagged text for use by the MediaAlignedText Player.
+AutoAligner:  (proposed) The AutoAligner is a server side program that will take a media file and corresponding text and automatically create the audio tagged html text for use by the MediaAlignedText Player.
 
 
 
