@@ -49,10 +49,11 @@
                 'jplayer_control_options'   : {},                    //options to send to the jplayer control generator
                 'generate_jplayer_controls' : true,                  //flag indicating if controls should be generated or not
                 'highlight_function'        : _textSegmentHighlight, //the function to use to highlight - requires object and text_segment_id as arguments
-                'highlight_remove_function' : _textSegmentRemoveHighlight,  //function to remove highligh - requires object and text_segment_id as arguments
+                'highlight_remove_function' : _textSegmentHighlightRemove,  //function to remove highligh - requires object and text_segment_id as arguments
                 'time_start_attribute'      : 'data-time_start',
                 'time_end_attribute'        : 'data-time_end',
-                'check_time_disabled'       : false
+                'check_time_disabled'       : false,
+                'on_ready_function'         : undefined
             }, options);
             
             //save options to the objects namespaced data holder
@@ -75,6 +76,14 @@
             _initTextSegments($this);
             _initJplayer($this);
             
+            //bind the highlight event to the highlight function
+            $(document).bind('mediaAlignedText.highlight', function(event, parameters) {
+                options.highlight_function($this, parameters.text_segment_index);
+            });
+            //bind the remove_highlight event to the remove_highlight function
+            $(document).bind('mediaAlignedText.highlight_remove', function(event, parameters) {
+                options.highlight_remove_function($this, parameters.text_segment_index);
+            });
         },
         
         //handles advancing to the aligned time of media when charGroup div clicked
@@ -146,7 +155,7 @@
         else {    //unset the current text segment to remove highlight
             if(data.current_text_segment_index != undefined) {
                 
-                data.highlight_remove_function($this, data.current_text_segment_index);
+                $(document).trigger('mediaAlignedText.highlight_remove', {'text_segment_index': data.current_text_segment_index});
                 //unset the current_text_segment if necessary
                 data.current_text_segment_index = undefined;
                 current_text_segment_invalid = true;
@@ -211,10 +220,12 @@
                 types_supplied = types_supplied + i + ',';
             }
             
-            //load the media file
-            data.jplayer_options.ready = function() {
-                $(this).jPlayer("setMedia", data.media_files[0].media);
-            };
+            if(data.jplayer_options.ready == undefined) {
+                //load the media file
+                data.jplayer_options.ready = function() {
+                    $(this).jPlayer("setMedia", data.media_files[0].media);
+                };
+            }
             
             //knock off the last comma
             types_supplied = types_supplied.substring(0, types_supplied.length-1);
@@ -353,15 +364,15 @@
         }
         //if current text segment already set unhighlight it
         if (data.current_text_segment_index != undefined) {
-            data.highlight_remove_function($this, data.current_text_segment_index);
+            
         }
         
+        $(document).trigger('mediaAlignedText.highlight_remove', {'text_segment_index': data.current_text_segment_index});
+        $(document).trigger('mediaAlignedText.highlight', {'text_segment_index': text_segment_index});
+        
         //set new values for current and then highlight
-        data.current_text_segment_index= text_segment_index;
+        data.current_text_segment_index = text_segment_index;
         $this.data('mediaAlignedText', data);
-        
-        data.highlight_function($this, text_segment_index);
-        
     };
     
     /**
@@ -381,7 +392,7 @@
      * @param jQueryObject     $this   The obect on which the mediaAlignedText has been instantiated
      * @param text_segment_index  integer  The id of the textSegment to have highlighting removed
      */
-    var _textSegmentRemoveHighlight = function($this, text_segment_index){
+    var _textSegmentHighlightRemove = function($this, text_segment_index){
         $('[data-mat_segment='+text_segment_index+']').removeClass('mat_highlighted_text_segment');
     };
     
