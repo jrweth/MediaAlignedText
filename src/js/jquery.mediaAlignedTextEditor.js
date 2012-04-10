@@ -34,7 +34,6 @@
      * Define the following public methods
      * - clearAlignment       Remove all segment and time alignment
      * - init                 Initialize the MediaAlignedText
-     * - initMediaText        Create new text encoded json_alignment based upon passed in plain text
      * - outputAlignment      Output the current alignment
      * - pauseManualAlignment Pause the manual alignment that is currently being recorded
      * - playCurrentSegment   Play the currentlu selected segment via the player
