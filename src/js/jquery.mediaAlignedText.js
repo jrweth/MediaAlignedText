@@ -134,7 +134,7 @@
         //if checking time has been turned off then disable
         if(data.check_time_disabled) return false;
         
-        var current_time = parseFloat($this.data("jPlayer").status.currentTime)*1000;
+        var current_time = Math.round(parseFloat($this.data("jPlayer").status.currentTime)*1000);
         var current_text_segment_invalid = false;
         
         //get current start and end times as a convenience
@@ -144,12 +144,12 @@
         }
         else {
             var segment = data.text_segments[data.current_text_segment_index];
-            var current_segment_start = parseFloat(segment.time_start);
+            var current_segment_start = parseFloat(segment.time_start) -5; //-5 is hack since some browsers were setting time a bit off
             var current_segment_end = parseFloat(segment.time_end);
         }
         
         //check if we are still in the timeframe of the currently selected text segment
-        if(current_time >= current_segment_start && current_time <= current_segment_end) {
+        if(current_time >= current_segment_start && current_time < current_segment_end) {
             return true;
         }
         else {    //unset the current text segment to remove highlight
@@ -259,7 +259,7 @@
             text_segments[index] = {'time_start': parseFloat($this.attr(data.time_start_attribute))};
             
             if($this.attr(data.time_end_attribute)) {
-                text_segments[index].time_end = $this.attr(data.time_end_attribute);
+                text_segments[index].time_end = parseFloat($this.attr(data.time_end_attribute));
             }
             
             //add end time to previous segment if not yet defined
@@ -359,7 +359,7 @@
         var data = $this.data('mediaAlignedText');
         
         //if it is already set than do nothing
-        if (data.current_text_segment_index == text_segment_index) {
+        if (data.current_text_segment_index == parseInt(text_segment_index)) {
             return true;
         }
         //if current text segment already set unhighlight it
@@ -371,7 +371,8 @@
         $(document).trigger('mediaAlignedText.highlight', {'text_segment_index': text_segment_index});
         
         //set new values for current and then highlight
-        data.current_text_segment_index = text_segment_index;
+        data.current_text_segment_index = parseInt(text_segment_index);
+        
         $this.data('mediaAlignedText', data);
     };
     
