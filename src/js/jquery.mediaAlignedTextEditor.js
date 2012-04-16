@@ -236,7 +236,10 @@
             
             //get rid of mat_text_segment class
             html = html.replace(/mat_text_segment/ig,'');
-          
+
+            //get rid of highlighted segment
+            html = html.replace(/mat_highlighted_text_segment/ig,'');
+            
             //loop through color toggles and remove
             for(i in editor_data.color_toggle_classes) {
                 var re = new RegExp(editor_data.color_toggle_classes[i],"g");
