@@ -24,10 +24,6 @@
             <input type="text" id="mat_media_url" value ="media_files/hobbit-1a.mp3"/>
         </div>
         <div>
-            <label for="mat_duration">Duration in seconds</label>
-            <input type="text" id="mat_duration" value="42"/>
-        </div>
-        <div>
             <label for="mat_media_file_type">Media File Type</label>
             <select id="mat_media_file_type">
                 <option value="mp3">mp3</option>
@@ -54,7 +50,6 @@ It had a perfectly round door like a porthole, painted green, with a shiny yello
             $('#mat_editor').show('200')
             $('#jquery_jplayer_1').mediaAlignedTextEditor({
                 'url': $('#mat_media_url').val(),
-                'duration': $('#mat_duration').val(),
                 'file_type': $('#mat_media_file_type').val(),
                 'text_init_type': $('#mat_init_type').val(),
                 'text': $('#mat_text_input').val()});;">Intialize Alignment</button>
