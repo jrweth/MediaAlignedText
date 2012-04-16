@@ -49,9 +49,11 @@
                 'jplayer_control_options'   : {},                    //options to send to the jplayer control generator
                 'generate_jplayer_controls' : true,                  //flag indicating if controls should be generated or not
                 'highlight_function'        : _textSegmentHighlight, //the function to use to highlight - requires object and text_segment_id as arguments
-                'highlight_remove_function' : _textSegmentRemoveHighlight,  //function to remove highligh - requires object and text_segment_id as arguments
+                'highlight_remove_function' : _textSegmentHighlightRemove,  //function to remove highligh - requires object and text_segment_id as arguments
                 'time_start_attribute'      : 'data-time_start',
-                'time_end_attribute'        : 'data-time_end'
+                'time_end_attribute'        : 'data-time_end',
+                'check_time_disabled'       : false,
+                'on_ready_function'         : undefined
             }, options);
             
             //save options to the objects namespaced data holder
@@ -59,28 +61,29 @@
             var data = $this.data('mediaAlignedText');
             
             if(!data) {
-                $(this).data('mediaAlignedText', options);
+                $this.data('mediaAlignedText', options);
             }
             
             //initialized jplayer controls
             if(options.generate_jplayer_controls) {
-                if(options.media_files[0] != undefined) {
+                if(options.media_files[0] != undefined && options.media_files[0].title != undefined) {
                     options.jplayer_control_options.title = options.media_files[0].title;
                 }
                 $('#'+options.jplayer_controls_id).html(_getJplayerContainerHtml(options.jplayer_control_options));
             }
             
-            //set the initial media file for the jplayer
-            if(options.media_files != undefined) {
-                options.jplayer_options.ready = function() {
-                    $(this).jPlayer("setMedia", options.media_files[0].media);
-                };
-            }
-            
             //initialize all the mappings and components
             _initTextSegments($this);
-            _initJplayer($this, options.jplayer_options);
+            _initJplayer($this);
             
+            //bind the highlight event to the highlight function
+            $(document).bind('mediaAlignedText.highlight', function(event, parameters) {
+                options.highlight_function($this, parameters.text_segment_index);
+            });
+            //bind the remove_highlight event to the remove_highlight function
+            $(document).bind('mediaAlignedText.highlight_remove', function(event, parameters) {
+                options.highlight_remove_function($this, parameters.text_segment_index);
+            });
         },
         
         //handles advancing to the aligned time of media when charGroup div clicked
@@ -89,15 +92,18 @@
             var $this = $(this);
             var data = $this.data('mediaAlignedText');
             
-            if( text_segment_index ) {
+            if( text_segment_index) {
                 var text_segment = data.text_segments[text_segment_index];
-                //go to the place in the media file 
-                if($this.data('jPlayer').status.paused) { //if player paused just advance
-                    $this.jPlayer('pause', text_segment.time_start/1000);
-                    _setCurrentTextSegment($this, text_segment_index);
-                }
-                else { // if player not paused then go to 
-                    $this.jPlayer('play', text_segment.time_start/1000);
+                _setCurrentTextSegment($this, text_segment_index);
+                
+                if(text_segment.time_start >= 0) {
+                    //go to the place in the media file 
+                    if($this.data('jPlayer').status.paused) { //if player paused just advance
+                        $this.jPlayer('pause', text_segment.time_start/1000);
+                    }
+                    else { // if player not paused then go to 
+                        $this.jPlayer('play', text_segment.time_start/1000);
+                    }
                 }
             }
         },
@@ -125,7 +131,10 @@
     var _checkTimeChange = function($this){
         var data = $this.data('mediaAlignedText');
         
-        var current_time = parseFloat($this.data("jPlayer").status.currentTime)*1000;
+        //if checking time has been turned off then disable
+        if(data.check_time_disabled) return false;
+        
+        var current_time = Math.round(parseFloat($this.data("jPlayer").status.currentTime)*1000);
         var current_text_segment_invalid = false;
         
         //get current start and end times as a convenience
@@ -135,20 +144,19 @@
         }
         else {
             var segment = data.text_segments[data.current_text_segment_index];
-            var current_segment_start = parseFloat(segment.time_start);
+            var current_segment_start = parseFloat(segment.time_start) -5; //-5 is hack since some browsers were setting time a bit off
             var current_segment_end = parseFloat(segment.time_end);
         }
         
         //check if we are still in the timeframe of the currently selected text segment
-        if(current_time >= current_segment_start && current_time <= current_segment_end) {
+        if(current_time >= current_segment_start && current_time < current_segment_end) {
             return true;
         }
         else {    //unset the current text segment to remove highlight
             if(data.current_text_segment_index != undefined) {
                 
-                data.highlight_remove_function($this, data.current_text_segment_index);
+                $(document).trigger('mediaAlignedText.highlight_remove', {'text_segment_index': data.current_text_segment_index});
                 //unset the current_text_segment if necessary
-                data.current_text_segment = undefined;
                 data.current_text_segment_index = undefined;
                 current_text_segment_invalid = true;
 
@@ -196,30 +204,42 @@
     };
     
     //initialize the Jplayer
-    var _initJplayer = function ($this, options) {
+    var _initJplayer = function ($this) {
+        
+        var data = $this.data('mediaAlignedText');
         
         //get the media types supplied by looking at the first media file
         var types_supplied = '';
-        if(options.media_files == undefined) {
+        
+        //check to see if the media file is defined
+        if(data.media_files == undefined) {
             types_supplied = 'mp3';
         }
         else {
-            for(i in $this.data('mediaAlignedText').media_files[0].media) {
+            for(i in data.media_files[0].media) {
                 types_supplied = types_supplied + i + ',';
             }
+            
+            if(data.jplayer_options.ready == undefined) {
+                //load the media file
+                data.jplayer_options.ready = function() {
+                    $(this).jPlayer("setMedia", data.media_files[0].media);
+                };
+            }
+            
+            //knock off the last comma
+            types_supplied = types_supplied.substring(0, types_supplied.length-1);
         }
         
-        //knock off the last comma
-        types_supplied = types_supplied.substring(0, types_supplied.length-1);
         
         //initiate the jplayer
-        var options = $.extend({
+        data.jplayer_options = $.extend({
               swfPath: 'js',
-              supplied: 'mp3',
+              supplied: types_supplied,
               timeupdate: function() {_checkTimeChange($(this));}
-        }, options);
+        }, data.jplayer_options);
         
-        $this.jPlayer(options);
+        $this.jPlayer(data.jplayer_options);
     };
     
     
@@ -239,7 +259,7 @@
             text_segments[index] = {'time_start': parseFloat($this.attr(data.time_start_attribute))};
             
             if($this.attr(data.time_end_attribute)) {
-                text_segments[index].time_end = $this.attr(data.time_end_attribute);
+                text_segments[index].time_end = parseFloat($this.attr(data.time_end_attribute));
             }
             
             //add end time to previous segment if not yet defined
@@ -247,6 +267,17 @@
                 text_segments[index-1].time_end = parseFloat($this.attr(data.time_start_attribute));
             }
         });
+        
+        //set the time end for the last segment
+        if(text_segments.length && text_segments[text_segments.length - 1].time_end == undefined) {
+            //if time_start is undefined or -1 set to -1
+            if(text_segments[text_segments.length - 1].time_start >= 0 && data.media_files[0].duration > 0) {
+                text_segments[text_segments.length - 1].time_end = data.media_files[0].duration;
+            }
+            else { //set to the start time
+                text_segments[text_segments.length -1].time_end = text_segments[text_segments.length -1].time_start;
+            }
+        }
         
         $(data.text_viewer_css_selector).on(
             'click.mediaAlignedText',
@@ -328,18 +359,19 @@
         var data = $this.data('mediaAlignedText');
         
         //if it is already set than do nothing
-        if (data.current_text_segment_index == text_segment_index) {
+        if (data.current_text_segment_index == parseInt(text_segment_index)) {
             return true;
         }
         //if current text segment already set unhighlight it
-        if (data.current_text_segment_index == undefined) {
-            data.highlight_remove_function($this, data.current_text_segment_index);
+        if (data.current_text_segment_index != undefined) {
+            
         }
         
+        $(document).trigger('mediaAlignedText.highlight_remove', {'text_segment_index': data.current_text_segment_index});
+        $(document).trigger('mediaAlignedText.highlight', {'text_segment_index': text_segment_index});
+        
         //set new values for current and then highlight
-        data.current_text_segment_index= text_segment_index;
-        data.current_text_segment = data.text_segments[text_segment_index];
-        data.highlight_function($this, text_segment_index);
+        data.current_text_segment_index = parseInt(text_segment_index);
         
         $this.data('mediaAlignedText', data);
     };
@@ -351,7 +383,6 @@
      * @param text_segment_index  integer  The index of the textSegment to be highlighted
      */
     var _textSegmentHighlight = function($this, text_segment_index) {
-        $('.mat_highlighted_text_segment').removeClass('mat_highlighted_text_segment');
         $('[data-mat_segment='+text_segment_index+']').addClass('mat_highlighted_text_segment');
         $($this.data('mediaAlignedText').text_viewer_css_selector).scrollTo('.mat_highlighted_text_segment', 250, {'axis': 'y', 'offset': -20});
     };
@@ -362,7 +393,7 @@
      * @param jQueryObject     $this   The obect on which the mediaAlignedText has been instantiated
      * @param text_segment_index  integer  The id of the textSegment to have highlighting removed
      */
-    var _textSegmentRemoveHighlight = function($this, text_segment_index){
+    var _textSegmentHighlightRemove = function($this, text_segment_index){
         $('[data-mat_segment='+text_segment_index+']').removeClass('mat_highlighted_text_segment');
     };
     
