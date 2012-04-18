@@ -150,7 +150,7 @@
         
         //check if we are still in the timeframe of the currently selected text segment
         if(current_time >= current_segment_start && 
-                (current_time < current_segment_end || data.current_text_segment_index == data.text_segments.length - 1)
+                (current_time < current_segment_end || (data.current_text_segment_index == data.text_segments.length - 1 && current_segment_start >=0))
         ){
             return true;
         }
@@ -186,7 +186,7 @@
                 //set the text_segment var for convenience
                 var text_segment = data.text_segments[i];
                 if(text_segment.time_start < current_time && 
-                    (text_segment.time_end > current_time || i == data.text_segments.length - 1)) {
+                    (text_segment.time_end > current_time || (i == data.text_segments.length - 1 && text_segment.time_start >= 0))) {
                     _setCurrentTextSegment($this, i);
                     //check for the next match
                     return(true);
