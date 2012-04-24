@@ -16,9 +16,6 @@ Player:  The MediaAlignedText Player is a javascript library written as a jQuery
 Editor:  The MediaAlignedText Editor is a javascript library that extends the functionality of the MediaAlignedText Player by allowing the user to create and edit the audio tagged html alignment data linking the media and the text.
 
 
-AutoAligner:  (proposed) The AutoAligner is a server side program that will take a media file and corresponding text and automatically create the audio tagged html text for use by the MediaAlignedText Player.
-
-
 
 Library Dependencies:
 -------------------
