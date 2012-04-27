@@ -1,0 +1,69 @@
+@CHARSET "ISO-8859-1";
+
+/* Specific Div Styling ********************************************/
+
+
+#mat_text_viewer {
+    margin-top: 10px;
+    height: 150px;
+    width: 420px;
+    border:1px solid blue;
+    overflow: auto;
+    padding: 3px;
+}
+
+#mat_time_slider {
+    position: absolute;
+    width: 500px;
+}
+
+#mat_timeline {
+    position: relative;
+    height: 60px;
+}
+
+#mat_time_editor {
+    width: 500px;
+    height: 80px;
+    padding-top: 5px;
+    border: 1px solid black;
+}
+
+/* General Class Styling ********************************************/
+
+.mat_text_title {
+    font-weight: bold;
+}
+
+
+.mat_highlighted_text_segment{
+    background-color: rgba(200,200,200,0.5);
+    margin-top: 3px;
+    border-bottom: 1px solid black;
+}
+
+.mat_time_segment {
+	position: absolute;
+	height: 36px;
+	border-top: 3px solid transparent;
+	border-right: 1px solid black;
+	border-left: 1px solid black;
+	overflow: hidden;
+}
+
+.mat_highlighted_time_segment {
+    border-top: 3px solid black;
+}
+
+.mat_toggle_bg_color_0 {
+	background-color: rgb(198, 230 ,247);
+}
+.mat_toggle_bg_color_1 {
+    background-color: rgb(240, 236,180);
+}
+.mat_toggle_bg_color_2 {
+    background-color: rgb(181, 247, 229);
+}
+.mat_toggle_bg_color_3 {
+    background-color: rgb(255, 212, 179);
+}
