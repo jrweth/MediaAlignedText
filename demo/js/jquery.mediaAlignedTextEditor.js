@@ -118,6 +118,7 @@
                 'url'                       : '', //url of the media file
                 'text'                      : '', //the text to align
                 'editor_css_selector'       : '#mat_editor', //css selector for editor
+                'generate_editor_html'      : true,  //flag indicating if editor html should be generated or not
                 'viewable_media_segments'   : 5, //average number of segments viewable on the viewer
                 'color_toggle_classes'      : ['mat_toggle_bg_color_0', 'mat_toggle_bg_color_1', 'mat_toggle_bg_color_2', 'mat_toggle_bg_color_3'], //array of classes to toggle through
                 'media_aligned_text_options': {} //options to pass to the mediaAlignedText init function
@@ -130,6 +131,10 @@
                 'time_end_attribute'        : 'data-time_end'       //time_end attribute in aligned text
             }, options.media_aligned_text_options);
             
+            //initialize html editor
+            if(options.generate_editor_html) {
+                $(options.editor_css_selector).html(_getEditorHtml($this, options));
+            }
             
             //create the html and enter into the mat_text_viewer 
             if(options.text_init_type == 'TAGGED') {
@@ -236,7 +241,10 @@
             
             //get rid of mat_text_segment class
             html = html.replace(/mat_text_segment/ig,'');
-          
+
+            //get rid of highlighted segment
+            html = html.replace(/mat_highlighted_text_segment/ig,'');
+            
             //loop through color toggles and remove
             for(i in editor_data.color_toggle_classes) {
                 var re = new RegExp(editor_data.color_toggle_classes[i],"g");
@@ -532,6 +540,50 @@
         data.media_files[0].duration = $this.data('jPlayer').status.duration;
         $this.data('mediaAlignedText', data);
         _initTimeEditor($this);
+
+    };
+    
+    var _getEditorHtml = function($this, options) {
+    
+        return '<h2>Record and Edit Alignment</h2>\
+        \
+        <button class="mat_start_alignment" onclick="$(\'#jquery_jplayer_1\').mediaAlignedTextEditor(\'startManualAlignment\')">start recording alignment</button>\
+        <button class="mat_resume_alignment" style="display: none" onclick="$(\'#jquery_jplayer_1\').mediaAlignedTextEditor(\'resumeManualAlignment\')">resume recording alignment</button>\
+        <button class="mat_record_time" style="display: none" onclick="$(\'#jquery_jplayer_1\').mediaAlignedTextEditor(\'recordManualTime\')">record manual time</button>\
+        <button class="mat_pause_alignment" style="display: none" onclick="$(\'#jquery_jplayer_1\').mediaAlignedTextEditor(\'pauseManualAlignment\')">pause recording alignment</button>\
+        <button class="mat_save_alignment" style="display: none" onclick="$(\'#jquery_jplayer_1\').mediaAlignedTextEditor(\'saveManualAlignment\')">save new alignment</button>\
+        <button class="mat_cancel_alignment" style="display: none" onclick="$(\'#jquery_jplayer_1\').mediaAlignedTextEditor(\'cancelManualAlignment\')">cancel changes to alignment</button>\
+        \
+        <div id="mat_text_viewer"></div>\
+        \
+        <h3>Timeline</h3>\
+        <div>\
+            <a href="#" onclick="$(\'#jquery_jplayer_1\').mediaAlignedTextEditor(\'zoomTimeEditor\', -1)">zoom in</a>&nbsp;&nbsp;\
+            <a href="#" onclick="$(\'#jquery_jplayer_1\').mediaAlignedTextEditor(\'zoomTimeEditor\', 1)">zoom out</a>\
+        </div>\
+        <div id="mat_time_editor" style="overflow: auto">\
+            <div id="mat_timeline">\
+                <div id="mat_time_slider"></div>\
+            </div>\
+        </div>\
+        \
+        <div id="mat_manual_editor">\
+            start time: <input type="text" id="mat_editor_start_time" size="5"/>\
+            end time: <input type="text" id="mat_editor_end_time" size="5"/>\
+            <button onclick="$(\'#jquery_jplayer_1\').mediaAlignedTextEditor(\'updateSegmentTime\');">update time</button>\
+            <button onclick="$(\'#jquery_jplayer_1\').mediaAlignedTextEditor(\'playCurrentSegment\');">play segment</button>\
+        </div>\
+        \
+        <h3>HTML Alignment</h3>\
+        \
+        <button onclick="$(\'#jquery_jplayer_1\').mediaAlignedTextEditor(\'clearAlignment\')">clear all timing</button>&nbsp;&nbsp;\
+        <a href="#" onclick="\
+            $(\'#jquery_jplayer_1\').mediaAlignedTextEditor(\'outputAlignment\');\
+            window.prompt (\'Copy to clipboard: Press Ctrl+C then Enter/Return\', $(\'.mat_output\').val());\
+            return false;\
+            "\
+        >copy</a>\
+        <br /><textarea disabled="disabled" class="mat_output" rows="10" cols="50"></textarea>';
 
     };
     
