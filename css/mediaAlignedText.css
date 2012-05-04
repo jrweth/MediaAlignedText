@@ -10,6 +10,7 @@
     border:1px solid blue;
     overflow: auto;
     padding: 3px;
+    line-height: 125%;
 }
 
 #mat_time_slider {
