@@ -545,9 +545,7 @@
     
     var _getEditorHtml = function($this, options) {
     
-        return '<h2>Record and Edit Alignment</h2>\
-        \
-        <button class="mat_start_alignment" onclick="$(\'#jquery_jplayer_1\').mediaAlignedTextEditor(\'startManualAlignment\')">start recording alignment</button>\
+        return '<button class="mat_start_alignment" onclick="$(\'#jquery_jplayer_1\').mediaAlignedTextEditor(\'startManualAlignment\')">start recording alignment</button>\
         <button class="mat_resume_alignment" style="display: none" onclick="$(\'#jquery_jplayer_1\').mediaAlignedTextEditor(\'resumeManualAlignment\')">resume recording alignment</button>\
         <button class="mat_record_time" style="display: none" onclick="$(\'#jquery_jplayer_1\').mediaAlignedTextEditor(\'recordManualTime\')">record manual time</button>\
         <button class="mat_pause_alignment" style="display: none" onclick="$(\'#jquery_jplayer_1\').mediaAlignedTextEditor(\'pauseManualAlignment\')">pause recording alignment</button>\
@@ -763,7 +761,7 @@
         $this.data('mediaAlignedText', data);
         
         //begin playing and recording
-        alert('To track the text along with the audio simply press the space bar.  Once you click OK, the audio will begin in 1 second.');
+        alert('After clicking OK, the audio will begin in 1 second. To track the text along with the audio simply click the "record manual time" button.');
         var t = setTimeout(function () {$this.jPlayer('play', time_start);}, 1000);
         
         //set focus on recording
