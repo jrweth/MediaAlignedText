@@ -130,7 +130,7 @@
     
     var _checkTimeChange = function($this){
         var data = $this.data('mediaAlignedText');
-        
+
         //if checking time has been turned off then disable
         if(data.check_time_disabled) return false;
         
@@ -144,12 +144,14 @@
         }
         else {
             var segment = data.text_segments[data.current_text_segment_index];
-            var current_segment_start = parseFloat(segment.time_start) -5; //-5 is hack since some browsers were setting time a bit off
+            var current_segment_start = parseFloat(segment.time_start) -250; //-250 is hack since some browsers were setting time a bit off
             var current_segment_end = parseFloat(segment.time_end);
         }
         
         //check if we are still in the timeframe of the currently selected text segment
-        if(current_time >= current_segment_start && current_time < current_segment_end) {
+        if(current_time >= current_segment_start && 
+                (current_time < current_segment_end || (data.current_text_segment_index == data.text_segments.length - 1 && current_segment_start >=0))
+        ){
             return true;
         }
         else {    //unset the current text segment to remove highlight
@@ -166,25 +168,25 @@
             if(data.current_text_segment_index == undefined) {
                 var start = 0;
                 var step = 1;
-                var end = data.text_segments.length -1;
+                var end = data.text_segments.length;
             }
             else if (current_time > current_segment_end) {
                 var start = data.current_text_segment_index;
                 var step = 1;
-                var end = data.text_segments.length -1;
+                var end = data.text_segments.length;
             }
             else {
                 var start = data.current_text_segment_index;
                 var step = -1;
-                var end = 0;
+                var end = -1;
             }
-            
             //loop through and search for the next matching segment
             for(i = start; i != end; i = i + step) {
-                
+            
                 //set the text_segment var for convenience
                 var text_segment = data.text_segments[i];
-                if(text_segment.time_start < current_time && text_segment.time_end > current_time) {
+                if(text_segment.time_start < current_time && 
+                    (text_segment.time_end > current_time || (i == data.text_segments.length - 1 && text_segment.time_start >= 0))) {
                     _setCurrentTextSegment($this, i);
                     //check for the next match
                     return(true);
@@ -366,13 +368,13 @@
         if (data.current_text_segment_index != undefined) {
             
         }
+
         
         $(document).trigger('mediaAlignedText.highlight_remove', {'text_segment_index': data.current_text_segment_index});
         $(document).trigger('mediaAlignedText.highlight', {'text_segment_index': text_segment_index});
-        
+
         //set new values for current and then highlight
         data.current_text_segment_index = parseInt(text_segment_index);
-        
         $this.data('mediaAlignedText', data);
     };
     
