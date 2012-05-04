@@ -46,7 +46,7 @@
 It had a perfectly round door like a porthole, painted green, with a shiny yellow brass knob in the exact middle. The door opened on to a tube-shaped hall like a tunnel: a very comfortable tunnel without smoke, with paneled walls, and floors tiled and carpeted, provided with polished chairs, and lots and lots of pegs for hats and coats - the hobbit was fond of visitors.</textarea>
         </div>
         <button onclick="
-            $('#mat_init').hide('200');
+            $('#mat_init_alignment').hide('200');
             $('#mat_editor').show('200')
             $('#jquery_jplayer_1').mediaAlignedTextEditor({
                 'url': $('#mat_media_url').val(),
@@ -56,60 +56,11 @@ It had a perfectly round door like a porthole, painted green, with a shiny yello
     </div>
 </fieldset>
 
-<div id="mat_editor" style="display: none;">
-    <h2>Record and Edit Alignment</h2>
-    
-    <div id="jquery_jplayer_1"></div>
-    
-    <div id="mat_jplayer_controls"></div>
-    
-    <button class="mat_start_alignment" onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('startManualAlignment')">start recording alignment</button>
-    <button class="mat_resume_alignment" style="display: none" onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('resumeManualAlignment')">resume recording alignment</button>
-    <button class="mat_record_time" style="display: none" onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('recordManualTime')">record manual time</button>
-    <button class="mat_pause_alignment" style="display: none" onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('pauseManualAlignment')">pause recording alignment</button>
-    <button class="mat_save_alignment" style="display: none" onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('saveManualAlignment')">save new alignment</button>
-    <button class="mat_cancel_alignment" style="display: none" onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('cancelManualAlignment')">cancel changes to alignment</button>
 
-    
-    <div id="mat_text_viewer"></div>
-    
+<div id="jquery_jplayer_1"></div>
+<div id="mat_jplayer_controls"></div>
+<div id="mat_editor"></div>
 
-    
-    <h3>Timeline</h3>
-    <div>
-        <a href="#" onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('zoomTimeEditor', -1)">zoom in</a>&nbsp;&nbsp;
-        <a href="#" onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('zoomTimeEditor', 1)">zoom out</a>
-    </div>
-    <div id="mat_time_editor" style="overflow: auto">
-        <div id="mat_timeline">
-            <div id="mat_time_slider"></div>
-        </div>
-    </div>
-    
-    
-    <div id="mat_manual_editor">
-        start time: <input type="text" id="mat_editor_start_time" size="5"/>
-        end time: <input type="text" id="mat_editor_end_time" size="5"/>
-        <button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('updateSegmentTime');">update time</button>
-        <button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('playCurrentSegment');">play segment</button>
-    </div>
-    
-
-    
-    <h3>HTML Alignment</h3>
-
-    <button onclick="$('#jquery_jplayer_1').mediaAlignedTextEditor('clearAlignment')">clear all timing</button>&nbsp;&nbsp;
-    <a href="#" onclick="
-        $('#jquery_jplayer_1').mediaAlignedTextEditor('outputAlignment');
-        window.prompt ('Copy to clipboard: Press Ctrl+C then Enter/Return', $('.mat_output').val());
-        return false;
-        "
-    >copy</a>
-    <br /><textarea disabled="disabled" class="mat_output" rows="10" cols="50"></textarea>
-
-
-
-</div>
 </body>
 
 </html>
