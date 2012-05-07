@@ -4,8 +4,14 @@
     <meta charset='utf-8'>
 
     <title>jrweth/MediaAlignedText @ GitHub</title>
-
+    
+    <!-- Documentation includes -->
     <link rel="stylesheet" href="css/main.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="js/shCore.js"></script>
+    <script type="text/javascript" src="js/shBrushJScript.js"></script>
+    <link href="css/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="css/shThemeDefault.css" rel="stylesheet" type="text/css" />
+    
 </head>
 
 <body>
@@ -41,12 +47,108 @@
             jQuery plugin to align and highlight text with audio files
         </div>
     </div>
-    <h2>Developer Guide</h2>
-    Coming Soon
+    
+    <h1>Developer Guide</h1>
+    
+    <ul>
+        <li><a href="#hyper_audio">Hyper-Audio tagging</a></li>
+        <li>
+            <a href="#installation">Installation</a>
+            <ul>
+                <li><a href="#player_setup">Player Setup</a></li>
+                <li><a href="#editor_setup">Editor Setup</a></li>
+            </ul>
+        </li>
+    </ul>
+    
+    <section>
+        <h2><a id="hyper_audio">HyperAudio Tagging</a></h2>
+        
+        <p>
+        In an effort to keep the encoding of the time alignment as simple as possible, the alignment
+        information is embedded into regular html via a specialized attribute. This is based upon
+        the <span class="emphasize">HyperAudio</span> concept developed by Mark Boas over 
+        at <a href="http://happyworm.com/blog/topics/hyper-audio/">HappyWorm </a>.
+        </p>
+        <span class="emphasize">Example</span>
+        <pre class="brush: js">
+            &lt;h2 data-time_start="0"&gt;Counting&lt;/h2&gt;
+            &lt;span data-time_start="1000"&gt;One&lt;/span&gt;
+            &lt;span data-time_start="2000"&gt;Two&lt;/span&gt;
+            &lt;span data-time_start="3000" data-time_end="4000"&gt;Three&lt;/span&gt;
+            &lt;br /&gt;
+            &lt;span&gt;This text won't be highlighted&lt;/span&gt;
+            &lt;div data-time_start="4000" data-time_end="5500"&gt;We Just Counted to 3!&lt;/div&gt;
+        </pre>
+        
+        
+        <section>
+            <h3>data-time_start Attribute</h3>
+            To set the time alignment on any html element just add
+            a <span class="emphasize">"data-time_start"</span> attribute to the element with the value of miliseconds
+            from the begining of the recording that the element should be highlighted.
+            <div class="note">
+                Note: The name of this attribute may be adjusted by setting the
+                <a href="#time_start_attribute">time_start_attribute</a> when initializing the player.
+            </div>
+        </section>
+       
+        <section>
+            <h3>data-time_end Attribute</h3>
+            You may optionally include a <span class="emphasize">"data-time_end"</span> attribute with the value of milliseconds
+            from the beginning of the recording that the element's highlighting should be removed.
+            If no <span class="emphasize">data-time_end</span> attribute is included it will be assumed that the highlighting
+            will be removed when the start time of the subsequent element is reached.
+            <div class="note">
+                Note: The name of this attribute may be adjusted by setting the
+                <a href="#time_end_attribute">time_end_attribute</a> when initializing the player.
+            </div>
+        </section>
+        
+        <section>
+            <h3>Time Aligned Element Ordering</h3>
+            The elements tagged with time alignment should appear in chronological order in the document
+            and thier times should not overlap. <br />
+            <span class="emphasize">Good:</span>
+            <pre class="brush: js">
+                &lt;h2 data-time_start="0"&gt;Counting&lt;/h2&gt;
+                &lt;span data-time_start="1000"&gt;One&lt;/span&gt;
+                &lt;span data-time_start="2000"&gt;Two&lt;/span&gt;
+                &lt;span data-time_start="3000"&gt;Three&lt;/span&gt;
+            </pre>
+            <span class="emphasize">Bad:</span>
+            <pre class="brush: js">
+                &lt;h2 data-time_start="0"&gt;Counting&lt;/h2&gt;
+                &lt;span data-time_start="3500"&gt;One&lt;/span&gt;
+                
+                //time starts before previous start time: Bad
+                &lt;span data-time_start="2000" data-time_end="2500"&gt;Two&lt;/span&gt;
+                
+                //time starts before previous end time: Bad
+                &lt;span data-time_start="2400"&gt;Three&lt;/span&gt; --time starts before previous end time
+            </pre>
+        </section>
+        
+        <div class="note">
+        
+    </section>
+    
+    <section>
+        <h2><a id="installation">Installation</a></h2>
+         <section>
+            <h3><a id="player_setup">Player Setup</a></h3>
+        </section>
+         <section>
+            <h3><a id="editor_setup">Editor Setup</a></h3>
+        </section>
+    </section>
+    
+   
     <div class="footer">
         get the source code on GitHub : <a href="https://github.com/jrweth/MediaAlignedText">jrweth/MediaAlignedText</a>
     </div>
   </div>
 
+    <script type="text/javascript">SyntaxHighlighter.all()</script>
 </body>
 </html>
