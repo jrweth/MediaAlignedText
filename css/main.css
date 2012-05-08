@@ -58,8 +58,12 @@ h3 a,s
     font-size: .9em;
     background-color: #EEEEEE;
     border: 1px solid #cccccc;
+    padding: 3px;
 }
 
+section {
+	margin-left: 20px;
+}
 section h2 {
     border-top: 3px solid black;
 }
@@ -67,3 +71,6 @@ section h2 {
 section h3{
     border-top: 1px solid #cccccc;
 }
+
+/* HEADER PADDING */
+h1, h2, h3, h4, h5 { padding: 5px 0px 5px 0px}
