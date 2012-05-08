@@ -15,13 +15,12 @@
 </head>
 
 <body>
-    
-    <div id="container">
+<div id="container">
     <a href="https://github.com/jrweth/MediaAlignedText"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
     
     <div id="header">
         <div id="header_logo">
-           <img src="images/MediaAlignedTextIcon.png" alt="Media Aligned Text Icon""/>
+            <img src="images/MediaAlignedTextIcon.png" alt="Media Aligned Text Icon""/>
         </div>
         <div class="download">
             <a href="https://github.com/jrweth/MediaAlignedText/zipball/master"><img border="0" width="90" src="https://github.com/images/modules/download/zip.png" alt="download zip file"></a>
@@ -37,7 +36,7 @@
         </nav>
         
         <div class="title">
-           <h1>
+            <h1>
                 <a href="https://github.com/jrweth/MediaAlignedText">MediaAlignedText</a><br />
                 <!--  span class="small">by <a href="https://github.com/jrweth">jrweth</a></span-->
             </h1>
@@ -55,7 +54,12 @@
         <li>
             <a href="#installation">Installation</a>
             <ul>
-                <li><a href="#player_setup">Player Setup</a></li>
+                <li>
+                    <a href="#player_setup">Player Setup</a>
+                    <ul>
+                        <li><a href="#quick_player_setup">Quick Player Setup</a></li>
+                    </ul>
+                </li>
                 <li><a href="#editor_setup">Editor Setup</a></li>
             </ul>
         </li>
@@ -129,16 +133,33 @@
             </pre>
         </section>
         
-        <div class="note">
         
     </section>
     
     <section>
         <h2><a id="installation">Installation</a></h2>
-         <section>
+        <section>
+            <h3><a id="quick_player_setup">Quick Demo Setup</a></h3>
+            Since the MediaAlignedText Player depends on several libraries (most notably <a href="http://http://jplayer.org/">jPlayer</a>), a
+            quick way to install a working version of the player/editor and related libraries is to use the <span class="emphasize">/demo</span>
+            folder from the MediaAlignedText project source.  To do so follow these steps:
+            <ol>
+                <li>Download the MediaAlignedText source code from gtihub
+                    (<a href="https://github.com/jrweth/MediaAlignedText/zipball/master">zip</a>,
+                    <a href="https://github.com/jrweth/MediaAlignedText/tarball/master">tar</a>)
+                </li>
+                <li>Install in a web accessible directory</li>
+                <li>Add audio files to be played into the media_files folder</li>
+                <li>Edit the file names which initialize the player in the javascript in the head of the <span class="emphasize">player.html</span> file</li>
+                <li>Replace the contents of the <span class="emphasize">mat_text_viewer</span> div with your hyperaudio tagged text.</li>
+            </ol>
+            
+            
+        </section>
+        <section>
             <h3><a id="player_setup">Player Setup</a></h3>
         </section>
-         <section>
+        <section>
             <h3><a id="editor_setup">Editor Setup</a></h3>
         </section>
     </section>
@@ -147,8 +168,8 @@
     <div class="footer">
         get the source code on GitHub : <a href="https://github.com/jrweth/MediaAlignedText">jrweth/MediaAlignedText</a>
     </div>
-  </div>
 
-    <script type="text/javascript">SyntaxHighlighter.all()</script>
+</div><!-- End Container Div -->
+<script type="text/javascript">SyntaxHighlighter.all()</script>
 </body>
 </html>
