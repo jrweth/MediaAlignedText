@@ -36,10 +36,8 @@
         </nav>
         
         <div class="title">
-            <h1>
                 <a href="https://github.com/jrweth/MediaAlignedText">MediaAlignedText</a><br />
                 <!--  span class="small">by <a href="https://github.com/jrweth">jrweth</a></span-->
-            </h1>
         </div>
         
         <div class="description">
@@ -47,17 +45,26 @@
         </div>
     </div>
     
-    <h1>Developer Guide</h1>
+    <h2>Developer Guide</h2>
     
     <ul>
-        <li><a href="#hyper_audio">Hyper-Audio tagging</a></li>
+        <li>
+            <a href="#hyper_audio">Hyper-Audio tagging</a>
+            <ul>
+                <li><a href="#hyperaudio_time_start">data-time_start Attribute</a></li>
+                <li><a href="#hyperaudio_time_end">data-time_end Attribute</a></li>
+                <li><a href="#hyperaudio_time_order">Time Aligned Element Ordering</a></li>
+            </ul>
+        </li>
         <li>
             <a href="#installation">Installation</a>
             <ul>
+                
+                <li><a href="#quick_player_setup">Quick Setup From Demo</a></li>
                 <li>
                     <a href="#player_setup">Player Setup</a>
                     <ul>
-                        <li><a href="#quick_player_setup">Quick Player Setup</a></li>
+                        <li><a href="#player_setup_includes">Include Required Resources</a></li>
                     </ul>
                 </li>
                 <li><a href="#editor_setup">Editor Setup</a></li>
@@ -87,7 +94,7 @@
         
         
         <section>
-            <h3>data-time_start Attribute</h3>
+            <h3><a id="hyperaudio_time_start">data-time_start Attribute</a></h3>
             To set the time alignment on any html element just add
             a <span class="emphasize">"data-time_start"</span> attribute to the element with the value of miliseconds
             from the begining of the recording that the element should be highlighted.
@@ -98,7 +105,7 @@
         </section>
        
         <section>
-            <h3>data-time_end Attribute</h3>
+            <h3><a id="hyperaudio_time_end">data-time_end Attribute</a></h3>
             You may optionally include a <span class="emphasize">"data-time_end"</span> attribute with the value of milliseconds
             from the beginning of the recording that the element's highlighting should be removed.
             If no <span class="emphasize">data-time_end</span> attribute is included it will be assumed that the highlighting
@@ -110,7 +117,7 @@
         </section>
         
         <section>
-            <h3>Time Aligned Element Ordering</h3>
+            <h3><a id="hyperaudio_time_order">Time Aligned Element Ordering</a></h3>
             The elements tagged with time alignment should appear in chronological order in the document
             and thier times should not overlap. <br />
             <span class="emphasize">Good:</span>
@@ -139,18 +146,18 @@
     <section>
         <h2><a id="installation">Installation</a></h2>
         <section>
-            <h3><a id="quick_player_setup">Quick Demo Setup</a></h3>
-            Since the MediaAlignedText Player depends on several libraries (most notably <a href="http://http://jplayer.org/">jPlayer</a>), a
+            <h3><a id="quick_player_setup">Quick Setup From Demo</a></h3>
+            Since the MediaAlignedText Player depends on several libraries (most notably <a href="http://jplayer.org/">jPlayer</a>), a
             quick way to install a working version of the player/editor and related libraries is to use the <span class="emphasize">/demo</span>
             folder from the MediaAlignedText project source.  To do so follow these steps:
             <ol>
-                <li>Download the MediaAlignedText source code from gtihub
+                <li>Download and unpack the MediaAlignedText source code from gtihub
                     (<a href="https://github.com/jrweth/MediaAlignedText/zipball/master">zip</a>,
                     <a href="https://github.com/jrweth/MediaAlignedText/tarball/master">tar</a>)
                 </li>
-                <li>Install in a web accessible directory</li>
+                <li>Copy the <span class="emphasize">/demo</span> folder to a web accessible directory</li>
                 <li>Add audio files to be played into the media_files folder</li>
-                <li>Edit the file names which initialize the player in the javascript in the head of the <span class="emphasize">player.html</span> file</li>
+                <li>Edit the javascript in the &lt;head&gt; section of <span class="emphasize">player.html</span> file with the new audio file names</li>
                 <li>Replace the contents of the <span class="emphasize">mat_text_viewer</span> div with your hyperaudio tagged text.</li>
             </ol>
             
@@ -158,6 +165,32 @@
         </section>
         <section>
             <h3><a id="player_setup">Player Setup</a></h3>
+            <section>
+                <h4><a id="player_setup_includes">Include Required Resources</a></h4>
+                In order for the MediaAlignedText Player to run, the following outside libraries neeed to be included:
+                <ul>
+                    <li><a href="http://www.jquery.org">jQuery</a>(version 1.7+)</li>
+                    <li><a href="http://www.jplayer.com">jPlayer</a>(version 2.1.0+) - see online documentation for necessary file inclusions for jPlayer including skins and flash fallback player</li>
+                    <li><a href="http://flesler.blogspot.com/2007/10/jqueryscrollto.html">jQuery.ScrollTo</a> (for default highlighting function)
+                </ul>
+                
+                For the player, it is also necessary to include the following resources from the MediaAlignedProject /src folder:
+                <ul>
+                    <li><span class="emphasize">/src/js/jquery.mediaAlignedText.js</span></li>
+                    <li><span class="emphasize">/src/css/mediaAlignedText.css</span></li>
+                </ul>
+                
+                The complete set of inclusions should look something like the following
+<pre class="brush: js">
+&lt;!-- Include necessary css and javascript --&gt;
+&lt;link type="text/css" href="css/skin/jplayer.blue.monday.css" rel="stylesheet" /&gt;
+&lt;link type="text/css" href="css/mediaAlignedText.css" rel="stylesheet" /&gt;
+&lt;script type="text/javascript" src="js/jquery.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="js/jquery.jplayer.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="js/jquery.scrollTo-min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="js/jquery.mediaAlignedText.js"&gt;&lt;/script&gt;
+</pre>
+            </section>
         </section>
         <section>
             <h3><a id="editor_setup">Editor Setup</a></h3>
