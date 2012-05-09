@@ -33,21 +33,37 @@ h3 {margin-bottom: 0px}
 #header_logo img { height: 120px; width: 90px; margin-right: 5px;}
 .description { font-size: 1em; margin-bottom: 5px; margin-top: 5px; font-style: italic; }
 .download { float: right; }
-hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-.title {padding: 10xp; margin: 5px 0px;}
+hr { border: 0; width: 80%; border-bottom: 1px solid #aaa; }
+.title, .title a { font-size: 1.8em;  margin: 5px 0px 5px 0px; padding: 0px; text-decoration: none;}
 .footer { text-align:center; padding-top:30px; font-style: italic; }
 
 
-/*ALTERNATE HIGHLIGHT COLOR */
+/*ALTERNATE TEXT COLOR */
 h1,
 h1 a,
 h2,
 h2 a,
 h3,
-h3 a,s
-#ALTERNATE_HEADER_COLOR
+h3 a,
+h4,
+h4 a,
+.title a,
+.title a:visited,
+#ALTERNATE_TEXT_COLOR
 {
 	color: #5577ff;
+}
+
+/*ALTERNATE TEXT BACKGROUND */
+section h1,
+section h2,
+section h3,
+section h4,
+section h5,
+#ALTERNATE_SECTION_BACKGROUND
+{
+	background-color: #DDDDFF;
+	margin-bottom: 5px;
 }
 
 .emphasize {
@@ -61,16 +77,16 @@ h3 a,s
     padding: 3px;
 }
 
-section {
+section section{
 	margin-left: 20px;
 }
 section h2 {
     border-top: 3px solid black;
 }
 
-section h3{
-    border-top: 1px solid #cccccc;
+section h3, section h4{
+    border-top: 1px solid black;
 }
 
 /* HEADER PADDING */
-h1, h2, h3, h4, h5 { padding: 5px 0px 5px 0px}
+h1, h2, h3, h4, h5 { padding: 5px 3px 5px 3px}
