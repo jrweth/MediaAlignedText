@@ -65,9 +65,34 @@
                     <a href="#player_setup">Player Setup</a>
                     <ul>
                         <li><a href="#player_setup_includes">Include Required Resources</a></li>
+                        <li><a href="#player_setup_initialize">Initialize Media Files</a></li>
+                        <li><a href="#player_setup_html">Include Required HTML Elements</a></li>
                     </ul>
                 </li>
-                <li><a href="#editor_setup">Editor Setup</a></li>
+                <li>
+                    <a href="#editor_setup">Editor Setup</a></li>
+                    <ul>
+                        <li><a href="#editor_setup_includes">Include Required Resources</a></li>
+                        <li><a href="#editor_setup_initialize">Gather Text and Media File Information and Initialize</a></li>
+                        <li><a href="#editor_setup_html">Include Required HTML Elements</a></li>
+                    </ul>
+            </ul>
+        </li>
+        <li>
+            <a href="#player_options">Player Options</a>
+            <ul>
+                <li><a href="#options_check_time_disabled">check_time_disabled</a></li>
+                <li><a href="#options_generate_jplayer_controls">generate_jplayer_controls</a></li>
+                <li><a href="#options_highlight_function">highlight_function</a></li>
+                <li><a href="#options_highlight_remove_function">highlight_remove_function</a></li>
+                <li><a href="#options_jplayer_controls_id">jplayer_controls_id</a></li>
+                <li><a href="#options_jplayer_control_options">jplayer_control_options</a></li>
+                <li><a href="#options_jplayer_options">jplayer_options</a></li>
+                <li><a href="#options_media_files">media_files</a></li>
+                <li><a href="#options_on_ready_function">on_ready_function</a></li>
+                <li><a href="#options_text_viewer_css_selector">text_viewer_css_selector</a></li>
+                <li><a href="#options_time_end_attribute">time_end_attribute</a></li>
+                <li><a href="#options_time_start_attribute">time_start_attribute</a></li>
             </ul>
         </li>
     </ul>
@@ -100,7 +125,7 @@
             from the begining of the recording that the element should be highlighted.
             <div class="note">
                 Note: The name of this attribute may be adjusted by setting the
-                <a href="#time_start_attribute">time_start_attribute</a> when initializing the player.
+                <a href="#options_time_start_attribute">time_start_attribute</a> when initializing the player.
             </div>
         </section>
        
@@ -112,7 +137,7 @@
             will be removed when the start time of the subsequent element is reached.
             <div class="note">
                 Note: The name of this attribute may be adjusted by setting the
-                <a href="#time_end_attribute">time_end_attribute</a> when initializing the player.
+                <a href="#options_time_end_attribute">time_end_attribute</a> when initializing the player.
             </div>
         </section>
         
@@ -176,8 +201,8 @@
                 
                 For the player, it is also necessary to include the following resources from the MediaAlignedProject /src folder:
                 <ul>
-                    <li><span class="emphasize">/src/js/jquery.mediaAlignedText.js</span></li>
-                    <li><span class="emphasize">/src/css/mediaAlignedText.css</span></li>
+                    <li><a href="https://raw.github.com/jrweth/MediaAlignedText/master/src/css/mediaAlignedText.css">/src/css/jquery.mediaAlignedText.css</a></li>
+                    <li><a href="https://raw.github.com/jrweth/MediaAlignedText/master/src/js/jquery.mediaAlignedText.js">/src/js/jquery.mediaAlignedText.js</a></li>
                 </ul>
                 
                 The complete set of inclusions should look something like the following
@@ -191,12 +216,212 @@
 &lt;script type="text/javascript" src="js/jquery.mediaAlignedText.js"&gt;&lt;/script&gt;
 </pre>
             </section>
+            <section>
+                <h4><a id="player_setup_initialize">Initialize Media Files</a></h4>
+                Once the required libraries are included it is necessary to initialize the MediaAlignedText Player with the desired Media Files.
+                There several additional options that may set the behaviour of the Player.  See <a href="#player_options">Player Options</a> for details.
+                    <pre class="brush: js">
+
+&lt;!-- Setup Player Media Files--&gt;
+&lt;script type="text/javascript"&gt;
+    var media_files = [{
+        "title":"The Hobbit - Chapter 1a",
+        "media_type":"AUDIO",
+        "media": {
+            mp3: "media_files/hobbit-1a.mp3",
+            wav: "media_files/hobbit-1a.wav"
+        }
+    }];
+    
+    &lt;!-- Initialize the Player--&gt;
+    $(document).ready(function(){
+        $('#jquery_jplayer_1').mediaAlignedText({
+            'media_files': media_files
+        });
+    });
+&lt;/script&gt;
+</pre>
+            
+            </section>
+            <section>
+                <h4><a id="player_setup_html">Include required elements</a></h4>
+                The following elements must be present in the body of the HTML document in the
+                position where you want the player to be displayed.
+                
+                <pre class="brush: js">
+                    &lt;div id="jquery_jplayer_1"&gt;&lt;/div&gt; &lt;!-- Base element for player functionality --&gt;
+                    &lt;div id="mat_jplayer_controls"&gt;&lt;/div&gt; &lt;!-- Container for jPlayer Controls --&gt;
+                    &lt;div id="mat_text_viewer"&gt; &lt;!-- Container for the Hyperaudio Tagged Text --&gt;
+                        &lt;h3&gt;The Hobbit - J.R.R Tokien&lt;/h3&gt;
+                         &lt;span data-time_start="0"&gt;In&lt;/span&gt;
+                         &lt;span data-time_start="1160"&gt;a&lt;/span&gt;
+                         &lt;span data-time_start="1460"&gt;hole&lt;/span&gt;
+                         ...
+                         &lt;span data-time_start="41220"&gt;fond&lt;/span&gt;
+                         &lt;span data-time_start="41470"&gt;of&lt;/span&gt;
+                         &lt;span data-time_start="41660"&gt;visitors&lt;/span&gt;. 
+                    &lt;/div&gt;
+                </pre>
+            <div class="note">Note: if you want to change the ids of the &lt;div&gt; elements above, they can be specified in the 
+                <a href="#player_options">player options</a> at initialization.  </div>
+                
+            <div class="note">Note: The jPlayer controls are generated by the MediaAlignedText library as a convenience. If you would like to supply
+                the html for the controls yourself set the  <a href="#option_generate_jplayer_controls">generate_jplayer_controls</a> 
+                option to <span class="emphasize">false</span> in the <a href="#player_options">player options</a>
+                at initialization.
+            </div>
+            </section>
         </section>
         <section>
             <h3><a id="editor_setup">Editor Setup</a></h3>
+            <section>
+                <h4><a id="editor_setup_includes">Include Required Resources</a></h4>
+                The MediaAlignedText editor needs the same libraries that were included for the MediaAlignedText Player
+                (see <a href="#player_setup_indcludes">here</a>).  The following additional resources are needed as well:
+
+                <ul>
+                    <li><a href="http://jqueryui.com/">jQuery.UI css and js</a>(version 1.8+) used for the slider widget in the timeline editor</li>
+                    <li><a href="https://raw.github.com/jrweth/MediaAlignedText/master/src/js/jquery.mediaAlignedTextEditor.js">/src/js/jquery.mediaAlignedTextEditor.js</a> (from project /src/js folder)</li>
+                </ul>
+                
+                The complete set of inclusions should look something like the following
+                <pre class="brush: js">
+                    &lt;link type="text/css" href="css/skin/jplayer.blue.monday.css" rel="stylesheet" /&gt;
+                    &lt;link type="text/css" href="css/mediaAlignedText.css" rel="stylesheet" /&gt;
+                    &lt;link type="text/css" href="css/jquery-ui-1.8.17.custom.css" rel="stylesheet" /&gt;
+                    
+                    &lt;script type="text/javascript" src="js/jquery.min.js"&gt;&lt;/script&gt;
+                    &lt;script type="text/javascript" src="js/jquery.jplayer.min.js"&gt;&lt;/script&gt;
+                    &lt;script type="text/javascript" src="js/jquery.scrollTo-min.js"&gt;&lt;/script&gt;
+                    &lt;script type="text/javascript" src="js/jquery-ui-1.8.17.custom.min.js"&gt;&lt;/script&gt;
+                    &lt;script type="text/javascript" src="js/jquery.mediaAlignedText.js"&gt;&lt;/script&gt;
+                    &lt;script type="text/javascript" src="js/jquery.mediaAlignedTextEditor.js"&gt;&lt;/script&gt;
+                </pre>
+            </section>
+            <section>
+                <h4><a id="editor_setup_initialize">Initialize Editor</a></h4>
+                In order to get started editing the HyperAudio you will need to initialize the editor with the text and the media file that you want to align.
+                To do so you will need a minimum of at least the following initialization 
+                <pre class="brush: js">
+                    $('#jquery_jplayer_1').mediaAlignedTextEditor({
+                        'url': media_url,                  //the url of the media file
+                        'file_type': file_type,            //the file_type of the media file e.g. mp3 or wav
+                        'text_init_type': text_init_type,  //length of text segments [WORD, LINE, SENTENCE, STANZA, TAGGED]
+                        'text': text                       //the plain (or HyperAudio Tagged )text to be aligned 
+                        });
+                </pre>
+                
+                <h5>Input Form</h5>
+                The following is an example of how to use a form to gather the necessary data and initialize the editor
+                <pre class="brush: js">
+                    &lt;div id="mat_init"&gt;
+                        &lt;div&gt;
+                            &lt;label for="mat_media_url"&gt;Media URL&lt;/label&gt;
+                            &lt;input type="text" id="mat_media_url" value =""/&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;label for="mat_media_file_type"&gt;Media File Type&lt;/label&gt;
+                            &lt;select id="mat_media_file_type"&gt;
+                                &lt;option value="mp3"&gt;mp3&lt;/option&gt;
+                                &lt;option value="wav"&gt;wav&lt;/option&gt;
+                            &lt;/select&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;label for="mat_init_type"&gt;Text Initialization Type&lt;/label&gt;
+                            &lt;select id="mat_init_type"&gt;
+                                &lt;option value="WORD"&gt;Plain Text - Create Word Segments&lt;/option&gt;
+                                &lt;option value="LINE"&gt;Plain Text - Create Line Segments&lt;/option&gt;
+                                &lt;option value="SENTENCE"&gt;Plain Text - Create Sentence Segments&lt;/option&gt;
+                                &lt;option value="STANZA"&gt;Plain Text - Create Stanza Segments&lt;/option&gt;
+                                &lt;option value="TAGGED"&gt;Text Already Segmented and Tagged&lt;/option&gt;
+                            &lt;/select&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;label for="mat_text_input"&gt;Text&lt;/label&gt;&lt;br /&gt;
+                            &lt;textarea id="mat_text_input" rows="5" cols="50"&gt;[INPUT TEXT HERE]&lt;/div&gt;
+                        &lt;button onclick="
+                            $('#mat_init_alignment').hide('200');
+                            $('#mat_editor').show('200')
+                            $('#jquery_jplayer_1').mediaAlignedTextEditor({
+                                'url': $('#mat_media_url').val(),
+                                'file_type': $('#mat_media_file_type').val(),
+                                'text_init_type': $('#mat_init_type').val(),
+                                'text': $('#mat_text_input').val()});;"&gt;Intialize Alignment&lt;/button&gt;
+                                
+                    &lt;/div&gt;
+                </pre>
+            </section>
+            <section>
+                <h4><a id="editor_setup_html">Include required elements</a></h4>
+                The MediaAlignedText Editor requires the following elements to be present in the HTML body:
+                <pre class="brush: js">
+                    &lt;div id="jquery_jplayer_1"&gt;&lt;/div&gt;
+                    &lt;div id="mat_jplayer_controls"&gt;&lt;/div&gt;
+                    &lt;div id="mat_editor"&gt;&lt;/div&gt;
+                </pre>
+            <div class="note">Note: if you want to change the ids of the &lt;div&gt; elements above, they can be specified in the 
+                <a href="#editor_options">editor options</a> at initialization.
+            </div>
+
+            <div class="note">Note: The jPlayer controls are generated by the MediaAlignedText library as a convenience. If you would like to supply
+                the html for the controls yourself set the  <a href="#option_generate_jplayer_controls">generate_jplayer_controls</a> 
+                option to <span class="emphasize">false</span> in the <a href="#player_options">player options</a>
+                at initialization.
+            </div>
+            </section>
         </section>
     </section>
-    
+    <section>
+        <h2><a id="player_options">Player Options</a></h3>
+        Player Options can be set on initialization of the MediaAlignedText player.
+        The only required option is the <a href="options_media_files">media_files</a> option.
+        Otherwise, the Player is set to expected defaults.
+        <section><h3><a id="options_check_time_disabled">check_time_disabled</a></h3>
+            <div class="emphasize">default: false</div>
+            This option controls if the Player should continually check the time to update text highlighting
+            while playing the media file.  This is the normal expected behaviour but can be turned off if desired.
+            (e.g. the MediaAlignedText Editor sets this option to false when recording new alignment times)
+        </section>
+        <section><h3><a id="options_generate_jplayer_controls">generate_jplayer_controls</a></h3>
+            <div class="emphasize">default: true</div>
+            This option specifies if the jPlayer controls should be generated by the library.
+            This options should be set to false if the jPlayer controls are already included in the html.
+            (See jPlayer documentation for audio html inclusions <a href="http://www.jplayer.org/latest/quick-start-guide/step-6-audio/">here</a>).
+        </section>
+        <section><h3><a id="options_highlight_function">highlight_function</a></h3>
+            <div class="emphasize">default: [internal function that scrolls to text and highlights]</div>
+            This option allows you to override the default highlighting function.  The overriding function supplied
+            should define 2 parameters:
+            <ul>
+                <li>$this -- reference to the jQuery object </li>
+                <li>text_segment_index -- the index of the text segment to be highlighted
+                    which is encoded in the <span class="emphasize">data-mat_segment</span> attribute of the text segment
+                </li>
+            </ul>
+            
+            As an example, the default highlighting function is the following:
+            <pre class="brush: js">
+                var _textSegmentHighlight = function($this, text_segment_index) {
+                    //add the 'mat_highlighted_text_segment' class to the specified text segment
+                    $('[data-mat_segment='+text_segment_index+']').addClass('mat_highlighted_text_segment');
+                    
+                    //scroll the text viewer to the highlighted segment
+                    $($this.data('mediaAlignedText').text_viewer_css_selector).scrollTo(
+                        '.mat_highlighted_text_segment', 250, {'axis': 'y', 'offset': -20}
+                    );
+                };
+            </pre>
+        </section>
+        <section><h3><a id="options_highlight_remove_function">highlight_remove_function</a></h3></section>
+        <section><h3><a id="options_jplayer_controls_id">jplayer_controls_id</a></h3></section>
+        <section><h3><a id="options_jplayer_control_options">jplayer_control_options</a></h3></section>
+        <section><h3><a id="options_jplayer_options">jplayer_options</a></h3></section>
+        <section><h3><a id="options_media_files">media_files</a></h3></section>
+        <section><h3><a id="options_on_ready_function">on_ready_function</a></h3></section>
+        <section><h3><a id="options_text_viewer_css_selector">text_viewer_css_selector</a></h3></section>
+        <section><h3><a id="options_time_end_attribute">time_end_attribute</a></h3></section>
+        <section><h3><a id="options_time_start_attribute">time_start_attribute</a></h3></section>
+    </section>
    
     <div class="footer">
         get the source code on GitHub : <a href="https://github.com/jrweth/MediaAlignedText">jrweth/MediaAlignedText</a>
