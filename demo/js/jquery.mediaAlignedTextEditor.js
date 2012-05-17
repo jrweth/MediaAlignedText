@@ -154,7 +154,7 @@
                     var pattern = new RegExp(/(\.|\?|!)/);
                     break;
                 case 'STANZA':
-                    var pattern = new RegExp(/(\n+)/);
+                    var pattern = new RegExp(/(\n\n+)/);
                     break;
                 default:
                     var pattern = new RegExp('(' + options.text_init_type + ')');
