@@ -82,21 +82,34 @@
             <a href="#player_options">Player Options</a>
             <ul>
                 <li><a href="#options_check_time_disabled">check_time_disabled</a></li>
-                <li><a href="#options_generate_jplayer_controls">generate_jplayer_controls</a></li>
                 <li><a href="#options_highlight_function">highlight_function</a></li>
                 <li><a href="#options_highlight_remove_function">highlight_remove_function</a></li>
+                <li><a href="#options_jplayer_controls_generate">jplayer_controls_generate</a></li>
                 <li><a href="#options_jplayer_controls_id">jplayer_controls_id</a></li>
                 <li><a href="#options_jplayer_control_options">jplayer_control_options</a></li>
                 <li><a href="#options_jplayer_options">jplayer_options</a></li>
-                <li><a href="#options_media_files">media_files</a></li>
-                <li><a href="#options_on_ready_function">on_ready_function</a></li>
+                <li><a href="#options_media_files">media_files *</a></li>
                 <li><a href="#options_text_viewer_css_selector">text_viewer_css_selector</a></li>
                 <li><a href="#options_time_end_attribute">time_end_attribute</a></li>
                 <li><a href="#options_time_start_attribute">time_start_attribute</a></li>
             </ul>
         </li>
+        <li>
+            <a href="#editor_options">Editor Options</a>
+            <ul>
+                <li><a href="#options_color_toggle_classes">color_toggle_classes</a></li>
+                <li><a href="#options_eclosing_tag">eclosing_tag</a></li>
+                <li><a href="#options_editor_css_selector">editor_css_selector</a></li>
+                <li><a href="#options_generate_editor_html">generate_editor_html</a></li>
+                <li><a href="#options_media_aligned_text_options">media_aligned_text_options</a></li>
+                <li><a href="#options_media_file_type">media_file_type *</a></li>
+                <li><a href="#options_text_init_type">text_init_type *</a></li>
+                <li><a href="#options_text">text *</a></li>
+                <li><a href="#options_url">url *</a></li>
+                <li><a href="#options_viewable_media_segments">viewable_media_segments</a></li>
+            </ul>
     </ul>
-    
+    * indicates a required option
     <section>
         <h2><a id="hyper_audio">HyperAudio Tagging</a></h2>
         
@@ -375,18 +388,29 @@
         <h2><a id="player_options">Player Options</a></h3>
         Player Options can be set on initialization of the MediaAlignedText player.
         The only required option is the <a href="options_media_files">media_files</a> option.
-        Otherwise, the Player is set to expected defaults.
+        Otherwise, the Player is set to expected defaults.<br />
+        To set these options, pass them in when first initializing the Player.
+        <pre class="brush: js">
+        $('#jquery_jplayer_1').mediaAlignedText({
+            'jplayer_controls_id'       : 'mat_jplayer_controls',//id of the div where jplayer controls reside
+            'media_files'               : {},                    //array of media files and types to initiate
+            'text_viewer_css_selector'  : '#mat_text_viewer',    //id of the div where the text is displayed
+            'jplayer_options'           : {},                    //additional jplayer options to initiate
+            'jplayer_control_options'   : {},                    //options to send to the jplayer control generator
+            'jplayer_controls_generate' : true,                  //flag indicating if controls should be generated or not
+            'highlight_function'        : _textSegmentHighlight, //the function to use to highlight - requires object and text_segment_id as arguments
+            'highlight_remove_function' : _textSegmentHighlightRemove,  //function to remove highligh - requires object and text_segment_id as arguments
+            'time_start_attribute'      : 'data-time_start',     //attribute to designate start time encoding
+            'time_end_attribute'        : 'data-time_end',       //attribute to designate end time encoding
+            'check_time_disabled'       : false                  //flag to indicate if you want to turn off checking time to change highlighting as recording plays
+        });
+        
+        </pre>
         <section><h3><a id="options_check_time_disabled">check_time_disabled</a></h3>
             <div class="emphasize">default: false</div>
             This option controls if the Player should continually check the time to update text highlighting
             while playing the media file.  This is the normal expected behaviour but can be turned off if desired.
             (e.g. the MediaAlignedText Editor sets this option to false when recording new alignment times)
-        </section>
-        <section><h3><a id="options_generate_jplayer_controls">generate_jplayer_controls</a></h3>
-            <div class="emphasize">default: true</div>
-            This option specifies if the jPlayer controls should be generated by the library.
-            This options should be set to false if the jPlayer controls are already included in the html.
-            (See jPlayer documentation for audio html inclusions <a href="http://www.jplayer.org/latest/quick-start-guide/step-6-audio/">here</a>).
         </section>
         <section><h3><a id="options_highlight_function">highlight_function</a></h3>
             <div class="emphasize">default: [internal function that scrolls to text and highlights]</div>
@@ -401,7 +425,7 @@
             
             As an example, the default highlighting function is the following:
             <pre class="brush: js">
-                var _textSegmentHighlight = function($this, text_segment_index) {
+                function($this, text_segment_index) {
                     //add the 'mat_highlighted_text_segment' class to the specified text segment
                     $('[data-mat_segment='+text_segment_index+']').addClass('mat_highlighted_text_segment');
                     
@@ -412,17 +436,184 @@
                 };
             </pre>
         </section>
-        <section><h3><a id="options_highlight_remove_function">highlight_remove_function</a></h3></section>
-        <section><h3><a id="options_jplayer_controls_id">jplayer_controls_id</a></h3></section>
-        <section><h3><a id="options_jplayer_control_options">jplayer_control_options</a></h3></section>
-        <section><h3><a id="options_jplayer_options">jplayer_options</a></h3></section>
-        <section><h3><a id="options_media_files">media_files</a></h3></section>
-        <section><h3><a id="options_on_ready_function">on_ready_function</a></h3></section>
-        <section><h3><a id="options_text_viewer_css_selector">text_viewer_css_selector</a></h3></section>
-        <section><h3><a id="options_time_end_attribute">time_end_attribute</a></h3></section>
-        <section><h3><a id="options_time_start_attribute">time_start_attribute</a></h3></section>
+        <section>
+            <h3><a id="options_highlight_remove_function">highlight_remove_function</a></h3>
+            <div class="emphasize">default: [internal function that removes highlight]</div>
+            This option allows you to override the default removal of highlight function.
+            Similar to the highlight function, the overriding hightlight-remove function supplied
+            should define 2 parameters:
+            <ul>
+                <li>$this -- reference to the jQuery object </li>
+                <li>text_segment_index -- the index of the text segment to be highlighted
+                    which is encoded in the <span class="emphasize">data-mat_segment</span> attribute of the text segment
+                </li>
+            </ul>
+            
+            
+            As an example, the default highlight-reomve function is the following:
+            <pre class="brush: js">
+                function($this, text_segment_index){
+                    $('[data-mat_segment='+text_segment_index+']').removeClass('mat_highlighted_text_segment');
+                };
+            </pre>
+        </section>
+        
+        <section><h3><a id="options_jplayer_controls_generate">jplayer_controls_generate</a></h3>
+            <div class="emphasize">default: true</div>
+            This option specifies if the jPlayer controls should be automatically generated by the library.
+            This options should be set to false if the jPlayer controls are already included in the html.
+            (See jPlayer documentation for audio html inclusions <a href="http://www.jplayer.org/latest/quick-start-guide/step-6-audio/">here</a>).
+        </section>
+        <section>
+            <h3><a id="options_jplayer_controls_id">jplayer_controls_id</a></h3>
+            <div class="emphasize">default: mat_jplayer_controls</div>
+            The id of the div element in which the html for the jPlayer controls will be generated.
+            <div class="note">
+            The html controls for the the jPlayer will automatically be inserted into this div unless the
+            <span class="emphasize">jplayer_controls_generate</span> option is set to <span class="emphasize">false</span>.
+            </div> 
+        </section>
+        <section>
+            <h3><a id="options_jplayer_control_options">jplayer_control_options</a></h3>
+            This option is an object containing the settings for the generated jplayer controls which default to the following 
+            <pre class="brush: js">
+            {
+                'jp_container_id' : 'jp_container_1',  //the id for the container of the controls
+                'title'           : '',  //defaults to the title of the media file
+                'media_type'      : 'audio'  //the media type for the container - only audio currently
+            }
+            </pre>
+        </section>
+        <section>
+            <h3><a id="options_jplayer_options">jplayer_options</a></h3>
+            This option is passed to the jPlayer initialization and should follow the format of the
+            jPlayer options found in the jPlayer developer documentation <a href="http://jplayer.org/latest/developer-guide/">here</a>.
+        </section>
+        <section>
+            <h3><a id="options_media_files">media_files *</a></h3>
+            This option is required and contains the array of media files that are being aligned.
+            At the moment the MediaAlignedText only supports one media file, but future development
+            will include having multiple media files available.  The media files should be passed in as an array of objects
+            in the following form:
+            
+            <pre class="brush: js">
+                media_files = [{
+                    "title":"The Hobbit - Chapter 1a",
+                    "media_type":"AUDIO",
+                    "media": {
+                        mp3: "media_files/hobbit-1a.mp3",
+                        wav: "media_files/hobbit-1a.wav"
+                    }
+                }];
+            </pre>
+        </section>
+        <section>
+            <h3><a id="options_text_viewer_css_selector">text_viewer_css_selector</a></h3>
+            <div class="emphasize">default: '#mat_text_viewer'</div>
+            The css selector that designates where the HyperAudio text is contained.
+        </section>
+        <section>
+            <h3><a id="options_time_end_attribute">time_end_attribute</a></h3>
+            <div class="emphasize">default: 'data-time_end'</div>
+            The name of the attribute which identifies the end time of html elements to be time aligned.
+            The value of the attribute named in this option should be the time in 
+            miliseconds from the beginning of the recording that the element's highlighting should be removed.
+            See the <a href="#hyper_audio">hyper_audio</a> section for more detail on the tagging.
+        </section>
+        <section>
+            <h3><a id="options_time_start_attribute">time_start_attribute</a></h3>
+            
+            <div class="emphasize">default: 'data-time_start'</div>
+            The name of the attribute which identifies the start time of html elements to be time aligned.
+            The value of the attribute named in this option should be the time in 
+            miliseconds from the beginning of the recording that the element shoulde be highlighted.
+            See the <a href="#hyper_audio">hyper_audio</a> section for more detail on the tagging.
+        </section>
     </section>
-   
+    <section>
+        <h2><a id="editor_options">Editor Options</a></h2>
+    
+        Editor Options can be set on initialization of the MediaAlignedText Editor.
+        The required options are <a href="options_media_file_type">media_file_type</a>, 
+        <a href="options_text_init_type">text_init_type</a>, 
+        <a href="options_text">text</a>, 
+        and <a href="options_url">url</a>. 
+        Otherwise, the Editor is set to expected defaults.<br />
+        To set these options, pass them in when first initializing the Editor.
+        <pre class="brush: js">
+            $('#jquery_jplayer_1').mediaAlignedTextEditor({
+                'media_file_type'           : 'mp3',  //type of media file
+                'text_init_type'            : 'WORD', //what to break on (can be WORD, LINE, SENTENCE, STANZA, TAGGED(already tagged)
+                'eclosing_tag'              : 'span', // the tag to enclose the text segments in
+                'url'                       : '',     //url of the media file
+                'text'                      : '',     //the text to align
+                'editor_css_selector'       : '#mat_editor', //css selector for editor
+                'generate_editor_html'      : true,   //flag indicating if editor html should be generated or not
+                'viewable_media_segments'   : 5,      //average number of segments viewable on the viewer
+                'color_toggle_classes'      : ['mat_toggle_bg_color_0', 'mat_toggle_bg_color_1', 'mat_toggle_bg_color_2', 'mat_toggle_bg_color_3'], //array of classes to toggle through
+                'media_aligned_text_options': {}      //options to pass to the mediaAlignedText init function
+            });
+        </pre>
+        <section>
+            <h3><a id="options_color_toggle_classes">color_toggle_classes</a></h3>
+            <div class="emphasize">default: ['mat_toggle_bg_color_0', 'mat_toggle_bg_color_1', 'mat_toggle_bg_color_2', 'mat_toggle_bg_color_3']</div>
+            This option is an array of class definitions which will be applied sequentially to the 
+            time aligned elements to distiguish them and match them with the time line editor.
+        </section>
+        <section>
+            <h3><a id="options_eclosing_tag">eclosing_tag</a></h3>
+            <div class="emphasize">default: span</div>
+            When initializing the text, the text segments for alignment will be inclosed in the type of tag specified by this option.
+        </section>
+        <section>
+            <h3><a id="options_editor_css_selector">editor_css_selector</a></h3>
+            <div class="emphasize">default: #mat_editor</div>
+            Set this option to change the default element where the editor html is contained
+        </section>
+        <section>
+            <h3><a id="options_generate_editor_html">generate_editor_html</a></h3>
+            <div class="emphasize">default: true</div>
+            The html for the editor controls are automatically generated by default.
+            If you would like to include the controls by default set this option to false.
+        </section>
+        <section>
+            <h3><a id="options_media_aligned_text_options">media_aligned_text_options</a></h3>
+            These are the options (defined <a href="#player_options">above</a>), to initialize the MediaAlignedText player.
+        </section>
+        <section>
+            <h3><a id="options_media_file_type">media_file_type *</a></h3>
+            <div class="emphasize">default: "mp3"</div>
+            The type of audio file to be aligned (e.g mp3, wav).
+        </section>
+        <section>
+            <h3><a id="options_text_init_type">text_init_type *</a></h3>
+            <span class="emphasize">Required.</span> 
+            This option controls how the supplied plain text will be segmented for alignment.  It can have the following values supplied:
+            <ul>
+                <li><span class="emphasize">WORD</span> - text segmented by each individual word</li>
+                <li><span class="emphasize">LINE</span> - text segmented by occurance of any new line </li>
+                <li><span class="emphasize">SENTENCE</span> - text segmented by occurance of periods ".", question marks "?" and exclamation points "!"</li>
+                <li><span class="emphasize">STANZA</span> - text segmented by occurance of multile new lines</li>
+                <li><span class="emphasize">TAGGED</span> - text has already been HyperAudio tagged and no further segmentation will happen on initialization</li>
+            </ul>
+            If a value other than any of the above values is specified it will be assumed that the value is a regular expression 
+            which serves to identify the delimiter of the text segments.
+        </section>
+        <section>
+            <h3><a id="options_text">text *</a></h3>
+            <span class="emphasize">Required.</span> The plain text to be time aligned.  If you want to edit
+            text which has already been aligned than choose the "TAGGED" value for <a href="#options_text_init_type">the text_init_type option</a>.
+        </section>
+        <section>
+            <h3><a id="options_url">url *</a></h3>
+            <span class="emphasize">Required.</span> The URL of the media file.
+        </section>
+        <section>
+            <h3><a id="options_viewable_media_segments">viewable_media_segments</a></h3>
+            <div class="emphasize">default: 5</div>
+            This option controls the Time Line editor and designates how many text segments should be viewable on average in the space allowed.
+        </section>
+    </section>
     <div class="footer">
         get the source code on GitHub : <a href="https://github.com/jrweth/MediaAlignedText">jrweth/MediaAlignedText</a>
     </div>
