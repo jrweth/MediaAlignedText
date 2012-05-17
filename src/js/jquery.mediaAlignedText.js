@@ -47,13 +47,12 @@
                 'text_viewer_css_selector'  : '#mat_text_viewer',    //id of the div where the text is displayed
                 'jplayer_options'           : {},                    //additional jplayer options to initiate
                 'jplayer_control_options'   : {},                    //options to send to the jplayer control generator
-                'generate_jplayer_controls' : true,                  //flag indicating if controls should be generated or not
+                'jplayer_controls_generate' : true,                  //flag indicating if controls should be generated or not
                 'highlight_function'        : _textSegmentHighlight, //the function to use to highlight - requires object and text_segment_id as arguments
                 'highlight_remove_function' : _textSegmentHighlightRemove,  //function to remove highligh - requires object and text_segment_id as arguments
                 'time_start_attribute'      : 'data-time_start',
                 'time_end_attribute'        : 'data-time_end',
-                'check_time_disabled'       : false,
-                'on_ready_function'         : undefined
+                'check_time_disabled'       : false
             }, options);
             
             //save options to the objects namespaced data holder
@@ -65,7 +64,7 @@
             }
             
             //initialized jplayer controls
-            if(options.generate_jplayer_controls) {
+            if(options.jplayer_controls_generate) {
                 if(options.media_files[0] != undefined && options.media_files[0].title != undefined) {
                     options.jplayer_control_options.title = options.media_files[0].title;
                 }
